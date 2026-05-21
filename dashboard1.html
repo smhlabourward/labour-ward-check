@@ -256,15 +256,30 @@ function expectedChecks(freq, days) {
 }
 
 function calcItemCompliance(id, meta, checks) {
-  // Use actual days in current calendar month for accuracy
+  // Count distinct days/weeks checked this month, not total number of checks
   if (!meta || !checks) return null;
   const now = new Date();
   const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const thisMonthChecks = checks.filter(c => new Date(c.checked_at) >= monthStart);
   const expected = expectedChecks(meta.freq, daysInMonth);
-  const done = checks.filter(c => new Date(c.checked_at) >= monthStart).length;
   if (expected === 0) return null;
-  return Math.min(Math.round(done / expected * 100), 100);
+
+  if (meta.freq === 'daily') {
+    // Count distinct days checked (not total checks)
+    const days = new Set(thisMonthChecks.map(c => new Date(c.checked_at).toISOString().slice(0,10)));
+    return Math.min(Math.round(days.size / expected * 100), 100);
+  } else if (meta.freq === 'weekly') {
+    // Count distinct weeks checked
+    const weeks = new Set(thisMonthChecks.map(c => {
+      const d = new Date(c.checked_at);
+      return d.getFullYear() + '-W' + Math.ceil(d.getDate() / 7);
+    }));
+    return Math.min(Math.round(weeks.size / expected * 100), 100);
+  } else {
+    // Monthly - done at least once = 100%
+    return thisMonthChecks.length > 0 ? 100 : 0;
+  }
 }
 
 function calcOverallCompliance30() {
