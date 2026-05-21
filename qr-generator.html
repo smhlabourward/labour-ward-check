@@ -280,19 +280,24 @@ function buildOutput(cb,ab,out){
     html+='<div class="section-hdr" style="color:'+sec.color+'">'+sec.title+'</div><div class="qr-grid">';
     sec.items.forEach(function(item){
       var url=item.aide?(ab+'?room='+item.room):(cb+'?eq='+item.id);
-      html+='<div class="qr-card"><span class="freq-badge '+(FC[item.freq]||'fb-daily')+'">'+(FL[item.freq]||item.freq)+'</span><h4>'+item.name+'</h4><div class="qr-wrap"><canvas id="qc-'+item.id+'" width="160" height="160"></canvas></div><button class="print-one" onclick="printOne(\''+item.id+'\',\''+encodeURIComponent(item.name)+'\',\''+(FL[item.freq]||'')+'\',\''+encodeURIComponent(url)+'\',\''+sec.color+'\')">Print this QR</button></div>';
+      var apiUrl='https://chart.googleapis.com/chart?cht=qr&chs=280x280&chld=L|1&chl='+encodeURIComponent(url);
+      html+='<div class="qr-card"><span class="freq-badge '+(FC[item.freq]||'fb-daily')+'">'+(FL[item.freq]||item.freq)+'</span><h4>'+item.name+'</h4><div class="qr-wrap"><img id="qi-'+item.id+'" src="'+apiUrl+'" width="280" height="280" alt="QR Code" style="border-radius:6px;"></div><p style="font-size:9px;color:#768692;word-break:break-all;margin:4px 0 6px;">'+url+'</p><button class="print-one" onclick="printOneImg(\''+item.id+'\',\''+encodeURIComponent(item.name)+'\',\''+(FL[item.freq]||'')+'\',\''+encodeURIComponent(url)+'\')">Print this QR</button></div>';
     });
     html+='</div>';
   });
   out.innerHTML=html;
-  var delay=0;
-  SECTIONS.forEach(function(sec){
-    sec.items.forEach(function(item){
-      var url=item.aide?(ab+'?room='+item.room):(cb+'?eq='+item.id);
-      (function(id,u,col){setTimeout(function(){var c=document.getElementById('qc-'+id);if(c)drawQR(u,c,280,col);},delay);})(item.id,url,sec.color);
-      delay+=5;
-    });
-  });
+  // QR codes load via Google Charts API img tags above
+}
+
+function printOneImg(id,name,freq,url,color){
+  var imgEl=document.getElementById('qi-'+id);
+  if(!imgEl||!imgEl.complete){alert('QR code still loading, please wait a moment and try again.');return;}
+  var n=decodeURIComponent(name),u=decodeURIComponent(url);
+  var win=window.open('','_blank');
+  if(!win){alert('Please allow pop-ups and try again.');return;}
+  var apiUrl='https://chart.googleapis.com/chart?cht=qr&chs=300x300&chld=L|1&chl='+encodeURIComponent(u);
+  win.document.write('<!DOCTYPE html><html><head><title>QR</title><style>body{font-family:Arial,sans-serif;text-align:center;padding:16px;background:white;max-width:220px;margin:0 auto;}.nhs{background:#003087;color:white;font-weight:700;font-size:14px;padding:2px 7px;border-radius:3px;display:inline-block;margin-bottom:8px;}h2{font-size:13px;color:#003087;margin-bottom:2px;line-height:1.3;}.ward{font-size:10px;color:#768692;margin-bottom:8px;}img{width:200px;height:200px;}.freq{background:#E8F4F9;color:#003087;padding:2px 8px;border-radius:7px;font-size:10px;font-weight:700;display:inline-block;margin-top:6px;}.url{font-size:8px;color:#999;margin-top:6px;word-break:break-all;}@media print{body{padding:6px;}}</style></head><body><div class="nhs">NHS</div><h2>'+n+'</h2><div class="ward">Labour Ward Stoke Mandeville</div><img src="'+apiUrl+'" onload="window.print();"><br><span class="freq">'+freq+'</span><div class="url">'+u+'</div></body></html>');
+  win.document.close();
 }
 
 function printOne(id,name,freq,url,color){
