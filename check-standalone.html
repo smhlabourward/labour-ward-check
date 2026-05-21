@@ -214,7 +214,7 @@ body{font-family:var(--font);background:var(--grey5);color:var(--grey1);min-heig
 //  CONFIG
 // ============================================================
 const CONFIG = {
-  supabaseUrl: 'https://evvcyddqxryaknyntrsv.supabase.co/rest/v1/',
+  supabaseUrl: 'YOUR_SUPABASE_URL',
   supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV2dmN5ZGRxeHJ5YWtueW50cnN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxODc3NjYsImV4cCI6MjA5NDc2Mzc2Nn0.sHy5ONNRuOEErcz21VO4316M8kd_VCi10OGhncke7kg',
   ward: 'Labour Ward Stoke Mandeville'
 };
@@ -1524,6 +1524,7 @@ const EQUIPMENT_DB1_EXTRA = {
       ]},
     ]
   },
+};
 
 
 // ============================================================
@@ -1829,9 +1830,10 @@ EQUIPMENT_DB2['mattress_audit'] = {
       { id: 'mattress_condemned_process', name: 'Condemned mattresses bagged and collection arranged', desc: 'Any condemned mattresses placed in yellow mattress bag and collection arranged via Help Desk', critical: false, image: 'images/mattress_condemned.jpg' },
     ]
   }]
+};
 
 
-<script>
+
 // ============================================================
 // Merge all equipment data into single lookup object
 Object.assign(EQUIPMENT_DB1, EQUIPMENT_DB1_EXTRA);
@@ -1854,7 +1856,7 @@ let isEmergencyCheck = false;
 function init() {
   updateTime();
   setInterval(updateTime, 30000);
-  if (CONFIG.supabaseUrl === 'YOUR_SUPABASE_URL') {
+  if (CONFIG.supabaseUrl === 'https://evvcyddqxryaknyntrsv.supabase.co/rest/v1/') {
     document.getElementById('configNotice').style.display = 'block';
   }
   const params = new URLSearchParams(window.location.search);
@@ -2101,7 +2103,7 @@ async function submitCheck() {
   document.getElementById('submitBtn').textContent = 'Submitting...';
 
   let saved = false;
-  if (CONFIG.supabaseUrl !== 'YOUR_SUPABASE_URL') {
+  if (CONFIG.supabaseUrl !== 'https://evvcyddqxryaknyntrsv.supabase.co/rest/v1/') {
     try {
       const res = await fetch(`${CONFIG.supabaseUrl}/rest/v1/equipment_checks`, {
         method:'POST',
