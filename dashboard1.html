@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#003087">
+<title>Dashboard 1 — Emergency Equipment | Labour Ward Stoke Mandeville</title>
+<style>
+:root{--blue:#003087;--blue2:#005EB8;--blue3:#0072CE;--aqua:#41B6E6;--green:#007F3B;--green2:#78BE20;--red:#DA291C;--amber:#ED8B00;--grey1:#231f20;--grey2:#425563;--grey3:#768692;--grey4:#D8DDE0;--grey5:#F0F4F5;--font:'Frutiger','Arial',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font);background:var(--grey5);color:var(--grey1);-webkit-font-smoothing:antialiased;}
+.nav{background:var(--blue);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 6px rgba(0,0,0,0.25);}
+.nhs-logo{background:white;color:var(--blue);font-weight:700;font-size:18px;padding:3px 9px;border-radius:3px;}
+.nav-centre{text-align:center;}
+.nav-centre h1{color:white;font-size:15px;font-weight:700;line-height:1.2;}
+.nav-centre p{color:var(--aqua);font-size:12px;}
+.nav-right{text-align:right;}
+.nav-right .nav-time{color:var(--aqua);font-size:13px;}
+.nav-right .nav-status{font-size:11px;color:rgba(255,255,255,0.6);}
+.dash-tabs{background:var(--blue2);display:flex;border-top:1px solid rgba(255,255,255,0.15);}
+.dash-tab{flex:1;padding:9px 6px;color:rgba(255,255,255,0.65);font-size:12px;font-weight:600;text-align:center;cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all 0.2s;}
+.dash-tab.active{color:white;border-bottom-color:var(--aqua);}
+.tab-view{display:none;}.tab-view.active{display:block;}
+.alert-bar{padding:13px 24px;display:none;align-items:flex-start;gap:14px;font-size:14px;}
+.alert-bar.fail{background:var(--red);color:white;display:flex;}
+.alert-bar.warn{background:var(--amber);color:white;display:flex;}
+.alert-icon{font-size:22px;flex-shrink:0;}
+.alert-bar strong{display:block;font-size:15px;font-weight:700;margin-bottom:2px;}
+.main{padding:20px 24px;max-width:1600px;margin:0 auto;}
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:22px;}
+.stat-card{background:white;border-radius:10px;border:1px solid var(--grey4);padding:16px 12px;text-align:center;}
+.stat-num{font-size:30px;font-weight:700;line-height:1;margin-bottom:5px;}
+.stat-label{font-size:11px;color:var(--grey3);font-weight:600;text-transform:uppercase;letter-spacing:0.4px;}
+.s-green{color:var(--green);}
+.s-red{color:var(--red);}
+.s-amber{color:var(--amber);}
+.s-blue{color:var(--blue3);}
+.s-grey{color:var(--grey3);}
+.section-title{font-size:15px;font-weight:700;color:var(--grey1);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.section-title span{font-size:12px;font-weight:400;color:var(--grey3);}
+.filter-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px;background:white;padding:12px 16px;border-radius:10px;border:1px solid var(--grey4);}
+.filter-bar label{font-size:12px;font-weight:700;color:var(--grey2);text-transform:uppercase;letter-spacing:0.3px;}
+.fselect{border:1.5px solid var(--grey4);border-radius:6px;padding:7px 10px;font-size:13px;font-family:var(--font);color:var(--grey1);background:white;cursor:pointer;}
+.fselect:focus{outline:none;border-color:var(--blue3);}
+.date-input{border:1.5px solid var(--grey4);border-radius:6px;padding:7px 10px;font-size:13px;font-family:var(--font);}
+.export-btn{margin-left:auto;background:var(--blue);color:white;border:none;padding:8px 16px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;}
+.export-btn:hover{background:var(--blue2);}
+.equip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:28px;}
+.eq-card{background:white;border-radius:10px;border:1px solid var(--grey4);overflow:hidden;cursor:pointer;transition:box-shadow 0.2s;border-left:4px solid var(--grey4);}
+.eq-card:hover{box-shadow:0 4px 16px rgba(0,48,135,0.1);}
+.eq-card.st-pass{border-left-color:var(--green);}
+.eq-card.st-fail{border-left-color:var(--red);}
+.eq-card.st-overdue{border-left-color:var(--amber);}
+.eq-card.st-never{border-left-color:var(--grey3);}
+.eq-card-top{padding:12px 14px;display:flex;align-items:flex-start;gap:10px;border-bottom:1px solid var(--grey4);}
+.eq-thumb{width:50px;height:50px;border-radius:8px;background:var(--grey4);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.eq-thumb img{width:100%;height:100%;object-fit:cover;}
+.eq-info{flex:1;}
+.eq-name{font-size:14px;font-weight:700;margin-bottom:3px;line-height:1.3;}
+.eq-loc{font-size:12px;color:var(--grey3);}
+.status-pill{padding:3px 9px;border-radius:10px;font-size:11px;font-weight:700;text-transform:uppercase;flex-shrink:0;}
+.sp-pass{background:#E8F4EE;color:var(--green);}
+.sp-fail{background:#FDECEA;color:var(--red);}
+.sp-overdue{background:#FEF3E2;color:var(--amber);}
+.sp-never{background:var(--grey4);color:var(--grey2);}
+.eq-card-body{padding:10px 14px;}
+.eq-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;}
+.eq-row-label{color:var(--grey3);}
+.eq-row-val{font-weight:600;color:var(--grey1);}
+.comp-bar-wrap{background:var(--grey4);border-radius:3px;height:4px;margin:6px 0 2px;overflow:hidden;}
+.comp-bar{height:100%;border-radius:3px;transition:width 0.4s;}
+.checks-table-wrap{background:white;border-radius:10px;border:1px solid var(--grey4);overflow:hidden;margin-bottom:28px;}
+.table-scroll{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead{background:var(--blue);color:white;}
+th{padding:10px 14px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;white-space:nowrap;}
+td{padding:11px 14px;border-bottom:1px solid var(--grey4);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--grey5);}
+.td-pill{display:inline-block;padding:3px 9px;border-radius:10px;font-size:11px;font-weight:700;text-transform:uppercase;}
+.view-btn{background:var(--blue3);color:white;border:none;padding:4px 10px;border-radius:5px;font-size:12px;font-weight:700;cursor:pointer;}
+.trend-card{background:white;border-radius:10px;border:1px solid var(--grey4);padding:20px;margin-bottom:28px;}
+.trend-card h3{font-size:14px;font-weight:700;margin-bottom:16px;}
+.chart-wrap{height:200px;position:relative;}
+.room-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:28px;}
+.room-card{background:white;border-radius:8px;border:1px solid var(--grey4);padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;border-left:4px solid var(--grey4);}
+.room-card.st-pass{border-left-color:var(--green);}
+.room-card.st-fail{border-left-color:var(--red);}
+.room-card.st-overdue{border-left-color:var(--amber);}
+.room-card.st-never{border-left-color:var(--grey3);}
+.room-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+.rd-pass{background:var(--green);}
+.rd-fail{background:var(--red);}
+.rd-overdue{background:var(--amber);}
+.rd-never{background:var(--grey3);}
+.room-info{flex:1;}
+.room-name{font-size:13px;font-weight:700;}
+.room-meta{font-size:11px;color:var(--grey3);}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-bg.show{display:flex;}
+.modal{background:white;border-radius:14px;width:100%;max-width:580px;max-height:90vh;overflow-y:auto;padding:24px;}
+.modal-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;}
+.modal-header h3{font-size:18px;font-weight:700;color:var(--blue);}
+.modal-close{background:var(--grey4);border:none;width:30px;height:30px;border-radius:50%;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--grey2);}
+.mdr{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--grey4);font-size:14px;}
+.mdr:last-child{border-bottom:none;}
+.mdr-label{color:var(--grey2);}
+.mdr-val{font-weight:600;max-width:60%;text-align:right;}
+.fail-item{background:#FDECEA;border-radius:8px;padding:10px 14px;margin-bottom:8px;}
+.fail-item strong{color:var(--red);display:block;margin-bottom:3px;font-size:13px;}
+.fail-item p{font-size:12px;color:var(--grey2);}
+.setup-panel{background:#FEF3E2;border:1px solid var(--amber);border-radius:10px;padding:18px;margin-bottom:20px;}
+.setup-panel h3{color:var(--amber);font-size:14px;font-weight:700;margin-bottom:6px;}
+.setup-panel p{font-size:13px;color:var(--grey2);margin-bottom:10px;}
+.setup-inputs{display:flex;gap:10px;flex-wrap:wrap;}
+.setup-input{flex:1;min-width:180px;border:1.5px solid var(--grey4);border-radius:6px;padding:9px 12px;font-size:13px;font-family:var(--font);}
+.setup-btn{background:var(--blue);color:white;border:none;padding:9px 18px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;}
+@media(max-width:768px){.stats-row{grid-template-columns:repeat(2,1fr);}.main{padding:14px 16px;}.nav{padding:0 16px;}.filter-bar{gap:8px;}}
+</style>
+</head>
+<body>
+<div class="nav">
+  <div class="nhs-logo">NHS</div>
+  <div class="nav-centre">
+    <h1>Labour Ward Stoke Mandeville</h1>
+    <p>Emergency Equipment Dashboard</p>
+  </div>
+  <div class="nav-right">
+    <div class="nav-time" id="navTime"></div>
+    <div class="nav-status" id="navStatus">Loading...</div>
+  </div>
+</div>
+
+<div class="alert-bar" id="alertBar">
+  <div class="alert-icon">⚠</div>
+  <div><strong id="alertTitle"></strong><span id="alertBody"></span></div>
+</div>
+
+<div class="dash-tabs">
+  <button class="dash-tab active" onclick="showTab('overview')">Overview</button>
+  <button class="dash-tab" onclick="showTab('rooms')">Rooms</button>
+  <button class="dash-tab" onclick="showTab('history')">Audit Trail</button>
+  <button class="dash-tab" onclick="showTab('trend')">Trends</button>
+</div>
+
+<!-- OVERVIEW TAB -->
+<div class="tab-view active" id="tab-overview">
+  <div class="main">
+    <div class="setup-panel" id="setupPanel" style="display:none;">
+      <h3>⚙ Connect to Supabase</h3>
+      <p>Enter your Supabase project URL and anon key to load live data. Found in your Supabase project under Settings → API.</p>
+      <div class="setup-inputs">
+        <input class="setup-input" id="sbUrl" placeholder="https://xxxx.supabase.co" type="url">
+        <input class="setup-input" id="sbKey" placeholder="anon key" type="password">
+        <button class="setup-btn" onclick="saveConfig()">Connect</button>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num s-green" id="statPass">--</div><div class="stat-label">Passed today</div></div>
+      <div class="stat-card"><div class="stat-num s-red" id="statFail">--</div><div class="stat-label">Issues today</div></div>
+      <div class="stat-card"><div class="stat-num s-amber" id="statOverdue">--</div><div class="stat-label">Overdue now</div></div>
+      <div class="stat-card"><div class="stat-num s-blue" id="stat7d">--</div><div class="stat-label">Checks (7 days)</div></div>
+      <div class="stat-card"><div class="stat-num s-grey" id="stat30compliance">--%</div><div class="stat-label">30-day compliance</div></div>
+    </div>
+    <div class="filter-bar">
+      <label>Filter:</label>
+      <select class="fselect" id="fFreq" onchange="renderOverview()"><option value="">All frequencies</option><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select>
+      <select class="fselect" id="fStatus" onchange="renderOverview()"><option value="">All statuses</option><option value="fail">Issues only</option><option value="overdue">Overdue only</option></select>
+      <input class="date-input" type="date" id="fDate" onchange="renderOverview()">
+      <button class="export-btn" onclick="exportCSV()">⬇ Export CSV</button>
+    </div>
+    <div class="section-title">Equipment status <span id="equipSubtitle"></span></div>
+    <div class="equip-grid" id="equipGrid"></div>
+  </div>
+</div>
+
+<!-- ROOMS TAB -->
+<div class="tab-view" id="tab-rooms">
+  <div class="main">
+    <div class="section-title" style="margin-top:4px;">Room daily checks <span id="roomSubtitle"></span></div>
+    <div class="room-grid" id="roomGrid"></div>
+  </div>
+</div>
+
+<!-- AUDIT TRAIL TAB -->
+<div class="tab-view" id="tab-history">
+  <div class="main">
+    <div class="filter-bar" style="margin-top:4px;">
+      <label>Filter:</label>
+      <select class="fselect" id="hFreq" onchange="renderHistory()"><option value="">All</option><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select>
+      <select class="fselect" id="hStatus" onchange="renderHistory()"><option value="">All statuses</option><option value="fail">Issues only</option></select>
+      <input class="date-input" type="date" id="hDate" onchange="renderHistory()">
+      <select class="fselect" id="hEquip" onchange="renderHistory()"><option value="">All equipment</option></select>
+      <button class="export-btn" onclick="exportCSV()">⬇ Export CSV</button>
+    </div>
+    <div class="checks-table-wrap">
+      <div class="table-scroll">
+        <table>
+          <thead><tr>
+            <th>Equipment</th><th>Location</th><th>Staff</th><th>ID</th>
+            <th>Date / Time</th><th>Freq</th><th>Pass</th><th>Fail</th>
+            <th>Status</th><th>Type</th><th>Detail</th>
+          </tr></thead>
+          <tbody id="historyBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TRENDS TAB -->
+<div class="tab-view" id="tab-trend">
+  <div class="main">
+    <div class="trend-card">
+      <h3>Daily checks completed — last 30 days</h3>
+      <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
+    </div>
+    <div class="trend-card">
+      <h3>Compliance rate by equipment — last 30 days</h3>
+      <div id="complianceByEquip"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modalBg" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle"></h3>
+      <button class="modal-close" onclick="closeModalDirect()">×</button>
+    </div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="equipment-data.js"></script>
+<script>
+let CONFIG = {supabaseUrl:'',supabaseKey:''};
+let allChecks = [];
+let trendChartInst = null;
+
+const EQUIP_META = {};
+Object.entries(EQUIPMENT_DB1).forEach(([id, eq]) => {
+  EQUIP_META[id] = { name: eq.name, freq: eq.frequency, image: eq.image, location: eq.location };
+});
+
+const FREQ_MS = {daily:86400000, weekly:7*86400000, monthly:30*86400000};
+
+function loadConfig() {
+  const saved = localStorage.getItem('sm_dash1_config');
+  if(saved) try{CONFIG=JSON.parse(saved);}catch(e){}
+  if(!CONFIG.supabaseUrl) {
+    document.getElementById('setupPanel').style.display='block';
+  } else {
+    loadData();
+  }
+  setInterval(()=>updateTime(), 30000);
+  updateTime();
+  document.getElementById('fDate').value = new Date().toISOString().slice(0,10);
+  document.getElementById('hDate').value = new Date().toISOString().slice(0,10);
+  populateEquipFilter();
+}
+
+function saveConfig() {
+  CONFIG.supabaseUrl = document.getElementById('sbUrl').value.trim();
+  CONFIG.supabaseKey = document.getElementById('sbKey').value.trim();
+  localStorage.setItem('sm_dash1_config', JSON.stringify(CONFIG));
+  document.getElementById('setupPanel').style.display='none';
+  loadData();
+}
+
+function updateTime() {
+  const now = new Date();
+  document.getElementById('navTime').textContent = now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+}
+
+async function loadData() {
+  document.getElementById('navStatus').textContent = 'Loading...';
+  try {
+    const since = new Date(); since.setFullYear(since.getFullYear()-2);
+    const res = await fetch(
+      `${CONFIG.supabaseUrl}/rest/v1/equipment_checks?checked_at=gte.${since.toISOString()}&order=checked_at.desc&limit=10000`,
+      {headers:{'apikey':CONFIG.supabaseKey,'Authorization':`Bearer ${CONFIG.supabaseKey}`}}
+    );
+    if(!res.ok) throw new Error('API error');
+    allChecks = await res.json();
+    document.getElementById('navStatus').textContent = `Updated ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}`;
+  } catch(e) {
+    const local = JSON.parse(localStorage.getItem('sm_lwec_checks')||'[]');
+    allChecks = local;
+    document.getElementById('navStatus').textContent = 'Offline — local data';
+  }
+  renderAll();
+  setInterval(loadData, 120000);
+}
+
+function renderAll() {
+  renderStats();
+  renderOverview();
+  renderRooms();
+  renderHistory();
+  renderTrends();
+}
+
+function renderStats() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const week = new Date(); week.setDate(week.getDate()-7);
+  const month = new Date(); month.setDate(month.getDate()-30);
+  const todayChecks = allChecks.filter(c=>new Date(c.checked_at)>=today);
+  const monthChecks = allChecks.filter(c=>new Date(c.checked_at)>=month);
+  const weekChecks = allChecks.filter(c=>new Date(c.checked_at)>=week);
+  const pass = todayChecks.filter(c=>c.overall_status==='pass').length;
+  const fail = todayChecks.filter(c=>c.overall_status==='fail').length;
+  const overdue = countOverdue();
+  const comp30 = monthChecks.length ? Math.round(monthChecks.filter(c=>c.overall_status==='pass').length/monthChecks.length*100) : 0;
+  document.getElementById('statPass').textContent=pass;
+  document.getElementById('statFail').textContent=fail;
+  document.getElementById('statOverdue').textContent=overdue;
+  document.getElementById('stat7d').textContent=weekChecks.length;
+  document.getElementById('stat30compliance').textContent=comp30+'%';
+  const ab = document.getElementById('alertBar');
+  if(fail>0){
+    ab.className='alert-bar fail';
+    document.getElementById('alertTitle').textContent=`${fail} equipment failure${fail>1?'s':''} recorded today`;
+    document.getElementById('alertBody').textContent=' — Review below. Equipment must not be used until resolved.';
+  } else if(overdue>0){
+    ab.className='alert-bar warn';
+    document.getElementById('alertTitle').textContent=`${overdue} item${overdue>1?'s':''} overdue for checking`;
+    document.getElementById('alertBody').textContent=' — Assign checks before clinical activity begins.';
+  } else { ab.className='alert-bar'; }
+}
+
+function countOverdue() {
+  const now = new Date();
+  let n = 0;
+  Object.entries(EQUIP_META).forEach(([id,meta])=>{
+    const last = allChecks.find(c=>c.equipment_id===id);
+    if(!last){n++;return;}
+    if(now-new Date(last.checked_at)>FREQ_MS[meta.freq]) n++;
+  });
+  return n;
+}
+
+function getCardStatus(id, meta, dateFilter) {
+  const now = new Date();
+  const checks = allChecks.filter(c=>{
+    if(c.equipment_id!==id) return false;
+    if(dateFilter){return new Date(c.checked_at).toISOString().slice(0,10)===dateFilter;}
+    return true;
+  });
+  const last = checks[0];
+  if(!last) return 'never';
+  if(last.overall_status==='fail') return 'fail';
+  if(!dateFilter && now-new Date(last.checked_at)>FREQ_MS[meta.freq]) return 'overdue';
+  return 'pass';
+}
+
+function renderOverview() {
+  const freqF = document.getElementById('fFreq').value;
+  const statusF = document.getElementById('fStatus').value;
+  const dateF = document.getElementById('fDate').value;
+  const grid = document.getElementById('equipGrid');
+  const ROOM_IDS = ROOMS_ALL.map(r=>`room_check_${r.id}`);
+  const TEMP_IDS = ['temp_bc_drug_room','temp_lw_iv_room','temp_lw_drug_prep'];
+  let html='', shown=0;
+
+  Object.entries(EQUIP_META).forEach(([id,meta])=>{
+    if(ROOM_IDS.includes(id)||TEMP_IDS.includes(id)) return;
+    if(freqF && meta.freq!==freqF) return;
+    const st = getCardStatus(id, meta, dateF);
+    if(statusF==='fail' && st!=='fail') return;
+    if(statusF==='overdue' && st!=='overdue' && st!=='never') return;
+    const checks = allChecks.filter(c=>c.equipment_id===id);
+    const total=checks.length, passC=checks.filter(c=>c.overall_status==='pass').length;
+    const comp=total?Math.round(passC/total*100):null;
+    const last=checks[0];
+    const lastStr=last?new Date(last.checked_at).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'Never';
+    const barCol=comp===null?'#D8DDE0':comp>=95?'#007F3B':comp>=80?'#ED8B00':'#DA291C';
+    const pillMap={pass:'sp-pass',fail:'sp-fail',overdue:'sp-overdue',never:'sp-never'};
+    const pillTxt={pass:'✓ OK',fail:'⚠ Fail',overdue:'Overdue',never:'Not checked'};
+    const imgHtml=meta.image?`<div class="eq-thumb"><img src="${meta.image}" onerror="this.parentElement.innerHTML='🏥'"></div>`:`<div class="eq-thumb">🏥</div>`;
+    html+=`<div class="eq-card st-${st}" onclick="openEquipModal('${id}')">
+      <div class="eq-card-top">${imgHtml}<div class="eq-info"><div class="eq-name">${meta.name}</div><div class="eq-loc">${meta.location}</div></div><div class="status-pill ${pillMap[st]}">${pillTxt[st]}</div></div>
+      <div class="eq-card-body">
+        <div class="eq-row"><span class="eq-row-label">Last checked</span><span class="eq-row-val">${lastStr}</span></div>
+        <div class="eq-row"><span class="eq-row-label">By</span><span class="eq-row-val">${last?last.staff_name:'—'}</span></div>
+        <div class="eq-row"><span class="eq-row-label">Frequency</span><span class="eq-row-val">${meta.freq}</span></div>
+        ${comp!==null?`<div class="eq-row"><span class="eq-row-label">Compliance</span><span class="eq-row-val" style="color:${barCol}">${comp}%</span></div><div class="comp-bar-wrap"><div class="comp-bar" style="width:${comp}%;background:${barCol}"></div></div>`:''}
+      </div></div>`;
+    shown++;
+  });
+
+  // Temperature checks section
+  let tempHtml='';
+  TEMP_IDS.forEach(id=>{
+    const meta=EQUIP_META[id]; if(!meta) return;
+    const st=getCardStatus(id,meta,dateF);
+    const last=allChecks.find(c=>c.equipment_id===id);
+    const lastStr=last?new Date(last.checked_at).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'Never';
+    const pillMap={pass:'sp-pass',fail:'sp-fail',overdue:'sp-overdue',never:'sp-never'};
+    const pillTxt={pass:'✓ OK',fail:'⚠ Above 25°C',overdue:'Overdue',never:'Not checked'};
+    tempHtml+=`<div class="eq-card st-${st}" onclick="openEquipModal('${id}')">
+      <div class="eq-card-top"><div class="eq-thumb">🌡</div><div class="eq-info"><div class="eq-name">${meta.name}</div><div class="eq-loc">${meta.location}</div></div><div class="status-pill ${pillMap[st]}">${pillTxt[st]}</div></div>
+      <div class="eq-card-body">
+        <div class="eq-row"><span class="eq-row-label">Last checked</span><span class="eq-row-val">${lastStr}</span></div>
+        <div class="eq-row"><span class="eq-row-label">By</span><span class="eq-row-val">${last?last.staff_name:'—'}</span></div>
+        <div class="eq-row"><span class="eq-row-label">Frequency</span><span class="eq-row-val">Twice daily</span></div>
+      </div></div>`;
+    shown++;
+  });
+
+  grid.innerHTML = html + (tempHtml?`</div><div class="section-title" style="margin-top:8px;">Area Temperature Checks <span>(above 25°C triggers escalation)</span></div><div class="equip-grid">`+tempHtml:'');
+  document.getElementById('equipSubtitle').textContent=`(${shown} items)`;
+}
+
+function renderRooms() {
+  const grid = document.getElementById('roomGrid');
+  let html='', pass=0, overdue=0, fail=0;
+  ROOMS_ALL.forEach(room=>{
+    const id=`room_check_${room.id}`;
+    const meta=EQUIP_META[id]; if(!meta) return;
+    const st=getCardStatus(id,meta,null);
+    if(st==='pass') pass++; else if(st==='fail') fail++; else overdue++;
+    const last=allChecks.find(c=>c.equipment_id===id);
+    const lastStr=last?new Date(last.checked_at).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}):'Not checked';
+    const dotClass={pass:'rd-pass',fail:'rd-fail',overdue:'rd-overdue',never:'rd-never'}[st];
+    html+=`<div class="room-card st-${st}" onclick="openEquipModal('${id}')">
+      <div class="room-dot ${dotClass}"></div>
+      <div class="room-info">
+        <div class="room-name">${room.name}</div>
+        <div class="room-meta">${room.hasDropDown?'O₂, Suction + Drop-down':'O₂ + Suction'} · ${lastStr}</div>
+      </div></div>`;
+  });
+  grid.innerHTML=html;
+  document.getElementById('roomSubtitle').textContent=`(${pass} OK, ${overdue} overdue, ${fail} issues)`;
+}
+
+function renderHistory() {
+  const freqF=document.getElementById('hFreq').value;
+  const statusF=document.getElementById('hStatus').value;
+  const dateF=document.getElementById('hDate').value;
+  const equipF=document.getElementById('hEquip').value;
+  let filtered=allChecks.filter(c=>{
+    if(freqF && c.frequency!==freqF) return false;
+    if(statusF==='fail' && c.overall_status!=='fail') return false;
+    if(equipF && c.equipment_id!==equipF) return false;
+    if(dateF){const d=new Date(c.checked_at).toISOString().slice(0,10);return d===dateF;}
+    return true;
+  }).slice(0,200);
+  const body=document.getElementById('historyBody');
+  if(!filtered.length){
+    body.innerHTML='<tr><td colspan="11" style="text-align:center;color:var(--grey3);padding:24px;">No records found for selected filters.</td></tr>';
+    return;
+  }
+  body.innerHTML=filtered.map(c=>{
+    const t=new Date(c.checked_at);
+    const ds=t.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'2-digit'});
+    const ts=t.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+    const sc=c.overall_status==='pass'?'sp-pass':'sp-fail';
+    const st=c.overall_status==='pass'?'✓ Pass':'⚠ Fail';
+    return `<tr>
+      <td style="font-weight:600;font-size:12px;">${c.equipment_name||c.equipment_id}</td>
+      <td style="font-size:12px;">${c.location||'—'}</td>
+      <td>${c.staff_name}</td>
+      <td style="color:var(--grey3);font-size:12px;">${c.staff_id}</td>
+      <td style="white-space:nowrap;">${ds} ${ts}</td>
+      <td style="color:var(--grey3);">${c.frequency||'—'}</td>
+      <td style="color:var(--green);font-weight:700;">${c.pass_count??'—'}</td>
+      <td style="color:${(c.fail_count||0)>0?'var(--red)':'var(--grey3)'};font-weight:700;">${c.fail_count??'—'}</td>
+      <td><span class="td-pill ${sc}">${st}</span></td>
+      <td style="font-size:11px;color:${c.is_post_emergency?'var(--red)':'var(--grey3)'};">${c.is_post_emergency?'Post-emergency':'Routine'}</td>
+      <td><button class="view-btn" onclick="openCheckModal(${JSON.stringify(JSON.stringify(c))})">View</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderTrends() {
+  const days=30;
+  const labels=[], passData=[], failData=[];
+  for(let i=days-1;i>=0;i--){
+    const d=new Date(); d.setDate(d.getDate()-i); d.setHours(0,0,0,0);
+    const next=new Date(d); next.setDate(next.getDate()+1);
+    const dc=allChecks.filter(c=>{const ct=new Date(c.checked_at);return ct>=d&&ct<next;});
+    labels.push(d.toLocaleDateString('en-GB',{day:'numeric',month:'short'}));
+    passData.push(dc.filter(c=>c.overall_status==='pass').length);
+    failData.push(dc.filter(c=>c.overall_status==='fail').length);
+  }
+  const ctx=document.getElementById('trendChart').getContext('2d');
+  if(trendChartInst) trendChartInst.destroy();
+  trendChartInst=new Chart(ctx,{
+    type:'bar',
+    data:{labels,datasets:[
+      {label:'Passed',data:passData,backgroundColor:'#007F3B',borderRadius:3,stack:'s'},
+      {label:'Failed',data:failData,backgroundColor:'#DA291C',borderRadius:3,stack:'s'}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{font:{size:12},boxWidth:12}}},scales:{x:{stacked:true,ticks:{font:{size:10},maxRotation:45},grid:{display:false}},y:{stacked:true,ticks:{font:{size:11},stepSize:1},grid:{color:'#F0F4F5'}}}}
+  });
+
+  // Compliance by equipment
+  const month=new Date(); month.setDate(month.getDate()-30);
+  const monthChecks=allChecks.filter(c=>new Date(c.checked_at)>=month);
+  let compHtml='';
+  Object.entries(EQUIP_META).forEach(([id,meta])=>{
+    const ec=monthChecks.filter(c=>c.equipment_id===id);
+    if(!ec.length) return;
+    const comp=Math.round(ec.filter(c=>c.overall_status==='pass').length/ec.length*100);
+    const col=comp>=95?'var(--green)':comp>=80?'var(--amber)':'var(--red)';
+    compHtml+=`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--grey4);font-size:13px;">
+      <div style="flex:1;font-weight:600;">${meta.name}</div>
+      <div style="width:120px;background:var(--grey4);border-radius:3px;height:6px;overflow:hidden;"><div style="width:${comp}%;height:100%;background:${col};border-radius:3px;"></div></div>
+      <div style="width:40px;text-align:right;font-weight:700;color:${col};">${comp}%</div>
+    </div>`;
+  });
+  document.getElementById('complianceByEquip').innerHTML=compHtml||'<p style="color:var(--grey3);font-size:14px;padding:20px 0;">No data yet.</p>';
+}
+
+function populateEquipFilter() {
+  const sel=document.getElementById('hEquip');
+  Object.entries(EQUIP_META).forEach(([id,meta])=>{
+    const opt=document.createElement('option');
+    opt.value=id; opt.textContent=meta.name;
+    sel.appendChild(opt);
+  });
+}
+
+function openEquipModal(id) {
+  const meta=EQUIP_META[id]; if(!meta) return;
+  const checks=allChecks.filter(c=>c.equipment_id===id);
+  const total=checks.length, passC=checks.filter(c=>c.overall_status==='pass').length;
+  const failChecks=checks.filter(c=>c.overall_status==='fail');
+  const comp=total?Math.round(passC/total*100):0;
+  document.getElementById('modalTitle').textContent=meta.name;
+  let html=`
+    <div class="mdr"><span class="mdr-label">Location</span><span class="mdr-val">${meta.location}</span></div>
+    <div class="mdr"><span class="mdr-label">Frequency</span><span class="mdr-val">${meta.freq}</span></div>
+    <div class="mdr"><span class="mdr-label">Total checks (2yr)</span><span class="mdr-val">${total}</span></div>
+    <div class="mdr"><span class="mdr-label">Overall compliance</span><span class="mdr-val" style="color:${comp>=95?'var(--green)':comp>=80?'var(--amber)':'var(--red)'}">${comp}%</span></div>
+    <div class="mdr"><span class="mdr-label">Failures recorded</span><span class="mdr-val" style="color:${failChecks.length>0?'var(--red)':'var(--green)'}">${failChecks.length}</span></div>`;
+  if(failChecks.length>0){
+    html+=`<div style="margin-top:16px;font-size:13px;font-weight:700;color:var(--red);margin-bottom:8px;">Recent failures:</div>`;
+    failChecks.slice(0,5).forEach(c=>{
+      const t=new Date(c.checked_at).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+      const notes=Object.entries(c.fail_notes||{}).map(([k,v])=>`<p>${k}: ${v}</p>`).join('');
+      html+=`<div class="fail-item"><strong>⚠ ${t} — ${c.staff_name}</strong>${notes||'<p>No notes recorded</p>'}</div>`;
+    });
+  }
+  document.getElementById('modalContent').innerHTML=html;
+  document.getElementById('modalBg').classList.add('show');
+}
+
+function openCheckModal(jsonStr) {
+  const c=JSON.parse(jsonStr);
+  const t=new Date(c.checked_at).toLocaleString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  document.getElementById('modalTitle').textContent=c.equipment_name||c.equipment_id;
+  let html=`
+    <div class="mdr"><span class="mdr-label">Checked by</span><span class="mdr-val">${c.staff_name} (${c.staff_id})</span></div>
+    <div class="mdr"><span class="mdr-label">Date & time</span><span class="mdr-val">${t}</span></div>
+    <div class="mdr"><span class="mdr-label">Location</span><span class="mdr-val">${c.location||'—'}</span></div>
+    <div class="mdr"><span class="mdr-label">Result</span><span class="mdr-val" style="color:${c.overall_status==='pass'?'var(--green)':'var(--red)'}">${c.overall_status==='pass'?'✓ Passed':'⚠ Failed'}</span></div>
+    <div class="mdr"><span class="mdr-label">Pass / Fail / N/A</span><span class="mdr-val">${c.pass_count||0} / ${c.fail_count||0} / ${c.na_count||0}</span></div>
+    <div class="mdr"><span class="mdr-label">Check type</span><span class="mdr-val" style="color:${c.is_post_emergency?'var(--red)':'inherit'}">${c.is_post_emergency?'Post-emergency':'Routine'}</span></div>`;
+  if(c.critical_fails&&c.critical_fails.length>0) html+=`<div class="mdr"><span class="mdr-label" style="color:var(--red)">Critical failures</span><span class="mdr-val" style="color:var(--red)">${c.critical_fails.join(', ')}</span></div>`;
+  if(c.temperature_values&&Object.keys(c.temperature_values).length>0){
+    const temps=Object.entries(c.temperature_values).map(([k,v])=>`${v}°C`).join(', ');
+    html+=`<div class="mdr"><span class="mdr-label">Temperature recorded</span><span class="mdr-val">${temps}</span></div>`;
+  }
+  if(c.fail_notes&&Object.keys(c.fail_notes).length>0){
+    html+=`<div style="margin-top:16px;font-size:13px;font-weight:700;margin-bottom:8px;">Fault notes:</div>`;
+    Object.entries(c.fail_notes).forEach(([k,v])=>{
+      html+=`<div class="fail-item"><strong>${k}</strong><p>${v}</p></div>`;
+    });
+  }
+  document.getElementById('modalContent').innerHTML=html;
+  document.getElementById('modalBg').classList.add('show');
+}
+
+function closeModal(e){if(e.target===document.getElementById('modalBg'))closeModalDirect();}
+function closeModalDirect(){document.getElementById('modalBg').classList.remove('show');}
+
+function showTab(name){
+  document.querySelectorAll('.tab-view').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.dash-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  const tabs=['overview','rooms','history','trend'];
+  document.querySelectorAll('.dash-tab')[tabs.indexOf(name)].classList.add('active');
+}
+
+function exportCSV(){
+  const headers=['equipment_id','equipment_name','location','frequency','staff_name','staff_id','checked_at','overall_status','pass_count','fail_count','na_count','is_post_emergency','critical_fails'];
+  const rows=allChecks.map(c=>headers.map(h=>{
+    const v=c[h];
+    if(Array.isArray(v)) return `"${v.join(';')}"`;
+    if(typeof v==='string'&&v.includes(',')) return `"${v}"`;
+    return v??'';
+  }).join(','));
+  const csv=[headers.join(','),...rows].join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download=`stoke-mandeville-emergency-equipment-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+}
+
+loadConfig();
+</script>
+</body>
+</html>
