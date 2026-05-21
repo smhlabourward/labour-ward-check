@@ -160,9 +160,6 @@ body{font-family:var(--font);background:var(--grey5);color:var(--grey1);min-heig
       <input class="form-input" id="staffName" type="text" placeholder="e.g. Sarah Jones" autocomplete="name">
     </div>
     <div class="form-group">
-      <label>Staff ID</label>
-      <input class="form-input" id="staffId" type="text" placeholder="e.g. SJ1234" autocomplete="off">
-    </div>
     <button class="start-btn" id="startBtn" onclick="startCheck()" disabled>Start Check</button>
     <button class="emergency-btn" id="emergencyBtn" onclick="startEmergencyCheck()" style="display:none;">
       ⚠ Post-Emergency Check
@@ -1847,7 +1844,7 @@ let answers = {};
 let failNotes = {};
 let tempValues = {};
 let staffName = '';
-let staffId = '';
+let staffId = "";
 let isEmergencyCheck = false;
 
 // ============================================================
@@ -1873,8 +1870,6 @@ function init() {
   renderHero();
   loadLastCheck(currentEqId);
   document.getElementById('staffName').addEventListener('input', checkCanStart);
-  document.getElementById('staffId').addEventListener('input', checkCanStart);
-  document.getElementById('staffName').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('staffId').focus(); });
   if (currentEquip.afterEmergency) {
     document.getElementById('emergencyBtn').style.display = 'block';
   }
@@ -1920,16 +1915,15 @@ async function loadLastCheck(eqId) {
 }
 
 function checkCanStart() {
-  const ok = document.getElementById('staffName').value.trim().length > 1 &&
-             document.getElementById('staffId').value.trim().length > 1;
+  const ok = document.getElementById('staffName').value.trim().length > 1;
   document.getElementById('startBtn').disabled = !ok;
 }
 
 function startEmergencyCheck() {
   isEmergencyCheck = true;
   staffName = document.getElementById('staffName').value.trim();
-  staffId = document.getElementById('staffId').value.trim();
-  if (!staffName || !staffId) { showToast('Please enter your name and staff ID first'); return; }
+  
+  if (!staffName) { showToast('Please enter your name first'); return; }
   buildChecklist();
   showScreen('screen-check');
 }
@@ -1937,7 +1931,7 @@ function startEmergencyCheck() {
 function startCheck() {
   isEmergencyCheck = false;
   staffName = document.getElementById('staffName').value.trim();
-  staffId = document.getElementById('staffId').value.trim();
+  
   answers = {}; failNotes = {}; tempValues = {};
   buildChecklist();
   showScreen('screen-check');
@@ -1949,7 +1943,7 @@ function startCheck() {
 function buildChecklist() {
   const eq = currentEquip;
   document.getElementById('checkTitle').textContent = eq.name + (isEmergencyCheck ? ' — Post-Emergency' : '');
-  document.getElementById('checkSubtitle').textContent = `${staffName} · ${staffId} · ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}`;
+  document.getElementById('checkSubtitle').textContent = `${staffName} · ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}`;
   if (eq.image) {
     document.getElementById('mainImg').src = eq.image;
     document.getElementById('mainCaption').textContent = eq.imageCaption || '';
@@ -2139,7 +2133,7 @@ function showComplete(status, pass, fail, na, critFails, saved) {
 
   let html = `
     <div class="summary-row"><span class="sr-label">Equipment</span><span class="sr-val">${currentEquip.name}</span></div>
-    <div class="summary-row"><span class="sr-label">Checked by</span><span class="sr-val">${staffName} (${staffId})</span></div>
+    <div class="summary-row"><span class="sr-label">Checked by</span><span class="sr-val">${staffName}</span></div>
     <div class="summary-row"><span class="sr-label">Time</span><span class="sr-val">${new Date().toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</span></div>
     <div class="summary-row"><span class="sr-label">Passed</span><span class="sr-val" style="color:var(--green)">${pass}</span></div>`;
   if(fail>0) html += `<div class="summary-row"><span class="sr-label">Failed</span><span class="sr-val" style="color:var(--red)">${fail}</span></div>`;
@@ -2154,7 +2148,6 @@ function showComplete(status, pass, fail, na, critFails, saved) {
 function resetToStart() {
   answers={}; failNotes={}; tempValues={}; isEmergencyCheck=false;
   document.getElementById('staffName').value='';
-  document.getElementById('staffId').value='';
   document.getElementById('startBtn').disabled=true;
   document.getElementById('submitBtn').textContent='Submit Check';
   showScreen('screen-staff');
