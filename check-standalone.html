@@ -1915,7 +1915,7 @@ async function loadLastCheck(eqId) {
 }
 
 function checkCanStart() {
-  const ok = document.getElementById('staffName').value.trim().length > 1;
+  const ok = document.getElementById('staffName').value.trim().length >= 1;
   document.getElementById('startBtn').disabled = !ok;
 }
 
@@ -1929,6 +1929,7 @@ function startEmergencyCheck() {
 }
 
 function startCheck() {
+  console.log("startCheck called, staffName:", document.getElementById("staffName").value, "button disabled:", document.getElementById("startBtn").disabled);
   isEmergencyCheck = false;
   staffName = document.getElementById('staffName').value.trim();
   
@@ -1941,6 +1942,7 @@ function startCheck() {
 //  BUILD CHECKLIST
 // ============================================================
 function buildChecklist() {
+
   const eq = currentEquip;
   document.getElementById('checkTitle').textContent = eq.name + (isEmergencyCheck ? ' — Post-Emergency' : '');
   document.getElementById('checkSubtitle').textContent = `${staffName} · ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}`;
@@ -1996,8 +1998,13 @@ function buildChecklist() {
     });
   });
 
-  document.getElementById('checksBody').innerHTML = html;
-  updateProgress();
+  try {
+    document.getElementById('checksBody').innerHTML = html;
+    updateProgress();
+  } catch(buildErr) {
+    console.error('buildChecklist error:', buildErr.message, buildErr.stack);
+    document.getElementById('checksBody').innerHTML = '<div style="padding:20px;color:red;">Error loading checklist: ' + buildErr.message + '</div>';
+  }
 }
 
 function checkTemp(itemId, val) {
