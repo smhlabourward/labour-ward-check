@@ -175,7 +175,7 @@ tr:hover td{background:var(--grey5);}
       <div class="stat-card"><div class="stat-num s-green" id="st1">--</div><div class="stat-label">Checks today</div></div>
       <div class="stat-card"><div class="stat-num s-red" id="st2">--</div><div class="stat-label">Issues today</div></div>
       <div class="stat-card"><div class="stat-num s-amber" id="st3">--</div><div class="stat-label">Overdue</div></div>
-      <div class="stat-card"><div class="stat-num s-grey" id="st4">--%</div><div class="stat-label">30-day compliance</div></div>
+      <div class="stat-card"><div class="stat-num s-grey" id="st4">--%</div><div class="stat-label">This month completion</div></div>
     </div>
     <div class="filter-bar">
       <label>Filter:</label>
@@ -273,6 +273,36 @@ Object.entries(EQUIPMENT_DB2).forEach(([id,eq])=>{
   };
 });
 
+// ── COMPLIANCE HELPERS (completion-based, calendar month) ────────────────
+function expectedChecks(freq, days) {
+  if (freq === 'daily') return days;
+  if (freq === 'weekly') return Math.ceil(days / 7);
+  if (freq === 'monthly') return 1;
+  return days;
+}
+
+function calcItemCompliance(id, meta, checks) {
+  if (!meta || !checks) return null;
+  const now = new Date();
+  const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const expected = expectedChecks(meta.freq, daysInMonth);
+  const done = checks.filter(c => new Date(c.checked_at) >= monthStart).length;
+  if (expected === 0) return null;
+  return Math.min(Math.round(done / expected * 100), 100);
+}
+
+function calcOverallCompletion() {
+  const rates = [];
+  Object.entries(EQUIP_META).forEach(([id, meta]) => {
+    const checks = allChecks.filter(c => c.equipment_id === id);
+    const rate = calcItemCompliance(id, meta, checks);
+    if (rate !== null) rates.push(rate);
+  });
+  if (!rates.length) return 0;
+  return Math.round(rates.reduce((a, b) => a + b, 0) / rates.length);
+}
+
 function loadConfig(){
   const s=localStorage.getItem('sm_dash2_config');
   if(s) try{CONFIG=JSON.parse(s);}catch(e){}
@@ -347,7 +377,7 @@ function renderStats(){
     if(!last){overdue++;return;}
     if(new Date()-new Date(last.checked_at)>FREQ_MS[meta.freq]) overdue++;
   });
-  const comp30=monthC.length?Math.round(monthC.filter(c=>c.overall_status==='pass').length/monthC.length*100):0;
+  const comp30=calcOverallCompletion();
   document.getElementById('st1').textContent=pass+fail;
   document.getElementById('st2').textContent=fail;
   document.getElementById('st3').textContent=overdue;
@@ -368,8 +398,7 @@ function makeCard(id,meta,dateFilter){
   const st=getStatus(id,meta.freq==='daily'?null:dateFilter);
   const checks=allChecks.filter(c=>c.equipment_id===id);
   const total=checks.length;
-  const passC=checks.filter(c=>c.overall_status==='pass').length;
-  const comp=total?Math.round(passC/total*100):null;
+  const comp=calcItemCompliance(id,meta,checks);
   const last=checks[0];
   const lastStr=last?new Date(last.checked_at).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'Never';
   const pillMap={pass:'sp-pass',fail:'sp-fail',overdue:'sp-overdue',never:'sp-never'};
@@ -520,15 +549,14 @@ function openModal(id){
   const meta=EQUIP_META[id]; if(!meta) return;
   const checks=allChecks.filter(c=>c.equipment_id===id);
   const total=checks.length;
-  const passC=checks.filter(c=>c.overall_status==='pass').length;
   const failChecks=checks.filter(c=>c.overall_status==='fail');
-  const comp=total?Math.round(passC/total*100):0;
+  const comp=calcItemCompliance(id,EQUIP_META[id],checks)||0;
   document.getElementById('modalTitle').textContent=meta.name;
   let html=`
     <div class="mdr"><span class="mdr-label">Location</span><span class="mdr-val">${meta.location}</span></div>
     <div class="mdr"><span class="mdr-label">Frequency</span><span class="mdr-val">${meta.freq}</span></div>
     <div class="mdr"><span class="mdr-label">Total checks (2yr)</span><span class="mdr-val">${total}</span></div>
-    <div class="mdr"><span class="mdr-label">Compliance rate</span><span class="mdr-val" style="color:${comp>=95?'var(--green)':comp>=80?'var(--amber)':'var(--red)'}">${comp}%</span></div>
+    <div class="mdr"><span class="mdr-label">Completion rate (this month)</span><span class="mdr-val" style="color:${comp>=95?'var(--green)':comp>=80?'var(--amber)':'var(--red)'}">${comp}%</span></div>
     <div class="mdr"><span class="mdr-label">Failures recorded</span><span class="mdr-val" style="color:${failChecks.length>0?'var(--red)':'var(--green)'}">${failChecks.length}</span></div>`;
   if(meta.isFridge&&meta.escalation){
     html+=`<div class="escalation-box"><strong>⚠ Out of range escalation protocol</strong>
