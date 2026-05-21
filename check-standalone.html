@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#003087">
-<title>Labour Ward Equipment Check — Stoke Mandeville</title>
+<title>Labour Ward Equipment Check v2 — Stoke Mandeville</title>
 <style>
 :root{--blue:#003087;--blue2:#005EB8;--blue3:#0072CE;--aqua:#41B6E6;--green:#007F3B;--green2:#78BE20;--red:#DA291C;--amber:#ED8B00;--grey1:#231f20;--grey2:#425563;--grey3:#768692;--grey4:#D8DDE0;--grey5:#F0F4F5;--white:#fff;--font:'Frutiger','Arial',sans-serif;}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -215,7 +215,7 @@ body{font-family:var(--font);background:var(--grey5);color:var(--grey1);min-heig
 // ============================================================
 const CONFIG = {
   supabaseUrl: 'YOUR_SUPABASE_URL',
-  supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV2dmN5ZGRxeHJ5YWtueW50cnN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxODc3NjYsImV4cCI6MjA5NDc2Mzc2Nn0.sHy5ONNRuOEErcz21VO4316M8kd_VCi10OGhncke7kg',
+  supabaseKey: 'YOUR_SUPABASE_ANON_KEY',
   ward: 'Labour Ward Stoke Mandeville'
 };
 
@@ -1854,9 +1854,12 @@ let isEmergencyCheck = false;
 //  INIT
 // ============================================================
 function init() {
+  console.log("init() running, EQUIPMENT_DB1 keys:", Object.keys(EQUIPMENT_DB1).length);
+  console.log("looking for eq:", new URLSearchParams(window.location.search).get("eq"));
+  console.log("found:", EQUIPMENT_DB1[new URLSearchParams(window.location.search).get("eq")] ? "YES" : "NO");
   updateTime();
   setInterval(updateTime, 30000);
-  if (CONFIG.supabaseUrl === 'https://evvcyddqxryaknyntrsv.supabase.co/rest/v1/') {
+  if (CONFIG.supabaseUrl === 'YOUR_SUPABASE_URL') {
     document.getElementById('configNotice').style.display = 'block';
   }
   const params = new URLSearchParams(window.location.search);
@@ -2103,7 +2106,7 @@ async function submitCheck() {
   document.getElementById('submitBtn').textContent = 'Submitting...';
 
   let saved = false;
-  if (CONFIG.supabaseUrl !== 'https://evvcyddqxryaknyntrsv.supabase.co/rest/v1/') {
+  if (CONFIG.supabaseUrl !== 'YOUR_SUPABASE_URL') {
     try {
       const res = await fetch(`${CONFIG.supabaseUrl}/rest/v1/equipment_checks`, {
         method:'POST',
