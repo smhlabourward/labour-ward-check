@@ -159,7 +159,6 @@ body{font-family:var(--font);background:var(--grey5);color:var(--grey1);min-heig
       <label>Full name</label>
       <input class="form-input" id="staffName" type="text" placeholder="e.g. Sarah Jones" autocomplete="name">
     </div>
-    <div class="form-group">
     <button class="start-btn" id="startBtn" onclick="startCheck()" disabled>Start Check</button>
     <button class="emergency-btn" id="emergencyBtn" onclick="startEmergencyCheck()" style="display:none;">
       ⚠ Post-Emergency Check
@@ -2000,6 +1999,7 @@ function buildChecklist() {
 
   try {
     document.getElementById('checksBody').innerHTML = html;
+    console.log("checksBody set, length:", document.getElementById('checksBody').innerHTML.length, "children:", document.getElementById('checksBody').children.length);
     updateProgress();
   } catch(buildErr) {
     console.error('buildChecklist error:', buildErr.message, buildErr.stack);
@@ -2169,6 +2169,7 @@ function openLightbox(src, caption) {
 function closeLightbox() { document.getElementById('lightbox').classList.remove('show'); }
 
 function showScreen(id) {
+  console.log("showScreen called:", id, "active screens before:", document.querySelectorAll('.screen.active').length);
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
