@@ -1855,8 +1855,8 @@ function init() {
   console.log("found:", EQUIPMENT_DB1[new URLSearchParams(window.location.search).get("eq")] ? "YES" : "NO");
   updateTime();
   setInterval(updateTime, 30000);
-  if (CONFIG.supabaseUrl === 'YOUR_SUPABASE_URL') {
-    document.getElementById('configNotice').style.display = 'block';
+  if (CONFIG.supabaseUrl === '') {
+    document.getElementById('configNotice').styYOUR_SUPABASE_URLle.display = 'block';
   }
   const params = new URLSearchParams(window.location.search);
   currentEqId = params.get('eq');
@@ -1897,7 +1897,7 @@ function renderHero() {
 }
 
 async function loadLastCheck(eqId) {
-  if (CONFIG.supabaseUrl === 'YOUR_SUPABASE_URL') return;
+  if (CONFIG.supabaseUrl === 'https://evvcyddqxryaknyntrsv.supabase.co/rest/v1/') return;
   try {
     const res = await fetch(`${CONFIG.supabaseUrl}/rest/v1/equipment_checks?equipment_id=eq.${eqId}&order=checked_at.desc&limit=1`, {
       headers:{'apikey':CONFIG.supabaseKey,'Authorization':`Bearer ${CONFIG.supabaseKey}`}
