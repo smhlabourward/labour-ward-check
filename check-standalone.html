@@ -1296,7 +1296,7 @@ const EQUIPMENT_DB1_EXTRA = {
         { id: 'inst2_vicryl_2', name: 'Vicryl Rapide size 2 — 4 needles', desc: 'Present, not expired', critical: true, image: 'images/inst_vicryl.jpg' },
         { id: 'inst2_vicryl_3', name: 'Vicryl Rapide size 3 — 4 needles', desc: 'Present, not expired', critical: true, image: 'images/inst_vicryl.jpg' },
         { id: 'inst2_vicryl_4', name: 'Vicryl Rapide size 4 — 4 needles', desc: 'Present, not expired', critical: true, image: 'images/inst_vicryl.jpg' },
-        { id: 'inst2_cord_clamps', name: '4 x Cord clamps', desc: 'All 4 present', critical: false, image: 'images/res_cord_clamps.jpg' },
+        { id: 'inst2_cord_clamps', name: '4 x Cord clamps', desc: 'AllF 4 present', critical: false, image: 'images/res_cord_clamps.jpg' },
         { id: 'inst2_fse', name: '2 x FSE electrodes', desc: 'Both present, not expired', critical: false, image: 'images/inst_fse.jpg' },
         { id: 'inst2_syringe_20ml', name: '2 x 20ml syringes', desc: 'Both present, not expired', critical: false, image: 'images/pph_syringe_20ml.jpg' },
         { id: 'inst2_pudendal', name: '2 x Pudendal needles', desc: 'Both present, not expired', critical: false, image: 'images/inst_pudendal.jpg' },
@@ -1855,7 +1855,7 @@ function init() {
   console.log("found:", EQUIPMENT_DB1[new URLSearchParams(window.location.search).get("eq")] ? "YES" : "NO");
   updateTime();
   setInterval(updateTime, 30000);
-  if (CONFIG.supabaseUrl === '') {
+  if (CONFIG.supabaseUrl === 'https://evvcyddqxryaknyntrsv.supabase.co') {
     document.getElementById('configNotice').styYOUR_SUPABASE_URLle.display = 'block';
   }
   const params = new URLSearchParams(window.location.search);
@@ -2107,7 +2107,7 @@ async function submitCheck() {
   document.getElementById('submitBtn').textContent = 'Submitting...';
 
   let saved = false;
-  if (CONFIG.supabaseUrl !== 'YOUR_SUPABASE_URL') {
+  if (CONFIG.supabaseUrl !== 'https://evvcyddqxryaknyntrsv.supabase.co/rest/v1/') {
     try {
       const res = await fetch(`${CONFIG.supabaseUrl}/rest/v1/equipment_checks`, {
         method:'POST',
