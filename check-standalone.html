@@ -1863,7 +1863,7 @@ function init() {
   if (!currentEqId || !EQUIPMENT_DB1[currentEqId]) {
     document.getElementById('heroName').textContent = 'Equipment not found';
     document.getElementById('heroLocation').textContent = 'Check QR code and try again';
-    return;
+    return;F
   }
   currentEquip = EQUIPMENT_DB1[currentEqId];
   renderHero();
@@ -1897,7 +1897,7 @@ function renderHero() {
 }
 
 async function loadLastCheck(eqId) {
-  if (CONFIG.supabaseUrl === 'https://evvcyddqxryaknyntrsv.supabase.co/rest/v1/') return;
+  if (CONFIG.supabaseUrl === 'https://evvcyddqxryaknyntrsv.supabase.co') return;
   try {
     const res = await fetch(`${CONFIG.supabaseUrl}/rest/v1/equipment_checks?equipment_id=eq.${eqId}&order=checked_at.desc&limit=1`, {
       headers:{'apikey':CONFIG.supabaseKey,'Authorization':`Bearer ${CONFIG.supabaseKey}`}
