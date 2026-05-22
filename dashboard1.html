@@ -295,13 +295,10 @@ function calcOverallCompliance30() {
 }
 
 function loadConfig() {
-  const saved = localStorage.getItem('sm_dash1_config');
-  if(saved) try{CONFIG=JSON.parse(saved);}catch(e){}
-  if(!CONFIG.supabaseUrl) {
-    document.getElementById('setupPanel').style.display='block';
-  } else {
-    loadData();
-  }
+  // Keys built in — connects automatically on any device
+  CONFIG.supabaseUrl = 'https://evvcyddqxryaknyntrsv.supabase.co';
+  CONFIG.supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV2dmN5ZGRxeHJ5YWtueW50cnN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxODc3NjYsImV4cCI6MjA5NDc2Mzc2Nn0.sHy5ONNRuOEErcz21VO4316M8kd_VCi10OGhncke7kg';
+  loadData();
   setInterval(()=>updateTime(), 30000);
   updateTime();
   document.getElementById('fDate').value = new Date().toISOString().slice(0,10);
@@ -310,9 +307,7 @@ function loadConfig() {
 }
 
 function saveConfig() {
-  CONFIG.supabaseUrl = document.getElementById('sbUrl').value.trim();
-  CONFIG.supabaseKey = document.getElementById('sbKey').value.trim();
-  localStorage.setItem('sm_dash1_config', JSON.stringify(CONFIG));
+  // Keys already built in
   document.getElementById('setupPanel').style.display='none';
   loadData();
 }
