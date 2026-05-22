@@ -43,12 +43,12 @@ body{font-family:var(--font);background:var(--grey5);color:var(--grey1);-webkit-
 .section-title{font-size:14px;font-weight:700;color:var(--grey1);margin-bottom:10px;margin-top:4px;display:flex;align-items:center;gap:8px;}
 .section-title span{font-size:12px;font-weight:400;color:var(--grey3);}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:24px;}
-.card{background:white;border-radius:10px;border:1px solid var(--grey4);overflow:hidden;cursor:pointer;border-left:4px solid var(--grey4);transition:box-shadow 0.2s;}
+.card{background:white;border-radius:10px;border:2px solid var(--grey4);overflow:hidden;cursor:pointer;transition:all 0.2s;}
 .card:hover{box-shadow:0 3px 12px rgba(0,0,0,0.1);}
-.card.st-pass{border-left-color:var(--green);}
-.card.st-fail{border-left-color:var(--red);}
-.card.st-overdue{border-left-color:var(--amber);}
-.card.st-never{border-left-color:var(--grey3);}
+.card.st-pass{background:#E8F4EE;border-color:var(--green);}
+.card.st-fail{background:#FDECEA;border-color:var(--red);}
+.card.st-overdue{background:#FEF3E2;border-color:var(--amber);}
+.card.st-never{background:#F0F4F5;border-color:var(--grey3);}
 .card-top{padding:10px 12px;display:flex;align-items:flex-start;gap:8px;border-bottom:1px solid var(--grey4);}
 .card-thumb{width:44px;height:44px;border-radius:7px;background:var(--grey4);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:18px;}
 .card-thumb img{width:100%;height:100%;object-fit:cover;}
@@ -67,12 +67,12 @@ body{font-family:var(--font);background:var(--grey5);color:var(--grey1);-webkit-
 .comp-bar-wrap{background:var(--grey4);border-radius:3px;height:3px;margin:4px 0 2px;}
 .comp-bar{height:100%;border-radius:3px;transition:width 0.4s;}
 .fridge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:24px;}
-.fridge-card{background:white;border-radius:10px;border:1px solid var(--grey4);overflow:hidden;cursor:pointer;border-left:4px solid var(--grey4);transition:box-shadow 0.2s;}
+.fridge-card{background:white;border-radius:10px;border:2px solid var(--grey4);overflow:hidden;cursor:pointer;transition:all 0.2s;}
 .fridge-card:hover{box-shadow:0 3px 12px rgba(0,0,0,0.1);}
-.fridge-card.st-pass{border-left-color:var(--green);}
-.fridge-card.st-fail{border-left-color:var(--red);}
-.fridge-card.st-overdue{border-left-color:var(--amber);}
-.fridge-card.st-never{border-left-color:var(--grey3);}
+.fridge-card.st-pass{background:#E8F4EE;border-color:var(--green);}
+.fridge-card.st-fail{background:#FDECEA;border-color:var(--red);}
+.fridge-card.st-overdue{background:#FEF3E2;border-color:var(--amber);}
+.fridge-card.st-never{background:#F0F4F5;border-color:var(--grey3);}
 .fridge-top{padding:12px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--grey4);}
 .fridge-icon{font-size:26px;}
 .fridge-name{font-size:14px;font-weight:700;margin-bottom:2px;}
@@ -86,11 +86,11 @@ body{font-family:var(--font);background:var(--grey5);color:var(--grey1);-webkit-
 .temp-bad{color:var(--red);}
 .temp-time{font-size:11px;color:var(--grey3);}
 .ctg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-bottom:24px;}
-.room-card{background:white;border-radius:8px;border:1px solid var(--grey4);padding:10px 12px;display:flex;align-items:center;gap:8px;cursor:pointer;border-left:4px solid var(--grey4);}
-.room-card.st-pass{border-left-color:var(--green);}
-.room-card.st-fail{border-left-color:var(--red);}
-.room-card.st-overdue{border-left-color:var(--amber);}
-.room-card.st-never{border-left-color:var(--grey3);}
+.room-card{background:white;border-radius:8px;border:2px solid var(--grey4);padding:10px 12px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:all 0.2s;}
+.room-card.st-pass{background:#E8F4EE;border-color:var(--green);}
+.room-card.st-fail{background:#FDECEA;border-color:var(--red);}
+.room-card.st-overdue{background:#FEF3E2;border-color:var(--amber);}
+.room-card.st-never{background:#F0F4F5;border-color:var(--grey3);}
 .rdot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
 .rd-pass{background:var(--green);}
 .rd-fail{background:var(--red);}
