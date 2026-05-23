@@ -1831,6 +1831,473 @@ EQUIPMENT_DB2['mattress_audit'] = {
 
 
 // ============================================================
+
+// ── ROOM READINESS CHECKS (Dashboard 2 — Support Staff) ─
+EQUIPMENT_DB2['room_ready_room_6'] = {
+  name: 'Room 6 — Daily Room Check',
+  location: 'Labour Ward',
+  image: 'images/room_room_6.jpg',
+  imageCaption: 'Check all items are in place before accepting the next patient',
+  frequency: 'daily',
+  afterEmergency: false,
+  dashboard: 2,
+  categories: [{
+    name: 'Room Readiness',
+    icon: '🏥',
+    items: [
+          { id: 'rr_room_6_clean', name: 'Room cleaned', desc: 'Room has been cleaned and is ready for use', critical: true, image: 'images/room_clean.jpg' },
+          { id: 'rr_room_6_linen', name: 'Fresh linen on bed', desc: 'Clean fresh linen applied to bed', critical: true, image: 'images/room_linen.jpg' },
+          { id: 'rr_room_6_bed_position', name: 'Bed in throne or upright position', desc: 'Bed positioned to support active birth', critical: true, image: 'images/room_bed_position.jpg' },
+          { id: 'rr_room_6_sharps', name: 'Sharps box present, signed, dated and not above fill line', desc: 'Yellow sharps box present, fill level acceptable, signed and dated', critical: true, image: 'images/room_sharps.jpg' },
+          { id: 'rr_room_6_sats_probe', name: 'CTG sats probe present', desc: 'Maternal SpO2 probe present and attached', critical: true, image: 'images/room_sats_probe.jpg' },
+          { id: 'rr_room_6_transducer', name: 'CTG transducer present', desc: 'Ultrasound transducer present, no cracks', critical: true, image: 'images/room_transducer.jpg' },
+          { id: 'rr_room_6_toco', name: 'CTG toco present', desc: 'Toco transducer present and intact', critical: true, image: 'images/room_toco.jpg' },
+          { id: 'rr_room_6_bp_small', name: 'BP cuff small present', desc: 'Small BP cuff present and labelled', critical: true, image: 'images/room_bp_small.jpg' },
+          { id: 'rr_room_6_bp_medium', name: 'BP cuff medium present', desc: 'Medium BP cuff present and labelled', critical: true, image: 'images/room_bp_medium.jpg' },
+          { id: 'rr_room_6_bp_large', name: 'BP cuff large present', desc: 'Large BP cuff present and labelled', critical: true, image: 'images/room_bp_large.jpg' },
+          { id: 'rr_room_6_fse', name: 'Fetal scalp electrode present', desc: 'FSE electrode present and in packaging', critical: true, image: 'images/room_fse.jpg' },
+          { id: 'rr_room_6_egg_light', name: 'Egg light available and working', desc: 'Egg light present in room and functioning', critical: false, image: 'images/room_egg_light.jpg' },
+          { id: 'rr_room_6_bin', name: 'Bin emptied', desc: 'Clinical waste and general waste bins emptied and relined', critical: false, image: 'images/room_bin.jpg' },
+    ]
+  }]
+};
+
+EQUIPMENT_DB2['room_ready_room_7'] = {
+  name: 'Room 7 — Daily Room Check',
+  location: 'Labour Ward',
+  image: 'images/room_room_7.jpg',
+  imageCaption: 'Check all items are in place before accepting the next patient',
+  frequency: 'daily',
+  afterEmergency: false,
+  dashboard: 2,
+  categories: [{
+    name: 'Room Readiness',
+    icon: '🏥',
+    items: [
+          { id: 'rr_room_7_clean', name: 'Room cleaned', desc: 'Room has been cleaned and is ready for use', critical: true, image: 'images/room_clean.jpg' },
+          { id: 'rr_room_7_linen', name: 'Fresh linen on bed', desc: 'Clean fresh linen applied to bed', critical: true, image: 'images/room_linen.jpg' },
+          { id: 'rr_room_7_bed_position', name: 'Bed in throne or upright position', desc: 'Bed positioned to support active birth', critical: true, image: 'images/room_bed_position.jpg' },
+          { id: 'rr_room_7_sharps', name: 'Sharps box present, signed, dated and not above fill line', desc: 'Yellow sharps box present, fill level acceptable, signed and dated', critical: true, image: 'images/room_sharps.jpg' },
+          { id: 'rr_room_7_sats_probe', name: 'CTG sats probe present', desc: 'Maternal SpO2 probe present and attached', critical: true, image: 'images/room_sats_probe.jpg' },
+          { id: 'rr_room_7_transducer', name: 'CTG transducer present', desc: 'Ultrasound transducer present, no cracks', critical: true, image: 'images/room_transducer.jpg' },
+          { id: 'rr_room_7_toco', name: 'CTG toco present', desc: 'Toco transducer present and intact', critical: true, image: 'images/room_toco.jpg' },
+          { id: 'rr_room_7_bp_small', name: 'BP cuff small present', desc: 'Small BP cuff present and labelled', critical: true, image: 'images/room_bp_small.jpg' },
+          { id: 'rr_room_7_bp_medium', name: 'BP cuff medium present', desc: 'Medium BP cuff present and labelled', critical: true, image: 'images/room_bp_medium.jpg' },
+          { id: 'rr_room_7_bp_large', name: 'BP cuff large present', desc: 'Large BP cuff present and labelled', critical: true, image: 'images/room_bp_large.jpg' },
+          { id: 'rr_room_7_fse', name: 'Fetal scalp electrode present', desc: 'FSE electrode present and in packaging', critical: true, image: 'images/room_fse.jpg' },
+          { id: 'rr_room_7_egg_light', name: 'Egg light available and working', desc: 'Egg light present in room and functioning', critical: false, image: 'images/room_egg_light.jpg' },
+          { id: 'rr_room_7_bin', name: 'Bin emptied', desc: 'Clinical waste and general waste bins emptied and relined', critical: false, image: 'images/room_bin.jpg' },
+    ]
+  }]
+};
+
+EQUIPMENT_DB2['room_ready_room_8'] = {
+  name: 'Room 8 — Daily Room Check',
+  location: 'Labour Ward',
+  image: 'images/room_room_8.jpg',
+  imageCaption: 'Check all items are in place before accepting the next patient',
+  frequency: 'daily',
+  afterEmergency: false,
+  dashboard: 2,
+  categories: [{
+    name: 'Room Readiness',
+    icon: '🏥',
+    items: [
+          { id: 'rr_room_8_clean', name: 'Room cleaned', desc: 'Room has been cleaned and is ready for use', critical: true, image: 'images/room_clean.jpg' },
+          { id: 'rr_room_8_linen', name: 'Fresh linen on bed', desc: 'Clean fresh linen applied to bed', critical: true, image: 'images/room_linen.jpg' },
+          { id: 'rr_room_8_bed_position', name: 'Bed in throne or upright position', desc: 'Bed positioned to support active birth', critical: true, image: 'images/room_bed_position.jpg' },
+          { id: 'rr_room_8_sharps', name: 'Sharps box present, signed, dated and not above fill line', desc: 'Yellow sharps box present, fill level acceptable, signed and dated', critical: true, image: 'images/room_sharps.jpg' },
+          { id: 'rr_room_8_sats_probe', name: 'CTG sats probe present', desc: 'Maternal SpO2 probe present and attached', critical: true, image: 'images/room_sats_probe.jpg' },
+          { id: 'rr_room_8_transducer', name: 'CTG transducer present', desc: 'Ultrasound transducer present, no cracks', critical: true, image: 'images/room_transducer.jpg' },
+          { id: 'rr_room_8_toco', name: 'CTG toco present', desc: 'Toco transducer present and intact', critical: true, image: 'images/room_toco.jpg' },
+          { id: 'rr_room_8_bp_small', name: 'BP cuff small present', desc: 'Small BP cuff present and labelled', critical: true, image: 'images/room_bp_small.jpg' },
+          { id: 'rr_room_8_bp_medium', name: 'BP cuff medium present', desc: 'Medium BP cuff present and labelled', critical: true, image: 'images/room_bp_medium.jpg' },
+          { id: 'rr_room_8_bp_large', name: 'BP cuff large present', desc: 'Large BP cuff present and labelled', critical: true, image: 'images/room_bp_large.jpg' },
+          { id: 'rr_room_8_fse', name: 'Fetal scalp electrode present', desc: 'FSE electrode present and in packaging', critical: true, image: 'images/room_fse.jpg' },
+          { id: 'rr_room_8_egg_light', name: 'Egg light available and working', desc: 'Egg light present in room and functioning', critical: false, image: 'images/room_egg_light.jpg' },
+          { id: 'rr_room_8_bin', name: 'Bin emptied', desc: 'Clinical waste and general waste bins emptied and relined', critical: false, image: 'images/room_bin.jpg' },
+    ]
+  }]
+};
+
+EQUIPMENT_DB2['room_ready_room_9'] = {
+  name: 'Room 9 — Daily Room Check',
+  location: 'Labour Ward',
+  image: 'images/room_room_9.jpg',
+  imageCaption: 'Check all items are in place before accepting the next patient',
+  frequency: 'daily',
+  afterEmergency: false,
+  dashboard: 2,
+  categories: [{
+    name: 'Room Readiness',
+    icon: '🏥',
+    items: [
+          { id: 'rr_room_9_clean', name: 'Room cleaned', desc: 'Room has been cleaned and is ready for use', critical: true, image: 'images/room_clean.jpg' },
+          { id: 'rr_room_9_linen', name: 'Fresh linen on bed', desc: 'Clean fresh linen applied to bed', critical: true, image: 'images/room_linen.jpg' },
+          { id: 'rr_room_9_bed_position', name: 'Bed in throne or upright position', desc: 'Bed positioned to support active birth', critical: true, image: 'images/room_bed_position.jpg' },
+          { id: 'rr_room_9_sharps', name: 'Sharps box present, signed, dated and not above fill line', desc: 'Yellow sharps box present, fill level acceptable, signed and dated', critical: true, image: 'images/room_sharps.jpg' },
+          { id: 'rr_room_9_sats_probe', name: 'CTG sats probe present', desc: 'Maternal SpO2 probe present and attached', critical: true, image: 'images/room_sats_probe.jpg' },
+          { id: 'rr_room_9_transducer', name: 'CTG transducer present', desc: 'Ultrasound transducer present, no cracks', critical: true, image: 'images/room_transducer.jpg' },
+          { id: 'rr_room_9_toco', name: 'CTG toco present', desc: 'Toco transducer present and intact', critical: true, image: 'images/room_toco.jpg' },
+          { id: 'rr_room_9_bp_small', name: 'BP cuff small present', desc: 'Small BP cuff present and labelled', critical: true, image: 'images/room_bp_small.jpg' },
+          { id: 'rr_room_9_bp_medium', name: 'BP cuff medium present', desc: 'Medium BP cuff present and labelled', critical: true, image: 'images/room_bp_medium.jpg' },
+          { id: 'rr_room_9_bp_large', name: 'BP cuff large present', desc: 'Large BP cuff present and labelled', critical: true, image: 'images/room_bp_large.jpg' },
+          { id: 'rr_room_9_fse', name: 'Fetal scalp electrode present', desc: 'FSE electrode present and in packaging', critical: true, image: 'images/room_fse.jpg' },
+          { id: 'rr_room_9_egg_light', name: 'Egg light available and working', desc: 'Egg light present in room and functioning', critical: false, image: 'images/room_egg_light.jpg' },
+          { id: 'rr_room_9_bin', name: 'Bin emptied', desc: 'Clinical waste and general waste bins emptied and relined', critical: false, image: 'images/room_bin.jpg' },
+    ]
+  }]
+};
+
+EQUIPMENT_DB2['room_ready_room_10'] = {
+  name: 'Room 10 — Daily Room Check',
+  location: 'Labour Ward',
+  image: 'images/room_room_10.jpg',
+  imageCaption: 'Check all items are in place before accepting the next patient',
+  frequency: 'daily',
+  afterEmergency: false,
+  dashboard: 2,
+  categories: [{
+    name: 'Room Readiness',
+    icon: '🏥',
+    items: [
+          { id: 'rr_room_10_clean', name: 'Room cleaned', desc: 'Room has been cleaned and is ready for use', critical: true, image: 'images/room_clean.jpg' },
+          { id: 'rr_room_10_linen', name: 'Fresh linen on bed', desc: 'Clean fresh linen applied to bed', critical: true, image: 'images/room_linen.jpg' },
+          { id: 'rr_room_10_bed_position', name: 'Bed in throne or upright position', desc: 'Bed positioned to support active birth', critical: true, image: 'images/room_bed_position.jpg' },
+          { id: 'rr_room_10_sharps', name: 'Sharps box present, signed, dated and not above fill line', desc: 'Yellow sharps box present, fill level acceptable, signed and dated', critical: true, image: 'images/room_sharps.jpg' },
+          { id: 'rr_room_10_sats_probe', name: 'CTG sats probe present', desc: 'Maternal SpO2 probe present and attached', critical: true, image: 'images/room_sats_probe.jpg' },
+          { id: 'rr_room_10_transducer', name: 'CTG transducer present', desc: 'Ultrasound transducer present, no cracks', critical: true, image: 'images/room_transducer.jpg' },
+          { id: 'rr_room_10_toco', name: 'CTG toco present', desc: 'Toco transducer present and intact', critical: true, image: 'images/room_toco.jpg' },
+          { id: 'rr_room_10_bp_small', name: 'BP cuff small present', desc: 'Small BP cuff present and labelled', critical: true, image: 'images/room_bp_small.jpg' },
+          { id: 'rr_room_10_bp_medium', name: 'BP cuff medium present', desc: 'Medium BP cuff present and labelled', critical: true, image: 'images/room_bp_medium.jpg' },
+          { id: 'rr_room_10_bp_large', name: 'BP cuff large present', desc: 'Large BP cuff present and labelled', critical: true, image: 'images/room_bp_large.jpg' },
+          { id: 'rr_room_10_fse', name: 'Fetal scalp electrode present', desc: 'FSE electrode present and in packaging', critical: true, image: 'images/room_fse.jpg' },
+          { id: 'rr_room_10_egg_light', name: 'Egg light available and working', desc: 'Egg light present in room and functioning', critical: false, image: 'images/room_egg_light.jpg' },
+          { id: 'rr_room_10_bin', name: 'Bin emptied', desc: 'Clinical waste and general waste bins emptied and relined', critical: false, image: 'images/room_bin.jpg' },
+    ]
+  }]
+};
+
+EQUIPMENT_DB2['room_ready_room_11'] = {
+  name: 'Room 11 — Daily Room Check',
+  location: 'Labour Ward',
+  image: 'images/room_room_11.jpg',
+  imageCaption: 'Check all items are in place before accepting the next patient',
+  frequency: 'daily',
+  afterEmergency: false,
+  dashboard: 2,
+  categories: [{
+    name: 'Room Readiness',
+    icon: '🏥',
+    items: [
+          { id: 'rr_room_11_clean', name: 'Room cleaned', desc: 'Room has been cleaned and is ready for use', critical: true, image: 'images/room_clean.jpg' },
+          { id: 'rr_room_11_linen', name: 'Fresh linen on bed', desc: 'Clean fresh linen applied to bed', critical: true, image: 'images/room_linen.jpg' },
+          { id: 'rr_room_11_bed_position', name: 'Bed in throne or upright position', desc: 'Bed positioned to support active birth', critical: true, image: 'images/room_bed_position.jpg' },
+          { id: 'rr_room_11_sharps', name: 'Sharps box present, signed, dated and not above fill line', desc: 'Yellow sharps box present, fill level acceptable, signed and dated', critical: true, image: 'images/room_sharps.jpg' },
+          { id: 'rr_room_11_sats_probe', name: 'CTG sats probe present', desc: 'Maternal SpO2 probe present and attached', critical: true, image: 'images/room_sats_probe.jpg' },
+          { id: 'rr_room_11_transducer', name: 'CTG transducer present', desc: 'Ultrasound transducer present, no cracks', critical: true, image: 'images/room_transducer.jpg' },
+          { id: 'rr_room_11_toco', name: 'CTG toco present', desc: 'Toco transducer present and intact', critical: true, image: 'images/room_toco.jpg' },
+          { id: 'rr_room_11_bp_small', name: 'BP cuff small present', desc: 'Small BP cuff present and labelled', critical: true, image: 'images/room_bp_small.jpg' },
+          { id: 'rr_room_11_bp_medium', name: 'BP cuff medium present', desc: 'Medium BP cuff present and labelled', critical: true, image: 'images/room_bp_medium.jpg' },
+          { id: 'rr_room_11_bp_large', name: 'BP cuff large present', desc: 'Large BP cuff present and labelled', critical: true, image: 'images/room_bp_large.jpg' },
+          { id: 'rr_room_11_fse', name: 'Fetal scalp electrode present', desc: 'FSE electrode present and in packaging', critical: true, image: 'images/room_fse.jpg' },
+          { id: 'rr_room_11_egg_light', name: 'Egg light available and working', desc: 'Egg light present in room and functioning', critical: false, image: 'images/room_egg_light.jpg' },
+          { id: 'rr_room_11_bin', name: 'Bin emptied', desc: 'Clinical waste and general waste bins emptied and relined', critical: false, image: 'images/room_bin.jpg' },
+    ]
+  }]
+};
+
+EQUIPMENT_DB2['room_ready_room_12'] = {
+  name: 'Room 12 — Daily Room Check',
+  location: 'Labour Ward',
+  image: 'images/room_room_12.jpg',
+  imageCaption: 'Check all items are in place before accepting the next patient',
+  frequency: 'daily',
+  afterEmergency: false,
+  dashboard: 2,
+  categories: [{
+    name: 'Room Readiness',
+    icon: '🏥',
+    items: [
+          { id: 'rr_room_12_clean', name: 'Room cleaned', desc: 'Room has been cleaned and is ready for use', critical: true, image: 'images/room_clean.jpg' },
+          { id: 'rr_room_12_linen', name: 'Fresh linen on bed', desc: 'Clean fresh linen applied to bed', critical: true, image: 'images/room_linen.jpg' },
+          { id: 'rr_room_12_bed_position', name: 'Bed in throne or upright position', desc: 'Bed positioned to support active birth', critical: true, image: 'images/room_bed_position.jpg' },
+          { id: 'rr_room_12_sharps', name: 'Sharps box present, signed, dated and not above fill line', desc: 'Yellow sharps box present, fill level acceptable, signed and dated', critical: true, image: 'images/room_sharps.jpg' },
+          { id: 'rr_room_12_sats_probe', name: 'CTG sats probe present', desc: 'Maternal SpO2 probe present and attached', critical: true, image: 'images/room_sats_probe.jpg' },
+          { id: 'rr_room_12_transducer', name: 'CTG transducer present', desc: 'Ultrasound transducer present, no cracks', critical: true, image: 'images/room_transducer.jpg' },
+          { id: 'rr_room_12_toco', name: 'CTG toco present', desc: 'Toco transducer present and intact', critical: true, image: 'images/room_toco.jpg' },
+          { id: 'rr_room_12_bp_small', name: 'BP cuff small present', desc: 'Small BP cuff present and labelled', critical: true, image: 'images/room_bp_small.jpg' },
+          { id: 'rr_room_12_bp_medium', name: 'BP cuff medium present', desc: 'Medium BP cuff present and labelled', critical: true, image: 'images/room_bp_medium.jpg' },
+          { id: 'rr_room_12_bp_large', name: 'BP cuff large present', desc: 'Large BP cuff present and labelled', critical: true, image: 'images/room_bp_large.jpg' },
+          { id: 'rr_room_12_fse', name: 'Fetal scalp electrode present', desc: 'FSE electrode present and in packaging', critical: true, image: 'images/room_fse.jpg' },
+          { id: 'rr_room_12_egg_light', name: 'Egg light available and working', desc: 'Egg light present in room and functioning', critical: false, image: 'images/room_egg_light.jpg' },
+          { id: 'rr_room_12_bin', name: 'Bin emptied', desc: 'Clinical waste and general waste bins emptied and relined', critical: false, image: 'images/room_bin.jpg' },
+    ]
+  }]
+};
+
+EQUIPMENT_DB2['room_ready_room_14'] = {
+  name: 'Room 14 — Daily Room Check',
+  location: 'Labour Ward',
+  image: 'images/room_room_14.jpg',
+  imageCaption: 'Check all items are in place before accepting the next patient',
+  frequency: 'daily',
+  afterEmergency: false,
+  dashboard: 2,
+  categories: [{
+    name: 'Room Readiness',
+    icon: '🏥',
+    items: [
+          { id: 'rr_room_14_clean', name: 'Room cleaned', desc: 'Room has been cleaned and is ready for use', critical: true, image: 'images/room_clean.jpg' },
+          { id: 'rr_room_14_linen', name: 'Fresh linen on bed', desc: 'Clean fresh linen applied to bed', critical: true, image: 'images/room_linen.jpg' },
+          { id: 'rr_room_14_bed_position', name: 'Bed in throne or upright position', desc: 'Bed positioned to support active birth', critical: true, image: 'images/room_bed_position.jpg' },
+          { id: 'rr_room_14_sharps', name: 'Sharps box present, signed, dated and not above fill line', desc: 'Yellow sharps box present, fill level acceptable, signed and dated', critical: true, image: 'images/room_sharps.jpg' },
+          { id: 'rr_room_14_sats_probe', name: 'CTG sats probe present', desc: 'Maternal SpO2 probe present and attached', critical: true, image: 'images/room_sats_probe.jpg' },
+          { id: 'rr_room_14_transducer', name: 'CTG transducer present', desc: 'Ultrasound transducer present, no cracks', critical: true, image: 'images/room_transducer.jpg' },
+          { id: 'rr_room_14_toco', name: 'CTG toco present', desc: 'Toco transducer present and intact', critical: true, image: 'images/room_toco.jpg' },
+          { id: 'rr_room_14_bp_small', name: 'BP cuff small present', desc: 'Small BP cuff present and labelled', critical: true, image: 'images/room_bp_small.jpg' },
+          { id: 'rr_room_14_bp_medium', name: 'BP cuff medium present', desc: 'Medium BP cuff present and labelled', critical: true, image: 'images/room_bp_medium.jpg' },
+          { id: 'rr_room_14_bp_large', name: 'BP cuff large present', desc: 'Large BP cuff present and labelled', critical: true, image: 'images/room_bp_large.jpg' },
+          { id: 'rr_room_14_fse', name: 'Fetal scalp electrode present', desc: 'FSE electrode present and in packaging', critical: true, image: 'images/room_fse.jpg' },
+          { id: 'rr_room_14_egg_light', name: 'Egg light available and working', desc: 'Egg light present in room and functioning', critical: false, image: 'images/room_egg_light.jpg' },
+          { id: 'rr_room_14_bin', name: 'Bin emptied', desc: 'Clinical waste and general waste bins emptied and relined', critical: false, image: 'images/room_bin.jpg' },
+    ]
+  }]
+};
+
+EQUIPMENT_DB2['room_ready_room_15'] = {
+  name: 'Room 15 — Daily Room Check',
+  location: 'Labour Ward',
+  image: 'images/room_room_15.jpg',
+  imageCaption: 'Check all items are in place before accepting the next patient',
+  frequency: 'daily',
+  afterEmergency: false,
+  dashboard: 2,
+  categories: [{
+    name: 'Room Readiness',
+    icon: '🏥',
+    items: [
+          { id: 'rr_room_15_clean', name: 'Room cleaned', desc: 'Room has been cleaned and is ready for use', critical: true, image: 'images/room_clean.jpg' },
+          { id: 'rr_room_15_linen', name: 'Fresh linen on bed', desc: 'Clean fresh linen applied to bed', critical: true, image: 'images/room_linen.jpg' },
+          { id: 'rr_room_15_bed_position', name: 'Bed in throne or upright position', desc: 'Bed positioned to support active birth', critical: true, image: 'images/room_bed_position.jpg' },
+          { id: 'rr_room_15_sharps', name: 'Sharps box present, signed, dated and not above fill line', desc: 'Yellow sharps box present, fill level acceptable, signed and dated', critical: true, image: 'images/room_sharps.jpg' },
+          { id: 'rr_room_15_sats_probe', name: 'CTG sats probe present', desc: 'Maternal SpO2 probe present and attached', critical: true, image: 'images/room_sats_probe.jpg' },
+          { id: 'rr_room_15_transducer', name: 'CTG transducer present', desc: 'Ultrasound transducer present, no cracks', critical: true, image: 'images/room_transducer.jpg' },
+          { id: 'rr_room_15_toco', name: 'CTG toco present', desc: 'Toco transducer present and intact', critical: true, image: 'images/room_toco.jpg' },
+          { id: 'rr_room_15_bp_small', name: 'BP cuff small present', desc: 'Small BP cuff present and labelled', critical: true, image: 'images/room_bp_small.jpg' },
+          { id: 'rr_room_15_bp_medium', name: 'BP cuff medium present', desc: 'Medium BP cuff present and labelled', critical: true, image: 'images/room_bp_medium.jpg' },
+          { id: 'rr_room_15_bp_large', name: 'BP cuff large present', desc: 'Large BP cuff present and labelled', critical: true, image: 'images/room_bp_large.jpg' },
+          { id: 'rr_room_15_fse', name: 'Fetal scalp electrode present', desc: 'FSE electrode present and in packaging', critical: true, image: 'images/room_fse.jpg' },
+          { id: 'rr_room_15_egg_light', name: 'Egg light available and working', desc: 'Egg light present in room and functioning', critical: false, image: 'images/room_egg_light.jpg' },
+          { id: 'rr_room_15_bin', name: 'Bin emptied', desc: 'Clinical waste and general waste bins emptied and relined', critical: false, image: 'images/room_bin.jpg' },
+    ]
+  }]
+};
+
+EQUIPMENT_DB2['room_ready_room_18'] = {
+  name: 'Room 18 — Daily Room Check',
+  location: 'Labour Ward',
+  image: 'images/room_room_18.jpg',
+  imageCaption: 'Check all items are in place before accepting the next patient',
+  frequency: 'daily',
+  afterEmergency: false,
+  dashboard: 2,
+  categories: [{
+    name: 'Room Readiness',
+    icon: '🏥',
+    items: [
+          { id: 'rr_room_18_clean', name: 'Room cleaned', desc: 'Room has been cleaned and is ready for use', critical: true, image: 'images/room_clean.jpg' },
+          { id: 'rr_room_18_linen', name: 'Fresh linen on bed', desc: 'Clean fresh linen applied to bed', critical: true, image: 'images/room_linen.jpg' },
+          { id: 'rr_room_18_bed_position', name: 'Bed in throne or upright position', desc: 'Bed positioned to support active birth', critical: true, image: 'images/room_bed_position.jpg' },
+          { id: 'rr_room_18_sharps', name: 'Sharps box present, signed, dated and not above fill line', desc: 'Yellow sharps box present, fill level acceptable, signed and dated', critical: true, image: 'images/room_sharps.jpg' },
+          { id: 'rr_room_18_sats_probe', name: 'CTG sats probe present', desc: 'Maternal SpO2 probe present and attached', critical: true, image: 'images/room_sats_probe.jpg' },
+          { id: 'rr_room_18_transducer', name: 'CTG transducer present', desc: 'Ultrasound transducer present, no cracks', critical: true, image: 'images/room_transducer.jpg' },
+          { id: 'rr_room_18_toco', name: 'CTG toco present', desc: 'Toco transducer present and intact', critical: true, image: 'images/room_toco.jpg' },
+          { id: 'rr_room_18_bp_small', name: 'BP cuff small present', desc: 'Small BP cuff present and labelled', critical: true, image: 'images/room_bp_small.jpg' },
+          { id: 'rr_room_18_bp_medium', name: 'BP cuff medium present', desc: 'Medium BP cuff present and labelled', critical: true, image: 'images/room_bp_medium.jpg' },
+          { id: 'rr_room_18_bp_large', name: 'BP cuff large present', desc: 'Large BP cuff present and labelled', critical: true, image: 'images/room_bp_large.jpg' },
+          { id: 'rr_room_18_fse', name: 'Fetal scalp electrode present', desc: 'FSE electrode present and in packaging', critical: true, image: 'images/room_fse.jpg' },
+          { id: 'rr_room_18_egg_light', name: 'Egg light available and working', desc: 'Egg light present in room and functioning', critical: false, image: 'images/room_egg_light.jpg' },
+          { id: 'rr_room_18_bin', name: 'Bin emptied', desc: 'Clinical waste and general waste bins emptied and relined', critical: false, image: 'images/room_bin.jpg' },
+    ]
+  }]
+};
+
+EQUIPMENT_DB2['room_ready_bc_1'] = {
+  name: 'Birth Centre 1 — Daily Room Check',
+  location: 'Birth Centre',
+  image: 'images/room_bc_1.jpg',
+  imageCaption: 'Check all items are in place before accepting the next patient',
+  frequency: 'daily',
+  afterEmergency: false,
+  dashboard: 2,
+  categories: [{
+    name: 'Room Readiness',
+    icon: '🏥',
+    items: [
+          { id: 'rr_bc_1_clean', name: 'Room cleaned', desc: 'Room has been cleaned and is ready for use', critical: true, image: 'images/room_clean.jpg' },
+          { id: 'rr_bc_1_linen', name: 'Fresh linen on bed', desc: 'Clean fresh linen applied to bed', critical: true, image: 'images/room_linen.jpg' },
+          { id: 'rr_bc_1_bed_position', name: 'Bed in throne or upright position', desc: 'Bed positioned to support active birth', critical: true, image: 'images/room_bed_position.jpg' },
+          { id: 'rr_bc_1_sharps', name: 'Sharps box present, signed, dated and not above fill line', desc: 'Yellow sharps box present, fill level acceptable, signed and dated', critical: true, image: 'images/room_sharps.jpg' },
+          { id: 'rr_bc_1_egg_light', name: 'Egg light available and working', desc: 'Egg light present in room and functioning', critical: false, image: 'images/room_egg_light.jpg' },
+          { id: 'rr_bc_1_bin', name: 'Bin emptied', desc: 'Clinical waste and general waste bins emptied and relined', critical: false, image: 'images/room_bin.jpg' },
+    ]
+  }]
+};
+
+EQUIPMENT_DB2['room_ready_bc_3'] = {
+  name: 'Birth Centre 3 — Daily Room Check',
+  location: 'Birth Centre',
+  image: 'images/room_bc_3.jpg',
+  imageCaption: 'Check all items are in place before accepting the next patient',
+  frequency: 'daily',
+  afterEmergency: false,
+  dashboard: 2,
+  categories: [{
+    name: 'Room Readiness',
+    icon: '🏥',
+    items: [
+          { id: 'rr_bc_3_clean', name: 'Room cleaned', desc: 'Room has been cleaned and is ready for use', critical: true, image: 'images/room_clean.jpg' },
+          { id: 'rr_bc_3_linen', name: 'Fresh linen on bed', desc: 'Clean fresh linen applied to bed', critical: true, image: 'images/room_linen.jpg' },
+          { id: 'rr_bc_3_bed_position', name: 'Bed in throne or upright position', desc: 'Bed positioned to support active birth', critical: true, image: 'images/room_bed_position.jpg' },
+          { id: 'rr_bc_3_sharps', name: 'Sharps box present, signed, dated and not above fill line', desc: 'Yellow sharps box present, fill level acceptable, signed and dated', critical: true, image: 'images/room_sharps.jpg' },
+          { id: 'rr_bc_3_egg_light', name: 'Egg light available and working', desc: 'Egg light present in room and functioning', critical: false, image: 'images/room_egg_light.jpg' },
+          { id: 'rr_bc_3_bin', name: 'Bin emptied', desc: 'Clinical waste and general waste bins emptied and relined', critical: false, image: 'images/room_bin.jpg' },
+    ]
+  }]
+};
+
+EQUIPMENT_DB2['room_ready_bc_4'] = {
+  name: 'Birth Centre 4 — Daily Room Check',
+  location: 'Birth Centre',
+  image: 'images/room_bc_4.jpg',
+  imageCaption: 'Check all items are in place before accepting the next patient',
+  frequency: 'daily',
+  afterEmergency: false,
+  dashboard: 2,
+  categories: [{
+    name: 'Room Readiness',
+    icon: '🏥',
+    items: [
+          { id: 'rr_bc_4_clean', name: 'Room cleaned', desc: 'Room has been cleaned and is ready for use', critical: true, image: 'images/room_clean.jpg' },
+          { id: 'rr_bc_4_linen', name: 'Fresh linen on bed', desc: 'Clean fresh linen applied to bed', critical: true, image: 'images/room_linen.jpg' },
+          { id: 'rr_bc_4_bed_position', name: 'Bed in throne or upright position', desc: 'Bed positioned to support active birth', critical: true, image: 'images/room_bed_position.jpg' },
+          { id: 'rr_bc_4_sharps', name: 'Sharps box present, signed, dated and not above fill line', desc: 'Yellow sharps box present, fill level acceptable, signed and dated', critical: true, image: 'images/room_sharps.jpg' },
+          { id: 'rr_bc_4_egg_light', name: 'Egg light available and working', desc: 'Egg light present in room and functioning', critical: false, image: 'images/room_egg_light.jpg' },
+          { id: 'rr_bc_4_bin', name: 'Bin emptied', desc: 'Clinical waste and general waste bins emptied and relined', critical: false, image: 'images/room_bin.jpg' },
+    ]
+  }]
+};
+
+EQUIPMENT_DB2['room_ready_triage'] = {
+  name: 'Triage — Daily Room Check',
+  location: 'Triage',
+  image: 'images/room_triage.jpg',
+  imageCaption: 'Check all items are in place before accepting the next patient',
+  frequency: 'daily',
+  afterEmergency: false,
+  dashboard: 2,
+  categories: [{
+    name: 'Room Readiness',
+    icon: '🏥',
+    items: [
+          { id: 'rr_triage_sharps', name: 'Sharps box present, signed, dated and not above fill line', desc: 'Yellow sharps box present, fill level acceptable, signed and dated', critical: true, image: 'images/room_sharps.jpg' },
+          { id: 'rr_triage_sats_probe', name: 'CTG sats probe present', desc: 'Maternal SpO2 probe present and attached', critical: true, image: 'images/room_sats_probe.jpg' },
+          { id: 'rr_triage_transducer', name: 'CTG transducer present', desc: 'Ultrasound transducer present, no cracks', critical: true, image: 'images/room_transducer.jpg' },
+          { id: 'rr_triage_toco', name: 'CTG toco present', desc: 'Toco transducer present and intact', critical: true, image: 'images/room_toco.jpg' },
+          { id: 'rr_triage_bp_small', name: 'BP cuff small present', desc: 'Small BP cuff present and labelled', critical: true, image: 'images/room_bp_small.jpg' },
+          { id: 'rr_triage_bp_medium', name: 'BP cuff medium present', desc: 'Medium BP cuff present and labelled', critical: true, image: 'images/room_bp_medium.jpg' },
+          { id: 'rr_triage_bp_large', name: 'BP cuff large present', desc: 'Large BP cuff present and labelled', critical: true, image: 'images/room_bp_large.jpg' },
+    ]
+  }]
+};
+
+EQUIPMENT_DB2['room_ready_obs_1'] = {
+  name: 'Obs 1 — Daily Room Check',
+  location: 'Obs Bay',
+  image: 'images/room_obs_1.jpg',
+  imageCaption: 'Check all items are in place before accepting the next patient',
+  frequency: 'daily',
+  afterEmergency: false,
+  dashboard: 2,
+  categories: [{
+    name: 'Room Readiness',
+    icon: '🏥',
+    items: [
+          { id: 'rr_obs_1_sharps', name: 'Sharps box present, signed, dated and not above fill line', desc: 'Yellow sharps box present, fill level acceptable, signed and dated', critical: true, image: 'images/room_sharps.jpg' },
+    ]
+  }]
+};
+
+EQUIPMENT_DB2['room_ready_obs_2'] = {
+  name: 'Obs 2 — Daily Room Check',
+  location: 'Obs Bay',
+  image: 'images/room_obs_2.jpg',
+  imageCaption: 'Check all items are in place before accepting the next patient',
+  frequency: 'daily',
+  afterEmergency: false,
+  dashboard: 2,
+  categories: [{
+    name: 'Room Readiness',
+    icon: '🏥',
+    items: [
+          { id: 'rr_obs_2_sharps', name: 'Sharps box present, signed, dated and not above fill line', desc: 'Yellow sharps box present, fill level acceptable, signed and dated', critical: true, image: 'images/room_sharps.jpg' },
+    ]
+  }]
+};
+
+EQUIPMENT_DB2['room_ready_obs_3'] = {
+  name: 'Obs 3 — Daily Room Check',
+  location: 'Obs Bay',
+  image: 'images/room_obs_3.jpg',
+  imageCaption: 'Check all items are in place before accepting the next patient',
+  frequency: 'daily',
+  afterEmergency: false,
+  dashboard: 2,
+  categories: [{
+    name: 'Room Readiness',
+    icon: '🏥',
+    items: [
+          { id: 'rr_obs_3_sharps', name: 'Sharps box present, signed, dated and not above fill line', desc: 'Yellow sharps box present, fill level acceptable, signed and dated', critical: true, image: 'images/room_sharps.jpg' },
+    ]
+  }]
+};
+
+EQUIPMENT_DB2['room_ready_obs_4'] = {
+  name: 'Obs 4 — Daily Room Check',
+  location: 'Obs Bay',
+  image: 'images/room_obs_4.jpg',
+  imageCaption: 'Check all items are in place before accepting the next patient',
+  frequency: 'daily',
+  afterEmergency: false,
+  dashboard: 2,
+  categories: [{
+    name: 'Room Readiness',
+    icon: '🏥',
+    items: [
+          { id: 'rr_obs_4_sharps', name: 'Sharps box present, signed, dated and not above fill line', desc: 'Yellow sharps box present, fill level acceptable, signed and dated', critical: true, image: 'images/room_sharps.jpg' },
+    ]
+  }]
+};
+
+
+EQUIPMENT_DB2['room_ready_primrose'] = {
+  name: 'Primrose — Daily Room Check',
+  location: 'Primrose',
+  image: 'images/room_primrose.jpg',
+  imageCaption: 'Check sharps box is present, signed, dated and not above fill line',
+  frequency: 'daily',
+  afterEmergency: false,
+  dashboard: 2,
+  categories: [{
+    name: 'Room Readiness',
+    icon: '🏥',
+    items: [
+      { id: 'rr_primrose_sharps', name: 'Sharps box present, signed, dated and not above fill line', desc: 'Yellow sharps box present, fill level acceptable, signed and dated', critical: true, image: 'images/room_sharps.jpg' },
+    ]
+  }]
+};
+
 // Merge all equipment data into single lookup object
 Object.assign(EQUIPMENT_DB1, EQUIPMENT_DB1_EXTRA);
 Object.assign(EQUIPMENT_DB1, EQUIPMENT_DB2);

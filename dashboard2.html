@@ -153,7 +153,7 @@ tr:hover td{background:var(--grey5);}
 
 <div class="tabs">
   <button class="tab active" onclick="showTab('overview')">Overview</button>
-  <button class="tab" onclick="showTab('ctg')">CTG Rooms</button>
+  <button class="tab" onclick="showTab('rooms')">Rooms</button>
   <button class="tab" onclick="showTab('environment')">Environment</button>
   <button class="tab" onclick="showTab('cleaning')">Cleaning</button>
   <button class="tab" onclick="showTab('history')">Audit Trail</button>
@@ -189,13 +189,11 @@ tr:hover td{background:var(--grey5);}
   </div>
 </div>
 
-<!-- CTG ROOMS -->
-<div class="tab-view" id="tab-ctg">
+<!-- ROOMS -->
+<div class="tab-view" id="tab-rooms">
   <div class="main">
-    <div class="section-title" style="margin-top:4px;">CTG Equipment — Daily room checks <span id="ctgSubtitle"></span></div>
-    <div class="ctg-grid" id="ctgGrid"></div>
-    <div class="section-title">Tristel Bottle</div>
-    <div class="grid" id="tristelGrid"></div>
+    <div class="section-title" style="margin-top:4px;">Daily Room Checks <span id="roomsSubtitle"></span></div>
+    <div class="ctg-grid" id="roomsGrid"></div>
   </div>
 </div>
 
@@ -212,7 +210,9 @@ tr:hover td{background:var(--grey5);}
 <!-- CLEANING -->
 <div class="tab-view" id="tab-cleaning">
   <div class="main">
-    <div class="section-title" style="margin-top:4px;">Instrument washers <span>(daily)</span></div>
+    <div class="section-title" style="margin-top:4px;">Tristel Bottle</div>
+    <div class="grid" id="tristelGrid"></div>
+    <div class="section-title">Instrument washers <span>(daily)</span></div>
     <div class="grid" id="washerGrid"></div>
     <div class="section-title">Weekly equipment cleans</div>
     <div class="grid" id="weeklyGrid"></div>
@@ -268,9 +268,33 @@ const AREA_TEMP_EXTRA={
   'temp_lw_iv_room':{name:'Labour Ward IV Room — Temperature',freq:'daily',location:'Labour Ward'},
   'temp_lw_drug_prep':{name:'Labour Ward Drug Preparation Area — Temperature',freq:'daily',location:'Labour Ward'}
 };
+const ROOM_READY_EXTRA={
+  'room_ready_room_6':{name:'Room 6 — Daily Room Check',freq:'daily',location:'Room 6'},
+  'room_ready_room_7':{name:'Room 7 — Daily Room Check',freq:'daily',location:'Room 7'},
+  'room_ready_room_8':{name:'Room 8 — Daily Room Check',freq:'daily',location:'Room 8'},
+  'room_ready_room_9':{name:'Room 9 — Daily Room Check',freq:'daily',location:'Room 9'},
+  'room_ready_room_10':{name:'Room 10 — Daily Room Check',freq:'daily',location:'Room 10'},
+  'room_ready_room_11':{name:'Room 11 — Daily Room Check',freq:'daily',location:'Room 11'},
+  'room_ready_room_12':{name:'Room 12 — Daily Room Check',freq:'daily',location:'Room 12'},
+  'room_ready_room_14':{name:'Room 14 — Daily Room Check',freq:'daily',location:'Room 14'},
+  'room_ready_room_15':{name:'Room 15 — Daily Room Check',freq:'daily',location:'Room 15'},
+  'room_ready_room_18':{name:'Room 18 — Daily Room Check',freq:'daily',location:'Room 18'},
+  'room_ready_bc_1':{name:'Birth Centre 1 — Daily Room Check',freq:'daily',location:'Birth Centre 1'},
+  'room_ready_bc_3':{name:'Birth Centre 3 — Daily Room Check',freq:'daily',location:'Birth Centre 3'},
+  'room_ready_bc_4':{name:'Birth Centre 4 — Daily Room Check',freq:'daily',location:'Birth Centre 4'},
+  'room_ready_triage':{name:'Triage — Daily Room Check',freq:'daily',location:'Triage'},
+  'room_ready_obs_1':{name:'Obs 1 — Daily Room Check',freq:'daily',location:'Obs 1'},
+  'room_ready_obs_2':{name:'Obs 2 — Daily Room Check',freq:'daily',location:'Obs 2'},
+  'room_ready_obs_3':{name:'Obs 3 — Daily Room Check',freq:'daily',location:'Obs 3'},
+  'room_ready_obs_4':{name:'Obs 4 — Daily Room Check',freq:'daily',location:'Obs 4'},
+  'room_ready_primrose':{name:'Primrose — Daily Room Check',freq:'daily',location:'Primrose'},
+};
 const EQUIP_META={};
 Object.entries(AREA_TEMP_EXTRA).forEach(([id,eq])=>{
   EQUIP_META[id]={name:eq.name,freq:eq.freq,location:eq.location,isAreaTemp:true};
+});
+Object.entries(ROOM_READY_EXTRA).forEach(([id,eq])=>{
+  EQUIP_META[id]={name:eq.name,freq:eq.freq,location:eq.location,isRoomReady:true};
 });
 Object.entries(EQUIPMENT_DB2).forEach(([id,eq])=>{
   EQUIP_META[id]={
@@ -364,7 +388,7 @@ async function loadData(){
   setInterval(loadData,120000);
 }
 
-function renderAll(){renderStats();renderOverview();renderCTG();renderEnvironment();renderCleaning();renderHistory();}
+function renderAll(){renderStats();renderOverview();renderRooms();renderEnvironment();renderCleaning();renderHistory();}
 
 function getStatus(id,dateFilter){
   const now=new Date();
@@ -448,31 +472,86 @@ function renderOverview(){
   document.getElementById('ovSubtitle').textContent=`(${shown} items)`;
 }
 
-function renderCTG(){
-  const CTG_ROOM_IDS=Object.keys(EQUIP_META).filter(id=>id.startsWith('ctg_'));
+function renderRooms(){
+  // Room readiness checks
+  const ROOM_CHECKS=[
+    {id:'room_ready_room_6',name:'Room 6',type:'full'},
+    {id:'room_ready_room_7',name:'Room 7',type:'full'},
+    {id:'room_ready_room_8',name:'Room 8',type:'full'},
+    {id:'room_ready_room_9',name:'Room 9',type:'full'},
+    {id:'room_ready_room_10',name:'Room 10',type:'full'},
+    {id:'room_ready_room_11',name:'Room 11',type:'full'},
+    {id:'room_ready_room_12',name:'Room 12',type:'full'},
+    {id:'room_ready_room_14',name:'Room 14',type:'full'},
+    {id:'room_ready_room_15',name:'Room 15',type:'full'},
+    {id:'room_ready_room_18',name:'Room 18',type:'full'},
+    {id:'room_ready_bc_1',name:'Birth Centre 1',type:'bc'},
+    {id:'room_ready_bc_3',name:'Birth Centre 3',type:'bc'},
+    {id:'room_ready_bc_4',name:'Birth Centre 4',type:'bc'},
+    {id:'room_ready_triage',name:'Triage',type:'triage'},
+    {id:'room_ready_obs_1',name:'Obs 1',type:'obs'},
+    {id:'room_ready_obs_2',name:'Obs 2',type:'obs'},
+    {id:'room_ready_obs_3',name:'Obs 3',type:'obs'},
+    {id:'room_ready_obs_4',name:'Obs 4',type:'obs'},
+    {id:'room_ready_primrose',name:'Primrose',type:'obs'},
+  ];
+  const typeLabel={full:'Full check',bc:'BC check',triage:'Sharps + CTG',obs:'Sharps only'};
   let html='',pass=0,over=0,fail=0;
-  CTG_ROOM_IDS.forEach(id=>{
-    const meta=EQUIP_META[id];
-    const st=getStatus(id,null);
+  ROOM_CHECKS.forEach(room=>{
+    const id=room.id;
+    const checks=allChecks.filter(c=>c.equipment_id===id);
+    const last=checks[0];
+    const now=new Date();
+    let st='never';
+    if(last){
+      if(last.overall_status==='fail') st='fail';
+      else if(now-new Date(last.checked_at)>86400000) st='overdue';
+      else st='pass';
+    }
     if(st==='pass') pass++; else if(st==='fail') fail++; else over++;
-    const last=allChecks.find(c=>c.equipment_id===id);
     const lastStr=last?new Date(last.checked_at).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}):'Not checked';
     const dotClass={pass:'rd-pass',fail:'rd-fail',overdue:'rd-overdue',never:'rd-never'}[st];
-    const roomName=meta.name.replace('CTG Equipment — ','');
-    html+=`<div class="room-card st-${st}" onclick="openModal('${id}')">
+    html+=`<div class="room-card st-${st}" onclick="openRoomModal('${id}','${room.name}',${JSON.stringify(checks).replace(/'/g,"\'").replace(/"/g,'&quot;')})">
       <div class="rdot ${dotClass}"></div>
-      <div><div class="rname">${roomName}</div><div class="rmeta">${lastStr}</div></div>
+      <div><div class="rname">${room.name}</div><div class="rmeta">${typeLabel[room.type]} · ${lastStr}</div></div>
     </div>`;
   });
-  document.getElementById('ctgGrid').innerHTML=html;
-  document.getElementById('ctgSubtitle').textContent=`(${pass} OK, ${over} overdue, ${fail} issues)`;
+  const grid=document.getElementById('roomsGrid');
+  if(grid){grid.innerHTML=html;}
+  const sub=document.getElementById('roomsSubtitle');
+  if(sub) sub.textContent=`(${pass} OK, ${over} overdue, ${fail} issues)`;
 
-  // Tristel
+  // Tristel in cleaning tab
   let tristelHtml='';
   Object.entries(EQUIP_META).filter(([id])=>EQUIP_META[id].isTristel).forEach(([id,meta])=>{
     tristelHtml+=makeCard(id,meta,null);
   });
-  document.getElementById('tristelGrid').innerHTML=tristelHtml;
+  const tg=document.getElementById('tristelGrid');
+  if(tg) tg.innerHTML=tristelHtml;
+}
+
+function openRoomModal(id, name, checksJson){
+  document.getElementById('modalTitle').textContent=name+' — Daily Room Check';
+  const checks=typeof checksJson==='string'?JSON.parse(checksJson.replace(/&quot;/g,'"')):checksJson;
+  const last=checks[0];
+  let html='';
+  if(last){
+    const t=new Date(last.checked_at).toLocaleString('en-GB',{weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+    html+=`<div class="mdr"><span class="mdr-label">Last checked</span><span class="mdr-val">${t}</span></div>`;
+    html+=`<div class="mdr"><span class="mdr-label">By</span><span class="mdr-val">${last.staff_name}</span></div>`;
+    html+=`<div class="mdr"><span class="mdr-label">Result</span><span class="mdr-val" style="color:${last.overall_status==='pass'?'var(--green)':'var(--red)'}">${last.overall_status==='pass'?'✓ Room ready':'⚠ Issues recorded'}</span></div>`;
+    html+=`<div class="mdr"><span class="mdr-label">Pass / Fail</span><span class="mdr-val">${last.pass_count||0} / ${last.fail_count||0}</span></div>`;
+    if(last.fail_notes&&Object.keys(last.fail_notes).length>0){
+      html+=`<div style="margin-top:12px;font-size:13px;font-weight:700;margin-bottom:6px;">Issues noted:</div>`;
+      Object.entries(last.fail_notes).forEach(([k,v])=>{
+        html+=`<div class="fail-item"><strong>${k}</strong><p>${v}</p></div>`;
+      });
+    }
+  } else {
+    html='<p style="color:var(--grey3);padding:20px 0;">No checks recorded for this room yet.</p>';
+  }
+  document.getElementById('modalContent').innerHTML=html;
+  document.getElementById('modalBg').classList.add('show');
 }
 
 function renderEnvironment(){
@@ -665,7 +744,7 @@ function showTab(name){
   document.querySelectorAll('.tab-view').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
-  const tabs=['overview','ctg','environment','cleaning','history'];
+  const tabs=['overview','rooms','environment','cleaning','history'];
   document.querySelectorAll('.tab')[tabs.indexOf(name)].classList.add('active');
 }
 
