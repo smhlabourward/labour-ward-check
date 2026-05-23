@@ -6,144 +6,120 @@
 <meta name="theme-color" content="#005EB8">
 <title>Dashboard 2 — Housekeeping & Cleaning | Labour Ward Stoke Mandeville</title>
 <style>
-:root{--blue:#003087;--blue2:#005EB8;--blue3:#0072CE;--aqua:#41B6E6;--green:#007F3B;--green2:#78BE20;--red:#DA291C;--amber:#ED8B00;--grey1:#231f20;--grey2:#425563;--grey3:#768692;--grey4:#D8DDE0;--grey5:#F0F4F5;--font:'Frutiger','Arial',sans-serif;}
+:root{--blue:#003087;--blue2:#005EB8;--blue3:#0072CE;--aqua:#41B6E6;--green:#007F3B;--red:#DA291C;--amber:#ED8B00;--grey1:#231f20;--grey2:#425563;--grey3:#768692;--grey4:#D8DDE0;--grey5:#F0F4F5;--font:'Frutiger','Arial',sans-serif;}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--font);background:var(--grey5);color:var(--grey1);-webkit-font-smoothing:antialiased;}
+body{font-family:var(--font);background:var(--grey5);color:var(--grey1);}
 .nav{background:var(--blue2);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 6px rgba(0,0,0,0.2);}
 .nhs-logo{background:white;color:var(--blue);font-weight:700;font-size:18px;padding:3px 9px;border-radius:3px;}
 .nav-centre{text-align:center;}
-.nav-centre h1{color:white;font-size:14px;font-weight:700;line-height:1.2;}
+.nav-centre h1{color:white;font-size:14px;font-weight:700;}
 .nav-centre p{color:rgba(255,255,255,0.7);font-size:11px;}
-.nav-right{text-align:right;}
-.nav-time{color:var(--aqua);font-size:13px;}
-.nav-status{font-size:11px;color:rgba(255,255,255,0.5);}
+.nav-time{color:var(--aqua);font-size:13px;text-align:right;}
+.nav-status{font-size:11px;color:rgba(255,255,255,0.5);text-align:right;}
 .alert-bar{display:none;align-items:flex-start;gap:14px;padding:12px 24px;font-size:14px;}
-.alert-bar.fail{background:var(--red);color:white;display:flex;}
 .alert-bar.warn{background:var(--amber);color:white;display:flex;}
+.alert-bar.fail{background:var(--red);color:white;display:flex;}
 .alert-icon{font-size:20px;flex-shrink:0;}
 .alert-bar strong{display:block;font-weight:700;margin-bottom:2px;}
 .tabs{background:var(--blue);display:flex;border-top:1px solid rgba(255,255,255,0.1);}
-.tab{flex:1;padding:9px 4px;color:rgba(255,255,255,0.6);font-size:11px;font-weight:600;text-align:center;cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;}
+.tab{flex:1;padding:10px 4px;color:rgba(255,255,255,0.6);font-size:12px;font-weight:600;text-align:center;cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;}
 .tab.active{color:white;border-bottom-color:var(--aqua);}
 .tab-view{display:none;}.tab-view.active{display:block;}
 .main{padding:18px 24px;max-width:1600px;margin:0 auto;}
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
-.stat-card{background:white;border-radius:10px;border:1px solid var(--grey4);padding:14px 12px;text-align:center;}
-.stat-num{font-size:28px;font-weight:700;line-height:1;margin-bottom:4px;}
-.stat-label{font-size:11px;color:var(--grey3);font-weight:600;text-transform:uppercase;letter-spacing:0.3px;}
-.s-green{color:var(--green);}
-.s-red{color:var(--red);}
-.s-amber{color:var(--amber);}
-.s-grey{color:var(--grey3);}
-.filter-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:white;padding:10px 14px;border-radius:10px;border:1px solid var(--grey4);margin-bottom:16px;}
-.filter-bar label{font-size:12px;font-weight:700;color:var(--grey2);text-transform:uppercase;letter-spacing:0.3px;}
-.fsel{border:1.5px solid var(--grey4);border-radius:5px;padding:6px 10px;font-size:13px;font-family:var(--font);background:white;}
-.date-input{border:1.5px solid var(--grey4);border-radius:5px;padding:6px 10px;font-size:13px;font-family:var(--font);}
-.export-btn{margin-left:auto;background:var(--blue2);color:white;border:none;padding:7px 14px;border-radius:5px;font-size:12px;font-weight:700;cursor:pointer;}
-.section-title{font-size:14px;font-weight:700;color:var(--grey1);margin-bottom:10px;margin-top:4px;display:flex;align-items:center;gap:8px;}
+.section-title{font-size:14px;font-weight:700;margin-bottom:12px;margin-top:4px;display:flex;align-items:center;gap:8px;}
 .section-title span{font-size:12px;font-weight:400;color:var(--grey3);}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:24px;}
-.card{background:white;border-radius:10px;border:2px solid var(--grey4);overflow:hidden;cursor:pointer;transition:all 0.2s;}
-.card:hover{box-shadow:0 3px 12px rgba(0,0,0,0.1);}
-.card.st-pass{background:#E8F4EE;border-color:var(--green);}
-.card.st-fail{background:#FDECEA;border-color:var(--red);}
-.card.st-overdue{background:#FEF3E2;border-color:var(--amber);}
-.card.st-never{background:#F0F4F5;border-color:var(--grey3);}
-.card-top{padding:10px 12px;display:flex;align-items:flex-start;gap:8px;border-bottom:1px solid var(--grey4);}
-.card-thumb{width:44px;height:44px;border-radius:7px;background:var(--grey4);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:18px;}
-.card-thumb img{width:100%;height:100%;object-fit:cover;}
-.card-info{flex:1;}
-.card-name{font-size:12px;font-weight:700;line-height:1.3;margin-bottom:2px;}
-.card-loc{font-size:11px;color:var(--grey3);}
-.spill{padding:3px 7px;border-radius:9px;font-size:10px;font-weight:700;text-transform:uppercase;flex-shrink:0;}
-.sp-pass{background:#E8F4EE;color:var(--green);}
-.sp-fail{background:#FDECEA;color:var(--red);}
-.sp-overdue{background:#FEF3E2;color:var(--amber);}
-.sp-never{background:var(--grey4);color:var(--grey2);}
-.card-body{padding:8px 12px;}
-.cr{display:flex;justify-content:space-between;font-size:11px;padding:2px 0;}
-.cr-label{color:var(--grey3);}
-.cr-val{font-weight:600;color:var(--grey1);}
-.comp-bar-wrap{background:var(--grey4);border-radius:3px;height:3px;margin:4px 0 2px;}
-.comp-bar{height:100%;border-radius:3px;transition:width 0.4s;}
-.fridge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:24px;}
-.fridge-card{background:white;border-radius:10px;border:2px solid var(--grey4);overflow:hidden;cursor:pointer;transition:all 0.2s;}
-.fridge-card:hover{box-shadow:0 3px 12px rgba(0,0,0,0.1);}
-.fridge-card.st-pass{background:#E8F4EE;border-color:var(--green);}
-.fridge-card.st-fail{background:#FDECEA;border-color:var(--red);}
-.fridge-card.st-overdue{background:#FEF3E2;border-color:var(--amber);}
-.fridge-card.st-never{background:#F0F4F5;border-color:var(--grey3);}
-.fridge-top{padding:12px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--grey4);}
-.fridge-icon{font-size:26px;}
-.fridge-name{font-size:14px;font-weight:700;margin-bottom:2px;}
-.fridge-loc{font-size:11px;color:var(--grey3);}
-.fridge-body{padding:10px 14px;}
-.temp-display{display:flex;align-items:baseline;gap:6px;margin-bottom:4px;}
-.temp-current{font-size:26px;font-weight:700;}
-.temp-unit{font-size:14px;color:var(--grey3);}
-.temp-minmax{font-size:11px;color:var(--grey3);margin-bottom:4px;}
-.temp-ok{color:var(--green);}
-.temp-bad{color:var(--red);}
-.temp-time{font-size:11px;color:var(--grey3);}
-.ctg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-bottom:24px;}
-.room-card{background:white;border-radius:8px;border:2px solid var(--grey4);padding:10px 12px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:all 0.2s;}
+/* Room cards - compact grid */
+.room-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;margin-bottom:24px;}
+.room-card{border-radius:10px;border:2px solid var(--grey4);padding:12px 14px;cursor:pointer;transition:all 0.2s;background:white;}
 .room-card.st-pass{background:#E8F4EE;border-color:var(--green);}
 .room-card.st-fail{background:#FDECEA;border-color:var(--red);}
 .room-card.st-overdue{background:#FEF3E2;border-color:var(--amber);}
 .room-card.st-never{background:#F0F4F5;border-color:var(--grey3);}
-.rdot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
-.rd-pass{background:var(--green);}
-.rd-fail{background:var(--red);}
-.rd-overdue{background:var(--amber);}
-.rd-never{background:var(--grey3);}
-.rname{font-size:12px;font-weight:700;}
-.rmeta{font-size:10px;color:var(--grey3);}
+.room-card:hover{box-shadow:0 3px 12px rgba(0,0,0,0.12);}
+.rc-name{font-size:13px;font-weight:700;margin-bottom:3px;}
+.rc-type{font-size:10px;color:var(--grey3);margin-bottom:6px;}
+.rc-status{font-size:11px;font-weight:700;}
+.rc-status.ok{color:var(--green);}
+.rc-status.fail{color:var(--red);}
+.rc-status.overdue{color:var(--amber);}
+.rc-status.never{color:var(--grey3);}
+.rc-meta{font-size:10px;color:var(--grey2);margin-top:3px;}
+/* Standard cards */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:24px;}
+.card{border-radius:10px;border:2px solid var(--grey4);overflow:hidden;cursor:pointer;transition:all 0.2s;background:white;}
+.card.st-pass{background:#E8F4EE;border-color:var(--green);}
+.card.st-fail{background:#FDECEA;border-color:var(--red);}
+.card.st-overdue{background:#FEF3E2;border-color:var(--amber);}
+.card.st-never{background:#F0F4F5;border-color:var(--grey3);}
+.card:hover{box-shadow:0 3px 12px rgba(0,0,0,0.12);}
+.card-top{padding:10px 12px;display:flex;align-items:flex-start;gap:8px;border-bottom:1px solid rgba(0,0,0,0.06);}
+.card-thumb{width:40px;height:40px;border-radius:6px;background:var(--grey4);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.card-info{flex:1;}
+.card-name{font-size:12px;font-weight:700;line-height:1.3;margin-bottom:2px;}
+.card-loc{font-size:11px;color:var(--grey3);}
+.pill{padding:2px 8px;border-radius:8px;font-size:10px;font-weight:700;text-transform:uppercase;flex-shrink:0;}
+.pill-pass{background:#C7E9D4;color:var(--green);}
+.pill-fail{background:#FBBDB9;color:var(--red);}
+.pill-overdue{background:#FDE8BC;color:var(--amber);}
+.pill-never{background:var(--grey4);color:var(--grey2);}
+.card-body{padding:8px 12px;}
+.cr{display:flex;justify-content:space-between;font-size:11px;padding:2px 0;}
+.cr-label{color:var(--grey3);}
+.cr-val{font-weight:600;}
+/* Fridge cards */
+.fridge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:24px;}
+.fridge-card{border-radius:10px;border:2px solid var(--grey4);overflow:hidden;cursor:pointer;transition:all 0.2s;background:white;}
+.fridge-card.st-pass{background:#E8F4EE;border-color:var(--green);}
+.fridge-card.st-fail{background:#FDECEA;border-color:var(--red);}
+.fridge-card.st-overdue{background:#FEF3E2;border-color:var(--amber);}
+.fridge-card.st-never{background:#F0F4F5;border-color:var(--grey3);}
+.fridge-card:hover{box-shadow:0 3px 12px rgba(0,0,0,0.12);}
+.fridge-top{padding:12px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(0,0,0,0.06);}
+.fridge-icon{font-size:24px;}
+.fridge-name{font-size:14px;font-weight:700;margin-bottom:2px;}
+.fridge-loc{font-size:11px;color:var(--grey3);}
+.fridge-body{padding:10px 14px;}
+.temp-big{font-size:28px;font-weight:700;line-height:1;margin-bottom:2px;}
+.temp-ok{color:var(--green);}
+.temp-bad{color:var(--red);}
+.temp-none{color:var(--grey3);}
+/* Audit table */
 .table-wrap{background:white;border-radius:10px;border:1px solid var(--grey4);overflow:hidden;margin-bottom:24px;}
 .table-scroll{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;font-size:12px;}
 thead{background:var(--blue2);color:white;}
-th{padding:9px 12px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;white-space:nowrap;}
+th{padding:9px 12px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;white-space:nowrap;}
 td{padding:9px 12px;border-bottom:1px solid var(--grey4);vertical-align:middle;}
 tr:last-child td{border-bottom:none;}
 tr:hover td{background:var(--grey5);}
-.td-pill{display:inline-block;padding:2px 7px;border-radius:8px;font-size:10px;font-weight:700;text-transform:uppercase;}
-.view-btn{background:var(--blue3);color:white;border:none;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:700;cursor:pointer;}
+.td-pass{background:#C7E9D4;color:var(--green);padding:2px 7px;border-radius:8px;font-size:10px;font-weight:700;}
+.td-fail{background:#FBBDB9;color:var(--red);padding:2px 7px;border-radius:8px;font-size:10px;font-weight:700;}
+/* Modal */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;}
 .modal-bg.show{display:flex;}
-.modal{background:white;border-radius:14px;width:100%;max-width:540px;max-height:90vh;overflow-y:auto;padding:22px;}
-.modal-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
-.modal-header h3{font-size:17px;font-weight:700;color:var(--blue2);}
-.modal-close{background:var(--grey4);border:none;width:28px;height:28px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.modal{background:white;border-radius:14px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;padding:22px;}
+.modal-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+.modal-hdr h3{font-size:17px;font-weight:700;color:var(--blue2);}
+.modal-close{background:var(--grey4);border:none;width:28px;height:28px;border-radius:50%;font-size:16px;cursor:pointer;}
 .mdr{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--grey4);font-size:13px;}
 .mdr:last-child{border-bottom:none;}
 .mdr-label{color:var(--grey2);}
-.mdr-val{font-weight:600;max-width:60%;text-align:right;}
+.mdr-val{font-weight:600;text-align:right;max-width:60%;}
 .fail-item{background:#FDECEA;border-radius:6px;padding:10px 12px;margin-bottom:7px;}
 .fail-item strong{color:var(--red);display:block;font-size:12px;margin-bottom:2px;}
 .fail-item p{font-size:12px;color:var(--grey2);}
-.setup-panel{background:#FEF3E2;border:1px solid var(--amber);border-radius:10px;padding:16px;margin-bottom:18px;}
-.setup-panel h3{color:var(--amber);font-size:13px;font-weight:700;margin-bottom:5px;}
-.setup-panel p{font-size:12px;color:var(--grey2);margin-bottom:8px;}
-.setup-inputs{display:flex;gap:8px;flex-wrap:wrap;}
-.setup-input{flex:1;min-width:160px;border:1.5px solid var(--grey4);border-radius:5px;padding:8px 10px;font-size:13px;font-family:var(--font);}
-.setup-btn{background:var(--blue2);color:white;border:none;padding:8px 16px;border-radius:5px;font-size:13px;font-weight:700;cursor:pointer;}
-.escalation-box{background:#FDECEA;border-radius:8px;padding:12px 14px;margin-top:10px;font-size:12px;color:var(--grey1);line-height:1.5;}
-.escalation-box strong{color:var(--red);display:block;margin-bottom:6px;font-size:13px;}
-@media(max-width:768px){.stats-row{grid-template-columns:repeat(2,1fr);}.main{padding:12px 14px;}.nav{padding:0 14px;}}
+.filter-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:white;padding:10px 14px;border-radius:10px;border:1px solid var(--grey4);margin-bottom:16px;}
+.filter-bar label{font-size:12px;font-weight:700;color:var(--grey2);text-transform:uppercase;}
+.fsel{border:1.5px solid var(--grey4);border-radius:5px;padding:5px 10px;font-size:13px;font-family:var(--font);}
+.export-btn{margin-left:auto;background:var(--blue2);color:white;border:none;padding:6px 14px;border-radius:5px;font-size:12px;font-weight:700;cursor:pointer;}
+@media(max-width:768px){.main{padding:12px 14px;}.nav{padding:0 14px;}}
 </style>
 </head>
 <body>
-
 <div class="nav">
   <div class="nhs-logo">NHS</div>
-  <div class="nav-centre">
-    <h1>Labour Ward Stoke Mandeville</h1>
-    <p>Dashboard 2 — Housekeeping & Cleaning</p>
-  </div>
-  <div class="nav-right">
-    <div class="nav-time" id="navTime"></div>
-    <div class="nav-status" id="navStatus">Loading...</div>
-  </div>
+  <div class="nav-centre"><h1>Labour Ward Stoke Mandeville</h1><p>Dashboard 2 — Housekeeping &amp; Cleaning</p></div>
+  <div><div class="nav-time" id="navTime"></div><div class="nav-status" id="navStatus">Loading...</div></div>
 </div>
 
 <div class="alert-bar" id="alertBar">
@@ -158,561 +134,423 @@ tr:hover td{background:var(--grey5);}
   <button class="tab" onclick="showTab('history')">Audit Trail</button>
 </div>
 
-<!-- ROOMS -->
-<div class="tab-view" id="tab-rooms" class="tab-view active">
+<!-- ROOMS TAB -->
+<div class="tab-view active" id="tab-rooms">
   <div class="main">
-    <div class="section-title" style="margin-top:4px;">Daily Room Checks <span id="roomsSubtitle"></span></div>
-    <div class="ctg-grid" id="roomsGrid"></div>
+    <div class="section-title">Labour Ward Rooms <span>Daily check by support staff</span></div>
+    <div class="room-grid" id="lwRoomsGrid"></div>
+    <div class="section-title">Birth Centre Rooms <span>Daily check by support staff</span></div>
+    <div class="room-grid" id="bcRoomsGrid"></div>
+    <div class="section-title">Triage &amp; Obs Bay <span>Sharps box (obs bay / triage) + CTG equipment (triage)</span></div>
+    <div class="room-grid" id="triageObsGrid"></div>
   </div>
 </div>
 
-<!-- ENVIRONMENT -->
+<!-- ENVIRONMENT TAB -->
 <div class="tab-view" id="tab-environment">
   <div class="main">
-    <div class="section-title" style="margin-top:4px;">Area Temperature Checks <span>Above 25°C triggers escalation — twice daily</span></div>
-    <div class="grid" id="areaTempGrid"></div>
+    <div class="section-title">Area Temperature Checks <span>Above 25°C triggers escalation — twice daily</span></div>
+    <div class="card-grid" id="areaTempGrid"></div>
     <div class="section-title">Fridge Temperatures <span>Acceptable range 2–8°C — twice daily — pharmacy 01494 425355</span></div>
     <div class="fridge-grid" id="fridgeGrid"></div>
   </div>
 </div>
 
-<!-- CLEANING -->
+<!-- CLEANING TAB -->
 <div class="tab-view" id="tab-cleaning">
   <div class="main">
-    <div class="section-title" style="margin-top:4px;">Tristel Bottle</div>
-    <div class="grid" id="tristelGrid"></div>
-    <div class="section-title">Instrument washers <span>(daily)</span></div>
-    <div class="grid" id="washerGrid"></div>
-    <div class="section-title">Weekly equipment cleans</div>
-    <div class="grid" id="weeklyGrid"></div>
-    <div class="section-title">Monthly trolley cleans</div>
-    <div class="grid" id="monthlyGrid"></div>
-    <div class="section-title">Monthly mattress audit</div>
-    <div class="grid" id="mattressGrid"></div>
+    <div class="section-title">Tristel Bottle <span>(daily)</span></div>
+    <div class="card-grid" id="tristelGrid"></div>
+    <div class="section-title">Instrument Washers <span>(daily)</span></div>
+    <div class="card-grid" id="washerGrid"></div>
+    <div class="section-title">Weekly Equipment Cleans</div>
+    <div class="card-grid" id="weeklyGrid"></div>
+    <div class="section-title">Monthly Trolley Cleans</div>
+    <div class="card-grid" id="monthlyGrid"></div>
+    <div class="section-title">Monthly Mattress Audit</div>
+    <div class="card-grid" id="mattressGrid"></div>
   </div>
 </div>
 
-<!-- AUDIT TRAIL -->
+<!-- AUDIT TRAIL TAB -->
 <div class="tab-view" id="tab-history">
   <div class="main">
     <div class="filter-bar" style="margin-top:4px;">
       <label>Filter:</label>
-      <select class="fsel" id="hFreq" onchange="renderHistory()"><option value="">All</option><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select>
-      <select class="fsel" id="hStatus" onchange="renderHistory()"><option value="">All statuses</option><option value="fail">Issues only</option></select>
-      <input class="date-input" type="date" id="hDate" onchange="renderHistory()">
+      <select class="fsel" id="hStatus" onchange="renderHistory()"><option value="">All</option><option value="fail">Issues only</option></select>
+      <input type="date" id="hDate" class="fsel" onchange="renderHistory()">
       <button class="export-btn" onclick="exportCSV()">⬇ Export CSV</button>
     </div>
-    <div class="table-wrap">
-      <div class="table-scroll">
-        <table>
-          <thead><tr>
-            <th>Check</th><th>Location</th><th>Staff</th><th>Date/Time</th>
-            <th>Freq</th><th>Pass</th><th>Fail</th><th>Status</th><th>Detail</th>
-          </tr></thead>
-          <tbody id="histBody"></tbody>
-        </table>
-      </div>
-    </div>
+    <div class="table-wrap"><div class="table-scroll">
+      <table>
+        <thead><tr><th>Check</th><th>Location</th><th>Staff</th><th>Date/Time</th><th>Result</th><th>Pass</th><th>Fail</th></tr></thead>
+        <tbody id="histBody"></tbody>
+      </table>
+    </div></div>
   </div>
 </div>
 
-<div class="modal-bg" id="modalBg" onclick="closeModal(event)">
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
   <div class="modal">
-    <div class="modal-header">
-      <h3 id="modalTitle"></h3>
-      <button class="modal-close" onclick="closeModalDirect()">×</button>
-    </div>
-    <div id="modalContent"></div>
+    <div class="modal-hdr"><h3 id="modalTitle"></h3><button class="modal-close" onclick="closeModal()">×</button></div>
+    <div id="modalBody"></div>
   </div>
 </div>
 
-<script src="equipment-data-db2.js"></script>
 <script>
-let CONFIG={supabaseUrl:'',supabaseKey:''};
-let allChecks=[];
-const FREQ_MS={daily:86400000,weekly:7*86400000,monthly:30*86400000};
-
-const AREA_TEMP_EXTRA={
-  'temp_bc_drug_room':{name:'Birth Centre Drug Room — Temperature',freq:'daily',location:'Birth Centre'},
-  'temp_lw_iv_room':{name:'Labour Ward IV Room — Temperature',freq:'daily',location:'Labour Ward'},
-  'temp_lw_drug_prep':{name:'Labour Ward Drug Preparation Area — Temperature',freq:'daily',location:'Labour Ward'}
+// ── CONFIG ────────────────────────────────────────────────
+const CONFIG = {
+  supabaseUrl: 'https://evvcyddqxryaknyntrsv.supabase.co',
+  supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV2dmN5ZGRxeHJ5YWtueW50cnN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxODc3NjYsImV4cCI6MjA5NDc2Mzc2Nn0.sHy5ONNRuOEErcz21VO4316M8kd_VCi10OGhncke7kg'
 };
-const ROOM_READY_EXTRA={
-  'room_ready_room_6':{name:'Room 6 — Daily Room Check',freq:'daily',location:'Room 6'},
-  'room_ready_room_7':{name:'Room 7 — Daily Room Check',freq:'daily',location:'Room 7'},
-  'room_ready_room_8':{name:'Room 8 — Daily Room Check',freq:'daily',location:'Room 8'},
-  'room_ready_room_9':{name:'Room 9 — Daily Room Check',freq:'daily',location:'Room 9'},
-  'room_ready_room_10':{name:'Room 10 — Daily Room Check',freq:'daily',location:'Room 10'},
-  'room_ready_room_11':{name:'Room 11 — Daily Room Check',freq:'daily',location:'Room 11'},
-  'room_ready_room_12':{name:'Room 12 — Daily Room Check',freq:'daily',location:'Room 12'},
-  'room_ready_room_14':{name:'Room 14 — Daily Room Check',freq:'daily',location:'Room 14'},
-  'room_ready_room_15':{name:'Room 15 — Daily Room Check',freq:'daily',location:'Room 15'},
-  'room_ready_room_18':{name:'Room 18 — Daily Room Check',freq:'daily',location:'Room 18'},
-  'room_ready_bc_1':{name:'Birth Centre 1 — Daily Room Check',freq:'daily',location:'Birth Centre 1'},
-  'room_ready_bc_3':{name:'Birth Centre 3 — Daily Room Check',freq:'daily',location:'Birth Centre 3'},
-  'room_ready_bc_4':{name:'Birth Centre 4 — Daily Room Check',freq:'daily',location:'Birth Centre 4'},
-  'room_ready_triage':{name:'Triage — Daily Room Check',freq:'daily',location:'Triage'},
-  'room_ready_obs_1':{name:'Obs 1 — Daily Room Check',freq:'daily',location:'Obs 1'},
-  'room_ready_obs_2':{name:'Obs 2 — Daily Room Check',freq:'daily',location:'Obs 2'},
-  'room_ready_obs_3':{name:'Obs 3 — Daily Room Check',freq:'daily',location:'Obs 3'},
-  'room_ready_obs_4':{name:'Obs 4 — Daily Room Check',freq:'daily',location:'Obs 4'},
-  'room_ready_primrose':{name:'Primrose — Daily Room Check',freq:'daily',location:'Primrose'},
+
+// ── ROOM DEFINITIONS ──────────────────────────────────────
+const LW_ROOMS = [
+  {id:'room_ready_room_6',name:'Room 6',type:'Full check'},
+  {id:'room_ready_room_7',name:'Room 7',type:'Full check'},
+  {id:'room_ready_room_8',name:'Room 8',type:'Full check'},
+  {id:'room_ready_room_9',name:'Room 9',type:'Full check'},
+  {id:'room_ready_room_10',name:'Room 10',type:'Full check'},
+  {id:'room_ready_room_11',name:'Room 11',type:'Full check'},
+  {id:'room_ready_room_12',name:'Room 12',type:'Full check'},
+  {id:'room_ready_room_14',name:'Room 14',type:'Full check'},
+  {id:'room_ready_room_15',name:'Room 15',type:'Full check'},
+  {id:'room_ready_room_18',name:'Room 18',type:'Full check'},
+];
+const BC_ROOMS = [
+  {id:'room_ready_bc_1',name:'Birth Centre 1',type:'BC check'},
+  {id:'room_ready_bc_3',name:'Birth Centre 3',type:'BC check'},
+  {id:'room_ready_bc_4',name:'Birth Centre 4',type:'BC check'},
+];
+const TRIAGE_OBS = [
+  {id:'room_ready_triage',name:'Triage',type:'Sharps + CTG'},
+  {id:'room_ready_obs_1',name:'Obs 1',type:'Sharps only'},
+  {id:'room_ready_obs_2',name:'Obs 2',type:'Sharps only'},
+  {id:'room_ready_obs_3',name:'Obs 3',type:'Sharps only'},
+  {id:'room_ready_obs_4',name:'Obs 4',type:'Sharps only'},
+  {id:'room_ready_primrose',name:'Primrose',type:'Sharps only'},
+];
+
+// ── AREA TEMP DEFINITIONS ─────────────────────────────────
+const AREA_TEMPS = [
+  {id:'temp_bc_drug_room',name:'Birth Centre Drug Room',location:'Birth Centre',max:25},
+  {id:'temp_lw_iv_room',name:'Labour Ward IV Room',location:'Labour Ward',max:25},
+  {id:'temp_lw_drug_prep',name:'Labour Ward Drug Prep Area',location:'Labour Ward',max:25},
+];
+
+// ── FRIDGE DEFINITIONS ────────────────────────────────────
+const FRIDGES = [
+  {id:'fridge_staff',name:'Staff Fridge',location:'Staff Room'},
+  {id:'fridge_patient',name:'Patient Fridge',location:'Ward'},
+  {id:'fridge_lw_drug',name:'Labour Ward Drug Fridge',location:'Labour Ward'},
+  {id:'fridge_bc_drug',name:'Birth Centre Drug Fridge',location:'Birth Centre'},
+  {id:'fridge_primrose',name:'Primrose Fridge',location:'Primrose'},
+  {id:'fridge_primrose_annex',name:'Primrose Annex Fridge',location:'Primrose Annex'},
+];
+
+// ── CLEANING ITEM IDs ─────────────────────────────────────
+const CLEANING_IDS = {
+  tristel: ['tristel_bottle'],
+  washers: ['washer_labour_ward','washer_birth_centre'],
+  weekly: ['clean_resuscitaire_1','clean_resuscitaire_2','clean_resuscitaire_3','clean_resuscitaire_4','clean_resuscitaire_5','clean_resuscitaire_6','clean_resuscitaire_7','clean_resuscitaire_8','clean_resuscitaire_9','clean_uss_1','clean_uss_2','clean_epidural_pumps','clean_ecg_machine','clean_baxter_pumps','clean_syringe_drivers'],
+  monthly: ['clean_pph_trolley_1','clean_pph_trolley_2','clean_epidural_trolley_1','clean_epidural_trolley_2','clean_instrumental_trolley_1','clean_instrumental_trolley_2'],
+  mattress: ['mattress_audit']
 };
-const EQUIP_META={};
-Object.entries(AREA_TEMP_EXTRA).forEach(([id,eq])=>{
-  EQUIP_META[id]={name:eq.name,freq:eq.freq,location:eq.location,isAreaTemp:true};
-});
-Object.entries(ROOM_READY_EXTRA).forEach(([id,eq])=>{
-  EQUIP_META[id]={name:eq.name,freq:eq.freq,location:eq.location,isRoomReady:true};
-});
-Object.entries(EQUIPMENT_DB2).forEach(([id,eq])=>{
-  // Skip CTG and tristel - replaced by room_ready checks
-  if(id.startsWith('ctg_') || id === 'tristel_bottle') return;
-  EQUIP_META[id]={
-    name:eq.name, freq:eq.frequency, image:eq.image, location:eq.location,
-    isFridge:!!eq.fridgeCheck, isTristel:!!eq.tristelCheck,
-    isMattress:!!eq.mattressAudit, isCleaning:!!eq.cleaningInstructions,
-    isCTG:false, isWasher:id.startsWith('washer_'),
-    escalation:eq.escalation||null, pharmacyNumber:eq.pharmacyNumber||null,
-    tempMin:eq.tempMin||null, tempMax:eq.tempMax||null
-  };
-});
 
-// ── COMPLIANCE HELPERS (completion-based, calendar month) ────────────────
-function expectedChecks(freq, days) {
-  if (freq === 'daily') return days;
-  if (freq === 'weekly') return Math.ceil(days / 7);
-  if (freq === 'monthly') return 1;
-  return days;
-}
+// ── ALL IDs FOR DATA FETCH ────────────────────────────────
+const ALL_IDS = [
+  ...LW_ROOMS.map(r=>r.id),
+  ...BC_ROOMS.map(r=>r.id),
+  ...TRIAGE_OBS.map(r=>r.id),
+  ...AREA_TEMPS.map(t=>t.id),
+  ...FRIDGES.map(f=>f.id),
+  ...Object.values(CLEANING_IDS).flat()
+];
 
-function calcItemCompliance(id, meta, checks) {
-  if (!meta || !checks) return null;
-  const now = new Date();
-  const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-  const thisMonthChecks = checks.filter(c => new Date(c.checked_at) >= monthStart);
-  const expected = expectedChecks(meta.freq, daysInMonth);
-  if (expected === 0) return null;
+// ── FRIENDLY NAMES ────────────────────────────────────────
+const NAMES = {
+  tristel_bottle:'Tristel Bottle',
+  washer_labour_ward:'Instrument Washer — Labour Ward',washer_birth_centre:'Instrument Washer — Birth Centre',
+  clean_resuscitaire_1:'Resuscitaire 1 — Weekly Clean',clean_resuscitaire_2:'Resuscitaire 2 — Weekly Clean',clean_resuscitaire_3:'Resuscitaire 3 — Weekly Clean',clean_resuscitaire_4:'Resuscitaire 4 — Weekly Clean',clean_resuscitaire_5:'Resuscitaire 5 — Weekly Clean',clean_resuscitaire_6:'Resuscitaire 6 — Weekly Clean',clean_resuscitaire_7:'Resuscitaire 7 — Weekly Clean',clean_resuscitaire_8:'Resuscitaire 8 — Weekly Clean',clean_resuscitaire_9:'Resuscitaire 9 — Weekly Clean',
+  clean_uss_1:'USS Machine 1 — Weekly Clean',clean_uss_2:'USS Machine 2 — Weekly Clean',
+  clean_epidural_pumps:'Epidural Pumps — Weekly Clean',clean_ecg_machine:'ECG Machine — Weekly Clean',
+  clean_baxter_pumps:'Baxter Pumps — Weekly Clean',clean_syringe_drivers:'Syringe Drivers — Weekly Clean',
+  clean_pph_trolley_1:'PPH Trolley 1 — Monthly Clean',clean_pph_trolley_2:'PPH Trolley 2 — Monthly Clean',
+  clean_epidural_trolley_1:'Epidural Trolley 1 — Monthly Clean',clean_epidural_trolley_2:'Epidural Trolley 2 — Monthly Clean',
+  clean_instrumental_trolley_1:'Instrumental Trolley 1 — Monthly Clean',clean_instrumental_trolley_2:'Instrumental Trolley 2 — Monthly Clean',
+  mattress_audit:'Mattress Audit — Monthly',
+};
+const FREQS = {tristel_bottle:'daily',washer_labour_ward:'daily',washer_birth_centre:'daily',mattress_audit:'monthly'};
+const FREQ_MS = {daily:86400000,weekly:7*86400000,monthly:30*86400000};
 
-  if (meta.freq === 'daily') {
-    const days = new Set(thisMonthChecks.map(c => new Date(c.checked_at).toISOString().slice(0,10)));
-    return Math.min(Math.round(days.size / expected * 100), 100);
-  } else if (meta.freq === 'weekly') {
-    const weeks = new Set(thisMonthChecks.map(c => {
-      const d = new Date(c.checked_at);
-      return d.getFullYear() + "-W" + Math.ceil(d.getDate() / 7);
-    }));
-    return Math.min(Math.round(weeks.size / expected * 100), 100);
-  } else {
-    return thisMonthChecks.length > 0 ? 100 : 0;
-  }
-}
+let allChecks = [];
 
-function calcOverallCompletion() {
-  const rates = [];
-  Object.entries(EQUIP_META).forEach(([id, meta]) => {
-    const checks = allChecks.filter(c => c.equipment_id === id);
-    const rate = calcItemCompliance(id, meta, checks);
-    if (rate !== null) rates.push(rate);
-  });
-  if (!rates.length) return 0;
-  return Math.round(rates.reduce((a, b) => a + b, 0) / rates.length);
-}
-
-function loadConfig(){
-  CONFIG.supabaseUrl = "https://evvcyddqxryaknyntrsv.supabase.co";
-  CONFIG.supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV2dmN5ZGRxeHJ5YWtueW50cnN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxODc3NjYsImV4cCI6MjA5NDc2Mzc2Nn0.sHy5ONNRuOEErcz21VO4316M8kd_VCi10OGhncke7kg";
-  loadData();
+// ── INIT ──────────────────────────────────────────────────
+function init(){
   updateTime(); setInterval(updateTime,30000);
-  const today=new Date().toISOString().slice(0,10);
-  document.getElementById('ovDate').value=today;
-  document.getElementById('hDate').value=today;
-}
-
-function saveConfig(){
+  document.getElementById('hDate').value = new Date().toISOString().slice(0,10);
   loadData();
+  setInterval(loadData,120000);
 }
 
 function updateTime(){
-  document.getElementById('navTime').textContent=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('navTime').textContent = new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
 }
 
+// ── LOAD DATA ─────────────────────────────────────────────
 async function loadData(){
   document.getElementById('navStatus').textContent='Loading...';
   try{
     const since=new Date(); since.setFullYear(since.getFullYear()-2);
-    const ids=Object.keys(EQUIP_META).join(',');
+    const ids=ALL_IDS.join(',');
     const res=await fetch(
       `${CONFIG.supabaseUrl}/rest/v1/equipment_checks?equipment_id=in.(${ids})&checked_at=gte.${since.toISOString()}&order=checked_at.desc&limit=10000`,
       {headers:{'apikey':CONFIG.supabaseKey,'Authorization':`Bearer ${CONFIG.supabaseKey}`}}
     );
-    if(!res.ok) throw new Error();
+    if(!res.ok) throw new Error('Fetch failed');
     allChecks=await res.json();
     document.getElementById('navStatus').textContent=`Updated ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}`;
   }catch(e){
-    const local=JSON.parse(localStorage.getItem('sm_lwec_checks')||'[]');
-    allChecks=local.filter(c=>EQUIP_META[c.equipment_id]);
-    document.getElementById('navStatus').textContent='Offline — local data';
+    document.getElementById('navStatus').textContent='Offline — no data';
+    allChecks=[];
   }
   renderAll();
-  setInterval(loadData,120000);
 }
 
-function renderAll(){renderStats();renderRooms();renderEnvironment();renderCleaning();renderHistory();}
+// ── RENDER ALL ────────────────────────────────────────────
+function renderAll(){
+  renderRooms();
+  renderEnvironment();
+  renderCleaning();
+  renderHistory();
+  renderAlerts();
+}
 
-function getStatus(id,dateFilter){
-  const now=new Date();
-  const meta=EQUIP_META[id]; if(!meta) return 'never';
-  const checks=allChecks.filter(c=>{
-    if(c.equipment_id!==id) return false;
-    if(dateFilter) return new Date(c.checked_at).toISOString().slice(0,10)===dateFilter;
-    return true;
-  });
+// ── STATUS HELPER ─────────────────────────────────────────
+function getStatus(id, freqMs){
+  const checks=allChecks.filter(c=>c.equipment_id===id);
   const last=checks[0];
   if(!last) return 'never';
   if(last.overall_status==='fail') return 'fail';
-  if(!dateFilter&&now-new Date(last.checked_at)>FREQ_MS[meta.freq]) return 'overdue';
+  if(Date.now()-new Date(last.checked_at)>freqMs) return 'overdue';
   return 'pass';
 }
 
-function renderStats(){
-  const today=new Date(); today.setHours(0,0,0,0);
-  const month=new Date(); month.setDate(month.getDate()-30);
-  const todayC=allChecks.filter(c=>new Date(c.checked_at)>=today);
-  const monthC=allChecks.filter(c=>new Date(c.checked_at)>=month);
-  const pass=todayC.filter(c=>c.overall_status==='pass').length;
-  const fail=todayC.filter(c=>c.overall_status==='fail').length;
-  let overdue=0;
-  Object.entries(EQUIP_META).forEach(([id,meta])=>{
-    const last=allChecks.find(c=>c.equipment_id===id);
-    if(!last){overdue++;return;}
-    if(new Date()-new Date(last.checked_at)>FREQ_MS[meta.freq]) overdue++;
-  });
-  const comp30=calcOverallCompletion();
-  document.getElementById('st1').textContent=pass+fail;
-  document.getElementById('st2').textContent=fail;
-  document.getElementById('st3').textContent=overdue;
-  document.getElementById('st4').textContent=comp30+'%';
-  const ab=document.getElementById('alertBar');
-  if(fail>0){
-    ab.className='alert-bar fail';
-    document.getElementById('alertTitle').textContent=`${fail} check failure${fail>1?'s':''} recorded today`;
-    document.getElementById('alertBody').textContent=' — See details below and take action immediately.';
-  }else if(overdue>0){
-    ab.className='alert-bar warn';
-    document.getElementById('alertTitle').textContent=`${overdue} check${overdue>1?'s':''} overdue`;
-    document.getElementById('alertBody').textContent=' — Assign checks to care assistants.';
-  }else{ab.className='alert-bar';}
+function pillClass(st){ return {pass:'pill-pass',fail:'pill-fail',overdue:'pill-overdue',never:'pill-never'}[st]; }
+function pillText(st){ return {pass:'✓ OK',fail:'⚠ Fail',overdue:'Overdue',never:'Not checked'}[st]; }
+function fmtTime(dt){ return new Date(dt).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}); }
+
+// ── COMPLIANCE ────────────────────────────────────────────
+function compliance(id){
+  const now=new Date();
+  const daysInMonth=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
+  const monthStart=new Date(now.getFullYear(),now.getMonth(),1);
+  const thisMonth=allChecks.filter(c=>c.equipment_id===id&&new Date(c.checked_at)>=monthStart);
+  const days=new Set(thisMonth.map(c=>new Date(c.checked_at).toISOString().slice(0,10)));
+  return Math.min(Math.round(days.size/daysInMonth*100),100);
 }
 
-function makeCard(id,meta,dateFilter){
-  const st=getStatus(id,meta.freq==='daily'?null:dateFilter);
-  const checks=allChecks.filter(c=>c.equipment_id===id);
-  const total=checks.length;
-  const comp=calcItemCompliance(id,meta,checks);
-  const last=checks[0];
-  const lastStr=last?new Date(last.checked_at).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'Never';
-  const pillMap={pass:'sp-pass',fail:'sp-fail',overdue:'sp-overdue',never:'sp-never'};
-  const pillTxt={pass:'✓ OK',fail:'⚠ Fail',overdue:'Overdue',never:'Not checked'};
-  const barCol=comp===null?'#D8DDE0':comp>=95?'#007F3B':comp>=80?'#ED8B00':'#DA291C';
-  const imgHtml=meta.image?`<div class="card-thumb"><img src="${meta.image}" onerror="this.parentElement.innerHTML='🔧'"></div>`:`<div class="card-thumb">🔧</div>`;
-  return `<div class="card st-${st}" onclick="openModal('${id}')">
-    <div class="card-top">${imgHtml}<div class="card-info"><div class="card-name">${meta.name}</div><div class="card-loc">${meta.location}</div></div><div class="spill ${pillMap[st]}">${pillTxt[st]}</div></div>
-    <div class="card-body">
-      <div class="cr"><span class="cr-label">Last checked</span><span class="cr-val">${lastStr}</span></div>
-      <div class="cr"><span class="cr-label">By</span><span class="cr-val">${last?last.staff_name:'—'}</span></div>
-      ${comp!==null?`<div class="cr"><span class="cr-label">Compliance</span><span class="cr-val" style="color:${barCol}">${comp}%</span></div><div class="comp-bar-wrap"><div class="comp-bar" style="width:${comp}%;background:${barCol}"></div></div>`:''}
-    </div></div>`;
-}
-
-function renderOverview(){
-  const freqF=document.getElementById('ovFreq').value;
-  const statusF=document.getElementById('ovStatus').value;
-  const dateF=document.getElementById('ovDate').value;
-  let html='',shown=0;
-  Object.entries(EQUIP_META).forEach(([id,meta])=>{
-    // Room ready and area temp shown on their own tabs only
-    if(id.startsWith('room_ready_') || meta.isAreaTemp) return;
-    if(freqF&&meta.freq!==freqF) return;
-    const st=getStatus(id,dateF);
-    if(statusF==='fail'&&st!=='fail') return;
-    if(statusF==='overdue'&&st!=='overdue'&&st!=='never') return;
-    html+=makeCard(id,meta,dateF);
-    shown++;
-  });
-  document.getElementById('ovGrid').innerHTML=html||'<p style="color:var(--grey3);padding:20px;font-size:14px;">No items match the current filters.</p>';
-  document.getElementById('ovSubtitle').textContent=`(${shown} items)`;
-}
-
+// ── ROOMS ─────────────────────────────────────────────────
 function renderRooms(){
-  // Room readiness checks
-  const ROOM_CHECKS=[
-    {id:'room_ready_room_6',name:'Room 6',type:'full'},
-    {id:'room_ready_room_7',name:'Room 7',type:'full'},
-    {id:'room_ready_room_8',name:'Room 8',type:'full'},
-    {id:'room_ready_room_9',name:'Room 9',type:'full'},
-    {id:'room_ready_room_10',name:'Room 10',type:'full'},
-    {id:'room_ready_room_11',name:'Room 11',type:'full'},
-    {id:'room_ready_room_12',name:'Room 12',type:'full'},
-    {id:'room_ready_room_14',name:'Room 14',type:'full'},
-    {id:'room_ready_room_15',name:'Room 15',type:'full'},
-    {id:'room_ready_room_18',name:'Room 18',type:'full'},
-    {id:'room_ready_bc_1',name:'Birth Centre 1',type:'bc'},
-    {id:'room_ready_bc_3',name:'Birth Centre 3',type:'bc'},
-    {id:'room_ready_bc_4',name:'Birth Centre 4',type:'bc'},
-    {id:'room_ready_triage',name:'Triage',type:'triage'},
-    {id:'room_ready_obs_1',name:'Obs 1',type:'obs'},
-    {id:'room_ready_obs_2',name:'Obs 2',type:'obs'},
-    {id:'room_ready_obs_3',name:'Obs 3',type:'obs'},
-    {id:'room_ready_obs_4',name:'Obs 4',type:'obs'},
-    {id:'room_ready_primrose',name:'Primrose',type:'obs'},
-  ];
-  const typeLabel={full:'Full check',bc:'BC check',triage:'Sharps + CTG',obs:'Sharps only'};
-  let html='',pass=0,over=0,fail=0;
-  ROOM_CHECKS.forEach(room=>{
-    const id=room.id;
-    const checks=allChecks.filter(c=>c.equipment_id===id);
-    const last=checks[0];
-    const now=new Date();
-    let st='never';
-    if(last){
-      if(last.overall_status==='fail') st='fail';
-      else if(now-new Date(last.checked_at)>86400000) st='overdue';
-      else st='pass';
-    }
-    if(st==='pass') pass++; else if(st==='fail') fail++; else over++;
-    const lastStr=last?new Date(last.checked_at).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}):'Not checked';
-    const dotClass={pass:'rd-pass',fail:'rd-fail',overdue:'rd-overdue',never:'rd-never'}[st];
-    html+=`<div class="room-card st-${st}" onclick="openRoomModal('${id}','${room.name}',${JSON.stringify(checks).replace(/'/g,"\'").replace(/"/g,'&quot;')})">
-      <div class="rdot ${dotClass}"></div>
-      <div><div class="rname">${room.name}</div><div class="rmeta">${typeLabel[room.type]} · ${lastStr}</div></div>
+  renderRoomGroup(LW_ROOMS,'lwRoomsGrid');
+  renderRoomGroup(BC_ROOMS,'bcRoomsGrid');
+  renderRoomGroup(TRIAGE_OBS,'triageObsGrid');
+}
+
+function renderRoomGroup(rooms, gridId){
+  const grid=document.getElementById(gridId); if(!grid) return;
+  grid.innerHTML=rooms.map(room=>{
+    const st=getStatus(room.id,86400000);
+    const last=allChecks.find(c=>c.equipment_id===room.id);
+    const timeStr=last?fmtTime(last.checked_at):'Never checked';
+    const byStr=last?`By ${last.staff_name}`:'';
+    const stClass={pass:'ok',fail:'fail',overdue:'overdue',never:'never'}[st];
+    const stText={pass:'✓ Checked today',fail:'⚠ Issues recorded',overdue:'Overdue',never:'Not checked today'}[st];
+    return `<div class="room-card st-${st}" onclick="openRoomModal('${room.id}','${room.name}')">
+      <div class="rc-name">${room.name}</div>
+      <div class="rc-type">${room.type}</div>
+      <div class="rc-status ${stClass}">${stText}</div>
+      <div class="rc-meta">${timeStr}</div>
+      ${byStr?`<div class="rc-meta">${byStr}</div>`:''}
     </div>`;
-  });
-  const grid=document.getElementById('roomsGrid');
-  if(grid){grid.innerHTML=html;}
-  const sub=document.getElementById('roomsSubtitle');
-  if(sub) sub.textContent=`(${pass} OK, ${over} overdue, ${fail} issues)`;
-
-  // Tristel in cleaning tab
-  let tristelHtml='';
-  Object.entries(EQUIP_META).filter(([id])=>EQUIP_META[id].isTristel).forEach(([id,meta])=>{
-    tristelHtml+=makeCard(id,meta,null);
-  });
-  const tg=document.getElementById('tristelGrid');
-  if(tg) tg.innerHTML=tristelHtml;
+  }).join('');
 }
 
-function openRoomModal(id, name, checksJson){
-  document.getElementById('modalTitle').textContent=name+' — Daily Room Check';
-  const checks=typeof checksJson==='string'?JSON.parse(checksJson.replace(/&quot;/g,'"')):checksJson;
-  const last=checks[0];
-  let html='';
-  if(last){
-    const t=new Date(last.checked_at).toLocaleString('en-GB',{weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
-    html+=`<div class="mdr"><span class="mdr-label">Last checked</span><span class="mdr-val">${t}</span></div>`;
-    html+=`<div class="mdr"><span class="mdr-label">By</span><span class="mdr-val">${last.staff_name}</span></div>`;
-    html+=`<div class="mdr"><span class="mdr-label">Result</span><span class="mdr-val" style="color:${last.overall_status==='pass'?'var(--green)':'var(--red)'}">${last.overall_status==='pass'?'✓ Room ready':'⚠ Issues recorded'}</span></div>`;
-    html+=`<div class="mdr"><span class="mdr-label">Pass / Fail</span><span class="mdr-val">${last.pass_count||0} / ${last.fail_count||0}</span></div>`;
-    if(last.fail_notes&&Object.keys(last.fail_notes).length>0){
-      html+=`<div style="margin-top:12px;font-size:13px;font-weight:700;margin-bottom:6px;">Issues noted:</div>`;
-      Object.entries(last.fail_notes).forEach(([k,v])=>{
-        html+=`<div class="fail-item"><strong>${k}</strong><p>${v}</p></div>`;
-      });
-    }
-  } else {
-    html='<p style="color:var(--grey3);padding:20px 0;">No checks recorded for this room yet.</p>';
-  }
-  document.getElementById('modalContent').innerHTML=html;
-  document.getElementById('modalBg').classList.add('show');
-}
-
+// ── ENVIRONMENT ───────────────────────────────────────────
 function renderEnvironment(){
-  const AREA_TEMP_IDS=['temp_bc_drug_room','temp_lw_iv_room','temp_lw_drug_prep'];
-  const areaTempMeta={
-    'temp_bc_drug_room':{name:'Birth Centre Drug Room — Temperature',freq:'daily',location:'Birth Centre',isFridge:false,isAreaTemp:true,tempMax:25},
-    'temp_lw_iv_room':{name:'Labour Ward IV Room — Temperature',freq:'daily',location:'Labour Ward',isFridge:false,isAreaTemp:true,tempMax:25},
-    'temp_lw_drug_prep':{name:'Labour Ward Drug Preparation Area — Temperature',freq:'daily',location:'Labour Ward',isFridge:false,isAreaTemp:true,tempMax:25}
-  };
-  let html='';
-  AREA_TEMP_IDS.forEach(id=>{
-    const meta=areaTempMeta[id];
-    const checks=allChecks.filter(c=>c.equipment_id===id);
-    const last=checks[0];
-    const now=new Date();
-    let st='never';
-    if(last){
-      if(last.overall_status==='fail') st='fail';
-      else if(now-new Date(last.checked_at)>86400000) st='overdue';
-      else st='pass';
-    }
-    const lastStr=last?new Date(last.checked_at).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'Never checked';
-    const pillMap={pass:'sp-pass',fail:'sp-fail',overdue:'sp-overdue',never:'sp-never'};
-    const pillTxt={pass:'✓ OK',fail:'⚠ Above 25°C',overdue:'Overdue',never:'Not checked'};
-    html+=`<div class="card st-${st}" onclick="openModal('${id}')">
-      <div class="card-top"><div class="card-thumb">🌡</div><div class="card-info"><div class="card-name">${meta.name}</div><div class="card-loc">${meta.location}</div></div><div class="spill ${pillMap[st]}">${pillTxt[st]}</div></div>
+  // Area temps
+  const atGrid=document.getElementById('areaTempGrid'); if(!atGrid) return;
+  atGrid.innerHTML=AREA_TEMPS.map(t=>{
+    const st=getStatus(t.id,86400000);
+    const last=allChecks.find(c=>c.equipment_id===t.id);
+    const timeStr=last?fmtTime(last.checked_at):'Never checked';
+    return `<div class="card st-${st}" onclick="openCheckModal('${t.id}','${t.name}')">
+      <div class="card-top">
+        <div class="card-thumb">🌡</div>
+        <div class="card-info"><div class="card-name">${t.name}</div><div class="card-loc">${t.location}</div></div>
+        <span class="pill ${pillClass(st)}">${pillText(st)}</span>
+      </div>
       <div class="card-body">
-        <div class="cr"><span class="cr-label">Last checked</span><span class="cr-val">${lastStr}</span></div>
+        <div class="cr"><span class="cr-label">Last checked</span><span class="cr-val">${timeStr}</span></div>
         <div class="cr"><span class="cr-label">By</span><span class="cr-val">${last?last.staff_name:'—'}</span></div>
-        <div class="cr"><span class="cr-label">Max temp</span><span class="cr-val">Below 25°C</span></div>
+        <div class="cr"><span class="cr-label">Threshold</span><span class="cr-val">Below 25°C</span></div>
       </div></div>`;
-  });
-  const grid=document.getElementById('areaTempGrid');
-  if(grid) grid.innerHTML=html;
-  renderFridges();
-}
+  }).join('');
 
-function renderFridges(){
-  const FRIDGE_IDS=Object.keys(EQUIP_META).filter(id=>EQUIP_META[id].isFridge);
-  let html='';
-  FRIDGE_IDS.forEach(id=>{
-    const meta=EQUIP_META[id];
-    const st=getStatus(id,null);
-    const last=allChecks.find(c=>c.equipment_id===id);
-    const temps=last&&last.temperature_values?last.temperature_values:{};
-    const tempKeys=Object.keys(temps);
-    const currKey=tempKeys.find(k=>k.includes('current'));
-    const minKey=tempKeys.find(k=>k.includes('min'));
-    const maxKey=tempKeys.find(k=>k.includes('max'));
-    const curr=currKey?parseFloat(temps[currKey]):null;
-    const min=minKey?parseFloat(temps[minKey]):null;
-    const max=maxKey?parseFloat(temps[maxKey]):null;
-    const inRange=(v)=>v!==null&&v>=2&&v<=8;
-    const currOk=curr===null||inRange(curr);
-    const minOk=min===null||inRange(min);
-    const maxOk=max===null||inRange(max);
-    const allOk=currOk&&minOk&&maxOk;
-    const lastStr=last?new Date(last.checked_at).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'Never checked';
-    const fridgeName=meta.name.replace(' — Temperature Check','');
-    html+=`<div class="fridge-card st-${st}" onclick="openModal('${id}')">
+  // Fridges
+  const fGrid=document.getElementById('fridgeGrid'); if(!fGrid) return;
+  fGrid.innerHTML=FRIDGES.map(f=>{
+    const st=getStatus(f.id,86400000);
+    const last=allChecks.find(c=>c.equipment_id===f.id);
+    const tv=last&&last.temperature_values||{};
+    const curr=Object.entries(tv).find(([k])=>k.toLowerCase().includes('current'));
+    const min=Object.entries(tv).find(([k])=>k.toLowerCase().includes('min'));
+    const max=Object.entries(tv).find(([k])=>k.toLowerCase().includes('max'));
+    const currVal=curr?parseFloat(curr[1]):null;
+    const inRange=v=>v!==null&&v>=2&&v<=8;
+    const tempClass=currVal===null?'temp-none':inRange(currVal)?'temp-ok':'temp-bad';
+    const timeStr=last?fmtTime(last.checked_at):'Never checked';
+    return `<div class="fridge-card st-${st}" onclick="openCheckModal('${f.id}','${f.name}')">
       <div class="fridge-top">
         <div class="fridge-icon">❄</div>
-        <div><div class="fridge-name">${fridgeName}</div><div class="fridge-loc">${meta.location}</div></div>
-        <div class="spill ${st==='pass'?'sp-pass':st==='fail'?'sp-fail':st==='overdue'?'sp-overdue':'sp-never'}">${st==='pass'?'✓ OK':st==='fail'?'⚠ Fail':st==='overdue'?'Overdue':'Not checked'}</div>
+        <div class="card-info"><div class="fridge-name">${f.name}</div><div class="fridge-loc">${f.location}</div></div>
+        <span class="pill ${pillClass(st)}">${pillText(st)}</span>
       </div>
       <div class="fridge-body">
-        ${curr!==null?`<div class="temp-display"><span class="temp-current ${currOk?'temp-ok':'temp-bad'}">${curr}°C</span><span class="temp-unit">current</span></div>`:'<div style="font-size:22px;color:var(--grey3);margin-bottom:4px;">—°C</div>'}
-        ${min!==null||max!==null?`<div class="temp-minmax">Min: <span class="${minOk?'temp-ok':'temp-bad'}">${min!==null?min+'°C':'—'}</span> · Max: <span class="${maxOk?'temp-ok':'temp-bad'}">${max!==null?max+'°C':'—'}</span></div>`:''}
-        <div class="cr"><span class="cr-label">Acceptable range</span><span class="cr-val">2–8°C</span></div>
-        <div class="cr"><span class="cr-label">Last checked</span><span class="cr-val">${lastStr}</span></div>
+        <div class="temp-big ${tempClass}">${currVal!==null?currVal+'°C':'—°C'}</div>
+        ${min||max?`<div style="font-size:11px;color:var(--grey3);margin-bottom:4px;">Min: ${min?min[1]+'°C':'—'} · Max: ${max?max[1]+'°C':'—'}</div>`:''}
+        <div class="cr"><span class="cr-label">Range</span><span class="cr-val">2–8°C</span></div>
+        <div class="cr"><span class="cr-label">Last checked</span><span class="cr-val">${timeStr}</span></div>
         <div class="cr"><span class="cr-label">By</span><span class="cr-val">${last?last.staff_name:'—'}</span></div>
-        ${!allOk&&last?`<div style="background:#FDECEA;border-radius:5px;padding:6px 8px;margin-top:6px;font-size:11px;color:var(--red);font-weight:600;">⚠ Temperature out of range — see escalation protocol</div>`:''}
       </div></div>`;
-  });
-  document.getElementById('fridgeGrid').innerHTML=html;
+  }).join('');
 }
 
+// ── CLEANING ──────────────────────────────────────────────
 function renderCleaning(){
-  const washerIds=Object.keys(EQUIP_META).filter(id=>EQUIP_META[id].isWasher);
-  const weeklyIds=Object.keys(EQUIP_META).filter(id=>!EQUIP_META[id].isFridge&&!EQUIP_META[id].isTristel&&!EQUIP_META[id].isMattress&&!EQUIP_META[id].isCTG&&!EQUIP_META[id].isWasher&&EQUIP_META[id].freq==='weekly');
-  const monthlyIds=Object.keys(EQUIP_META).filter(id=>!EQUIP_META[id].isFridge&&!EQUIP_META[id].isTristel&&!EQUIP_META[id].isMattress&&!EQUIP_META[id].isCTG&&!EQUIP_META[id].isWasher&&EQUIP_META[id].freq==='monthly'&&!id.startsWith('mattress'));
-  const mattressIds=Object.keys(EQUIP_META).filter(id=>EQUIP_META[id].isMattress);
-
-  document.getElementById('washerGrid').innerHTML=washerIds.map(id=>makeCard(id,EQUIP_META[id],null)).join('');
-  document.getElementById('weeklyGrid').innerHTML=weeklyIds.map(id=>makeCard(id,EQUIP_META[id],null)).join('');
-  document.getElementById('monthlyGrid').innerHTML=monthlyIds.map(id=>makeCard(id,EQUIP_META[id],null)).join('');
-  document.getElementById('mattressGrid').innerHTML=mattressIds.map(id=>makeCard(id,EQUIP_META[id],null)).join('');
+  renderCleanGroup(CLEANING_IDS.tristel,'tristelGrid','daily');
+  renderCleanGroup(CLEANING_IDS.washers,'washerGrid','daily');
+  renderCleanGroup(CLEANING_IDS.weekly,'weeklyGrid','weekly');
+  renderCleanGroup(CLEANING_IDS.monthly,'monthlyGrid','monthly');
+  renderCleanGroup(CLEANING_IDS.mattress,'mattressGrid','monthly');
 }
 
+function renderCleanGroup(ids, gridId, freq){
+  const grid=document.getElementById(gridId); if(!grid) return;
+  const freqMs=FREQ_MS[freq]||FREQ_MS.daily;
+  grid.innerHTML=ids.map(id=>{
+    const st=getStatus(id,freqMs);
+    const last=allChecks.find(c=>c.equipment_id===id);
+    const timeStr=last?fmtTime(last.checked_at):'Never';
+    const name=NAMES[id]||id;
+    const comp=compliance(id);
+    const barCol=comp>=95?'var(--green)':comp>=70?'var(--amber)':'var(--red)';
+    return `<div class="card st-${st}" onclick="openCheckModal('${id}','${name}')">
+      <div class="card-top">
+        <div class="card-thumb">🧹</div>
+        <div class="card-info"><div class="card-name">${name}</div><div class="card-loc">${freq}</div></div>
+        <span class="pill ${pillClass(st)}">${pillText(st)}</span>
+      </div>
+      <div class="card-body">
+        <div class="cr"><span class="cr-label">Last done</span><span class="cr-val">${timeStr}</span></div>
+        <div class="cr"><span class="cr-label">By</span><span class="cr-val">${last?last.staff_name:'—'}</span></div>
+        <div class="cr"><span class="cr-label">This month</span><span class="cr-val" style="color:${barCol}">${comp}%</span></div>
+        <div style="background:var(--grey4);border-radius:3px;height:3px;margin-top:4px;"><div style="width:${comp}%;height:100%;background:${barCol};border-radius:3px;"></div></div>
+      </div></div>`;
+  }).join('');
+}
+
+// ── ALERTS ────────────────────────────────────────────────
+function renderAlerts(){
+  const ab=document.getElementById('alertBar');
+  const today=new Date(); today.setHours(0,0,0,0);
+  const fails=allChecks.filter(c=>new Date(c.checked_at)>=today&&c.overall_status==='fail');
+  const overdue=ALL_IDS.filter(id=>getStatus(id,86400000)==='overdue'||getStatus(id,86400000)==='never');
+  if(fails.length>0){
+    ab.className='alert-bar fail';
+    document.getElementById('alertTitle').textContent=`${fails.length} failure${fails.length>1?'s':''} recorded today`;
+    document.getElementById('alertBody').textContent=' — check the relevant tab for details';
+  } else if(overdue.length>0){
+    ab.className='alert-bar warn';
+    document.getElementById('alertTitle').textContent=`${overdue.length} check${overdue.length>1?'s':''} not yet completed today`;
+    document.getElementById('alertBody').textContent=' — assign to support staff';
+  } else {
+    ab.className='alert-bar';
+  }
+}
+
+// ── HISTORY ───────────────────────────────────────────────
 function renderHistory(){
-  const freqF=document.getElementById('hFreq').value;
   const statusF=document.getElementById('hStatus').value;
   const dateF=document.getElementById('hDate').value;
-  let filtered=allChecks.filter(c=>{
-    if(freqF&&c.frequency!==freqF) return false;
+  let rows=allChecks.filter(c=>{
     if(statusF==='fail'&&c.overall_status!=='fail') return false;
-    if(dateF){const d=new Date(c.checked_at).toISOString().slice(0,10);return d===dateF;}
+    if(dateF) return new Date(c.checked_at).toISOString().slice(0,10)===dateF;
     return true;
-  }).slice(0,200);
+  }).slice(0,300);
   const body=document.getElementById('histBody');
-  if(!filtered.length){
-    body.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--grey3);padding:24px;">No records found.</td></tr>';
-    return;
-  }
-  body.innerHTML=filtered.map(c=>{
-    const t=new Date(c.checked_at);
-    const ds=t.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'2-digit'});
-    const ts=t.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-    const sc=c.overall_status==='pass'?'sp-pass':'sp-fail';
-    const st=c.overall_status==='pass'?'✓ Pass':'⚠ Fail';
+  if(!rows.length){body.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--grey3);padding:24px;">No records found.</td></tr>';return;}
+  body.innerHTML=rows.map(c=>{
+    const t=fmtTime(c.checked_at);
+    const name=NAMES[c.equipment_id]||c.equipment_name||c.equipment_id;
     return `<tr>
-      <td style="font-weight:600;font-size:11px;">${c.equipment_name||c.equipment_id}</td>
+      <td style="font-weight:600;font-size:11px;">${name}</td>
       <td style="font-size:11px;">${c.location||'—'}</td>
-      <td>${c.staff_name}</td>
-      <td style="white-space:nowrap;">${ds} ${ts}</td>
-      <td style="color:var(--grey3);">${c.frequency||'—'}</td>
+      <td>${c.staff_name||'—'}</td>
+      <td style="white-space:nowrap;font-size:11px;">${t}</td>
+      <td><span class="${c.overall_status==='pass'?'td-pass':'td-fail'}">${c.overall_status==='pass'?'✓ Pass':'⚠ Fail'}</span></td>
       <td style="color:var(--green);font-weight:700;">${c.pass_count??'—'}</td>
       <td style="color:${(c.fail_count||0)>0?'var(--red)':'var(--grey3)'};font-weight:700;">${c.fail_count??'—'}</td>
-      <td><span class="td-pill ${sc}">${st}</span></td>
-      <td><button class="view-btn" onclick="openCheckModal(${JSON.stringify(JSON.stringify(c))})">View</button></td>
     </tr>`;
   }).join('');
 }
 
-function openModal(id){
-  const meta=EQUIP_META[id]; if(!meta) return;
+// ── MODALS ────────────────────────────────────────────────
+function openRoomModal(id, name){
+  document.getElementById('modalTitle').textContent=name+' — Daily Room Check';
   const checks=allChecks.filter(c=>c.equipment_id===id);
-  const total=checks.length;
-  const failChecks=checks.filter(c=>c.overall_status==='fail');
-  const comp=calcItemCompliance(id,EQUIP_META[id],checks)||0;
-  document.getElementById('modalTitle').textContent=meta.name;
-  let html=`
-    <div class="mdr"><span class="mdr-label">Location</span><span class="mdr-val">${meta.location}</span></div>
-    <div class="mdr"><span class="mdr-label">Frequency</span><span class="mdr-val">${meta.freq}</span></div>
-    <div class="mdr"><span class="mdr-label">Total checks (2yr)</span><span class="mdr-val">${total}</span></div>
-    <div class="mdr"><span class="mdr-label">Completion rate (this month)</span><span class="mdr-val" style="color:${comp>=95?'var(--green)':comp>=80?'var(--amber)':'var(--red)'}">${comp}%</span></div>
-    <div class="mdr"><span class="mdr-label">Failures recorded</span><span class="mdr-val" style="color:${failChecks.length>0?'var(--red)':'var(--green)'}">${failChecks.length}</span></div>`;
-  if(meta.isFridge&&meta.escalation){
-    html+=`<div class="escalation-box"><strong>⚠ Out of range escalation protocol</strong>
-      <p><strong>Pharmacy (Mon–Fri 9am–5pm):</strong> ${meta.pharmacyNumber||'01494 425355'}</p>
-      <p style="margin-top:6px;">${meta.escalation.immediate}</p>
-      <p style="margin-top:6px;">${meta.escalation.resetSteps}</p>
-      <p style="margin-top:6px;">${meta.escalation.outOfHours}</p></div>`;
+  const last=checks[0];
+  let html='';
+  if(last){
+    html+=`<div class="mdr"><span class="mdr-label">Last checked</span><span class="mdr-val">${fmtTime(last.checked_at)}</span></div>`;
+    html+=`<div class="mdr"><span class="mdr-label">By</span><span class="mdr-val">${last.staff_name}</span></div>`;
+    html+=`<div class="mdr"><span class="mdr-label">Result</span><span class="mdr-val" style="color:${last.overall_status==='pass'?'var(--green)':'var(--red)'}">${last.overall_status==='pass'?'✓ Room ready':'⚠ Issues recorded'}</span></div>`;
+    html+=`<div class="mdr"><span class="mdr-label">Pass / Fail</span><span class="mdr-val">${last.pass_count||0} / ${last.fail_count||0}</span></div>`;
+    if(last.fail_notes&&Object.keys(last.fail_notes).length>0){
+      html+=`<div style="margin-top:12px;font-weight:700;font-size:13px;margin-bottom:6px;">Issues noted:</div>`;
+      Object.entries(last.fail_notes).forEach(([k,v])=>{
+        html+=`<div class="fail-item"><strong>${k}</strong><p>${v}</p></div>`;
+      });
+    }
+    const comp=compliance(id);
+    html+=`<div class="mdr" style="margin-top:8px;"><span class="mdr-label">This month completion</span><span class="mdr-val">${comp}%</span></div>`;
+  } else {
+    html='<p style="color:var(--grey3);padding:16px 0;">No checks recorded for this room yet.</p>';
   }
-  if(failChecks.length>0){
-    html+=`<div style="margin-top:14px;font-size:13px;font-weight:700;color:var(--red);margin-bottom:8px;">Recent failures:</div>`;
-    failChecks.slice(0,5).forEach(c=>{
-      const t=new Date(c.checked_at).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
-      const notes=Object.entries(c.fail_notes||{}).map(([k,v])=>`<p>${v}</p>`).join('');
-      html+=`<div class="fail-item"><strong>⚠ ${t} — ${c.staff_name}</strong>${notes||'<p>No notes recorded</p>'}</div>`;
-    });
-  }
-  document.getElementById('modalContent').innerHTML=html;
+  document.getElementById('modalBody').innerHTML=html;
   document.getElementById('modalBg').classList.add('show');
 }
 
-function openCheckModal(jsonStr){
-  const c=JSON.parse(jsonStr);
-  const t=new Date(c.checked_at).toLocaleString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
-  document.getElementById('modalTitle').textContent=c.equipment_name||c.equipment_id;
-  let html=`
-    <div class="mdr"><span class="mdr-label">Checked by</span><span class="mdr-val">${c.staff_name} (${c.staff_id})</span></div>
-    <div class="mdr"><span class="mdr-label">Date & time</span><span class="mdr-val">${t}</span></div>
-    <div class="mdr"><span class="mdr-label">Location</span><span class="mdr-val">${c.location||'—'}</span></div>
-    <div class="mdr"><span class="mdr-label">Result</span><span class="mdr-val" style="color:${c.overall_status==='pass'?'var(--green)':'var(--red)'}">${c.overall_status==='pass'?'✓ Passed':'⚠ Failed'}</span></div>
-    <div class="mdr"><span class="mdr-label">Pass / Fail / N/A</span><span class="mdr-val">${c.pass_count||0} / ${c.fail_count||0} / ${c.na_count||0}</span></div>`;
-  if(c.temperature_values&&Object.keys(c.temperature_values).length>0){
-    const tv=c.temperature_values;
-    const curr=Object.entries(tv).find(([k])=>k.includes('current'));
-    const min=Object.entries(tv).find(([k])=>k.includes('min'));
-    const max=Object.entries(tv).find(([k])=>k.includes('max'));
-    if(curr) html+=`<div class="mdr"><span class="mdr-label">Current temp</span><span class="mdr-val">${curr[1]}°C</span></div>`;
-    if(min) html+=`<div class="mdr"><span class="mdr-label">Min temp</span><span class="mdr-val">${min[1]}°C</span></div>`;
-    if(max) html+=`<div class="mdr"><span class="mdr-label">Max temp</span><span class="mdr-val">${max[1]}°C</span></div>`;
+function openCheckModal(id, name){
+  document.getElementById('modalTitle').textContent=name;
+  const checks=allChecks.filter(c=>c.equipment_id===id);
+  const last=checks[0];
+  let html='';
+  if(last){
+    html+=`<div class="mdr"><span class="mdr-label">Last checked</span><span class="mdr-val">${fmtTime(last.checked_at)}</span></div>`;
+    html+=`<div class="mdr"><span class="mdr-label">By</span><span class="mdr-val">${last.staff_name}</span></div>`;
+    html+=`<div class="mdr"><span class="mdr-label">Result</span><span class="mdr-val" style="color:${last.overall_status==='pass'?'var(--green)':'var(--red)'}">${last.overall_status==='pass'?'✓ Pass':'⚠ Fail'}</span></div>`;
+    html+=`<div class="mdr"><span class="mdr-label">This month completion</span><span class="mdr-val">${compliance(id)}%</span></div>`;
+  } else {
+    html='<p style="color:var(--grey3);padding:16px 0;">No checks recorded yet.</p>';
   }
-  if(c.fail_notes&&Object.keys(c.fail_notes).length>0){
-    html+=`<div style="margin-top:12px;font-size:13px;font-weight:700;margin-bottom:6px;">Fault notes:</div>`;
-    Object.entries(c.fail_notes).forEach(([k,v])=>{
-      html+=`<div class="fail-item"><strong>${k}</strong><p>${v}</p></div>`;
-    });
-  }
-  document.getElementById('modalContent').innerHTML=html;
+  document.getElementById('modalBody').innerHTML=html;
   document.getElementById('modalBg').classList.add('show');
 }
 
-function closeModal(e){if(e.target===document.getElementById('modalBg'))closeModalDirect();}
-function closeModalDirect(){document.getElementById('modalBg').classList.remove('show');}
+function closeModal(){ document.getElementById('modalBg').classList.remove('show'); }
 
+// ── TABS ──────────────────────────────────────────────────
 function showTab(name){
   document.querySelectorAll('.tab-view').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
@@ -721,21 +559,20 @@ function showTab(name){
   document.querySelectorAll('.tab')[tabs.indexOf(name)].classList.add('active');
 }
 
+// ── EXPORT ────────────────────────────────────────────────
 function exportCSV(){
-  const headers=['equipment_id','equipment_name','location','frequency','staff_name','staff_id','checked_at','overall_status','pass_count','fail_count'];
-  const rows=allChecks.map(c=>headers.map(h=>{
-    const v=c[h];
-    if(typeof v==='string'&&v.includes(',')) return `"${v}"`;
-    return v??'';
-  }).join(','));
-  const csv=[headers.join(','),...rows].join('\n');
+  const headers=['equipment_id','staff_name','checked_at','overall_status','pass_count','fail_count'];
+  const csv=[headers.join(','),...allChecks.map(c=>headers.map(h=>{
+    const v=c[h]??'';
+    return typeof v==='string'&&v.includes(',')? `"${v}"`:v;
+  }).join(','))].join('\n');
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
   a.download=`sm-housekeeping-${new Date().toISOString().slice(0,10)}.csv`;
   a.click();
 }
 
-loadConfig();
+init();
 </script>
 </body>
 </html>
