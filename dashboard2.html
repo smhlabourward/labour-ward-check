@@ -297,11 +297,13 @@ Object.entries(ROOM_READY_EXTRA).forEach(([id,eq])=>{
   EQUIP_META[id]={name:eq.name,freq:eq.freq,location:eq.location,isRoomReady:true};
 });
 Object.entries(EQUIPMENT_DB2).forEach(([id,eq])=>{
+  // Skip CTG and tristel - replaced by room_ready checks
+  if(id.startsWith('ctg_') || id === 'tristel_bottle') return;
   EQUIP_META[id]={
     name:eq.name, freq:eq.frequency, image:eq.image, location:eq.location,
     isFridge:!!eq.fridgeCheck, isTristel:!!eq.tristelCheck,
     isMattress:!!eq.mattressAudit, isCleaning:!!eq.cleaningInstructions,
-    isCTG:id.startsWith('ctg_'), isWasher:id.startsWith('washer_'),
+    isCTG:false, isWasher:id.startsWith('washer_'),
     escalation:eq.escalation||null, pharmacyNumber:eq.pharmacyNumber||null,
     tempMin:eq.tempMin||null, tempMax:eq.tempMax||null
   };
@@ -461,6 +463,8 @@ function renderOverview(){
   const dateF=document.getElementById('ovDate').value;
   let html='',shown=0;
   Object.entries(EQUIP_META).forEach(([id,meta])=>{
+    // Room ready and area temp shown on their own tabs only
+    if(id.startsWith('room_ready_') || meta.isAreaTemp) return;
     if(freqF&&meta.freq!==freqF) return;
     const st=getStatus(id,dateF);
     if(statusF==='fail'&&st!=='fail') return;
