@@ -154,7 +154,7 @@ tr:hover td{background:var(--grey5);}
 <div class="tabs">
   <button class="tab active" onclick="showTab('overview')">Overview</button>
   <button class="tab" onclick="showTab('ctg')">CTG Rooms</button>
-  <button class="tab" onclick="showTab('fridges')">Fridges</button>
+  <button class="tab" onclick="showTab('environment')">Environment</button>
   <button class="tab" onclick="showTab('cleaning')">Cleaning</button>
   <button class="tab" onclick="showTab('history')">Audit Trail</button>
 </div>
@@ -199,10 +199,12 @@ tr:hover td{background:var(--grey5);}
   </div>
 </div>
 
-<!-- FRIDGES -->
-<div class="tab-view" id="tab-fridges">
+<!-- ENVIRONMENT -->
+<div class="tab-view" id="tab-environment">
   <div class="main">
-    <div class="section-title" style="margin-top:4px;">Fridge temperatures <span>Acceptable range 2–8°C — twice daily — pharmacy 01494 425355</span></div>
+    <div class="section-title" style="margin-top:4px;">Area Temperature Checks <span>Above 25°C triggers escalation — twice daily</span></div>
+    <div class="grid" id="areaTempGrid"></div>
+    <div class="section-title">Fridge Temperatures <span>Acceptable range 2–8°C — twice daily — pharmacy 01494 425355</span></div>
     <div class="fridge-grid" id="fridgeGrid"></div>
   </div>
 </div>
@@ -261,7 +263,15 @@ let CONFIG={supabaseUrl:'',supabaseKey:''};
 let allChecks=[];
 const FREQ_MS={daily:86400000,weekly:7*86400000,monthly:30*86400000};
 
+const AREA_TEMP_EXTRA={
+  'temp_bc_drug_room':{name:'Birth Centre Drug Room — Temperature',freq:'daily',location:'Birth Centre'},
+  'temp_lw_iv_room':{name:'Labour Ward IV Room — Temperature',freq:'daily',location:'Labour Ward'},
+  'temp_lw_drug_prep':{name:'Labour Ward Drug Preparation Area — Temperature',freq:'daily',location:'Labour Ward'}
+};
 const EQUIP_META={};
+Object.entries(AREA_TEMP_EXTRA).forEach(([id,eq])=>{
+  EQUIP_META[id]={name:eq.name,freq:eq.freq,location:eq.location,isAreaTemp:true};
+});
 Object.entries(EQUIPMENT_DB2).forEach(([id,eq])=>{
   EQUIP_META[id]={
     name:eq.name, freq:eq.frequency, image:eq.image, location:eq.location,
@@ -354,7 +364,7 @@ async function loadData(){
   setInterval(loadData,120000);
 }
 
-function renderAll(){renderStats();renderOverview();renderCTG();renderFridges();renderCleaning();renderHistory();}
+function renderAll(){renderStats();renderOverview();renderCTG();renderEnvironment();renderCleaning();renderHistory();}
 
 function getStatus(id,dateFilter){
   const now=new Date();
@@ -463,6 +473,41 @@ function renderCTG(){
     tristelHtml+=makeCard(id,meta,null);
   });
   document.getElementById('tristelGrid').innerHTML=tristelHtml;
+}
+
+function renderEnvironment(){
+  const AREA_TEMP_IDS=['temp_bc_drug_room','temp_lw_iv_room','temp_lw_drug_prep'];
+  const areaTempMeta={
+    'temp_bc_drug_room':{name:'Birth Centre Drug Room — Temperature',freq:'daily',location:'Birth Centre',isFridge:false,isAreaTemp:true,tempMax:25},
+    'temp_lw_iv_room':{name:'Labour Ward IV Room — Temperature',freq:'daily',location:'Labour Ward',isFridge:false,isAreaTemp:true,tempMax:25},
+    'temp_lw_drug_prep':{name:'Labour Ward Drug Preparation Area — Temperature',freq:'daily',location:'Labour Ward',isFridge:false,isAreaTemp:true,tempMax:25}
+  };
+  let html='';
+  AREA_TEMP_IDS.forEach(id=>{
+    const meta=areaTempMeta[id];
+    const checks=allChecks.filter(c=>c.equipment_id===id);
+    const last=checks[0];
+    const now=new Date();
+    let st='never';
+    if(last){
+      if(last.overall_status==='fail') st='fail';
+      else if(now-new Date(last.checked_at)>86400000) st='overdue';
+      else st='pass';
+    }
+    const lastStr=last?new Date(last.checked_at).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'Never checked';
+    const pillMap={pass:'sp-pass',fail:'sp-fail',overdue:'sp-overdue',never:'sp-never'};
+    const pillTxt={pass:'✓ OK',fail:'⚠ Above 25°C',overdue:'Overdue',never:'Not checked'};
+    html+=`<div class="card st-${st}" onclick="openModal('${id}')">
+      <div class="card-top"><div class="card-thumb">🌡</div><div class="card-info"><div class="card-name">${meta.name}</div><div class="card-loc">${meta.location}</div></div><div class="spill ${pillMap[st]}">${pillTxt[st]}</div></div>
+      <div class="card-body">
+        <div class="cr"><span class="cr-label">Last checked</span><span class="cr-val">${lastStr}</span></div>
+        <div class="cr"><span class="cr-label">By</span><span class="cr-val">${last?last.staff_name:'—'}</span></div>
+        <div class="cr"><span class="cr-label">Max temp</span><span class="cr-val">Below 25°C</span></div>
+      </div></div>`;
+  });
+  const grid=document.getElementById('areaTempGrid');
+  if(grid) grid.innerHTML=html;
+  renderFridges();
 }
 
 function renderFridges(){
@@ -620,7 +665,7 @@ function showTab(name){
   document.querySelectorAll('.tab-view').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
-  const tabs=['overview','ctg','fridges','cleaning','history'];
+  const tabs=['overview','ctg','environment','cleaning','history'];
   document.querySelectorAll('.tab')[tabs.indexOf(name)].classList.add('active');
 }
 

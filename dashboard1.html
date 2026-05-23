@@ -404,7 +404,7 @@ function renderOverview() {
   const dateF = document.getElementById('fDate').value;
   const grid = document.getElementById('equipGrid');
   const ROOM_IDS = ROOMS_ALL.map(r=>`room_check_${r.id}`);
-  const TEMP_IDS = ['temp_bc_drug_room','temp_lw_iv_room','temp_lw_drug_prep'];
+  const TEMP_IDS = []; // Moved to Dashboard 2 Environment tab
   let html='', shown=0;
 
   Object.entries(EQUIP_META).forEach(([id,meta])=>{
@@ -433,26 +433,7 @@ function renderOverview() {
     shown++;
   });
 
-  // Temperature checks section
-  let tempHtml='';
-  TEMP_IDS.forEach(id=>{
-    const meta=EQUIP_META[id]; if(!meta) return;
-    const st=getCardStatus(id,meta,dateF);
-    const last=allChecks.find(c=>c.equipment_id===id);
-    const lastStr=last?new Date(last.checked_at).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'Never';
-    const pillMap={pass:'sp-pass',fail:'sp-fail',overdue:'sp-overdue',never:'sp-never'};
-    const pillTxt={pass:'✓ OK',fail:'⚠ Above 25°C',overdue:'Overdue',never:'Not checked'};
-    tempHtml+=`<div class="eq-card st-${st}" onclick="openEquipModal('${id}')">
-      <div class="eq-card-top"><div class="eq-thumb">🌡</div><div class="eq-info"><div class="eq-name">${meta.name}</div><div class="eq-loc">${meta.location}</div></div><div class="status-pill ${pillMap[st]}">${pillTxt[st]}</div></div>
-      <div class="eq-card-body">
-        <div class="eq-row"><span class="eq-row-label">Last checked</span><span class="eq-row-val">${lastStr}</span></div>
-        <div class="eq-row"><span class="eq-row-label">By</span><span class="eq-row-val">${last?last.staff_name:'—'}</span></div>
-        <div class="eq-row"><span class="eq-row-label">Frequency</span><span class="eq-row-val">Twice daily</span></div>
-      </div></div>`;
-    shown++;
-  });
-
-  grid.innerHTML = html + (tempHtml?`</div><div class="section-title" style="margin-top:8px;">Area Temperature Checks <span>(above 25°C triggers escalation)</span></div><div class="equip-grid">`+tempHtml:'');
+  grid.innerHTML = html;
   document.getElementById('equipSubtitle').textContent=`(${shown} items)`;
 }
 
