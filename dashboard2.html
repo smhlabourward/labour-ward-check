@@ -152,45 +152,14 @@ tr:hover td{background:var(--grey5);}
 </div>
 
 <div class="tabs">
-  <button class="tab active" onclick="showTab('overview')">Overview</button>
-  <button class="tab" onclick="showTab('rooms')">Rooms</button>
+  <button class="tab active" onclick="showTab('rooms')">Rooms</button>
   <button class="tab" onclick="showTab('environment')">Environment</button>
   <button class="tab" onclick="showTab('cleaning')">Cleaning</button>
   <button class="tab" onclick="showTab('history')">Audit Trail</button>
 </div>
 
-<!-- OVERVIEW -->
-<div class="tab-view active" id="tab-overview">
-  <div class="main">
-    <div class="setup-panel" id="setupPanel" style="display:none;">
-      <h3>⚙ Connect to Supabase</h3>
-      <p>Same database as Dashboard 1 — enter your Supabase URL and anon key.</p>
-      <div class="setup-inputs">
-        <input class="setup-input" id="sbUrl" placeholder="https://xxxx.supabase.co" type="url">
-        <input class="setup-input" id="sbKey" placeholder="anon key" type="password">
-        <button class="setup-btn" onclick="saveConfig()">Connect</button>
-      </div>
-    </div>
-    <div class="stats-row">
-      <div class="stat-card"><div class="stat-num s-green" id="st1">--</div><div class="stat-label">Checks today</div></div>
-      <div class="stat-card"><div class="stat-num s-red" id="st2">--</div><div class="stat-label">Issues today</div></div>
-      <div class="stat-card"><div class="stat-num s-amber" id="st3">--</div><div class="stat-label">Overdue</div></div>
-      <div class="stat-card"><div class="stat-num s-grey" id="st4">--%</div><div class="stat-label">This month completion</div></div>
-    </div>
-    <div class="filter-bar">
-      <label>Filter:</label>
-      <select class="fsel" id="ovFreq" onchange="renderOverview()"><option value="">All frequencies</option><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select>
-      <select class="fsel" id="ovStatus" onchange="renderOverview()"><option value="">All statuses</option><option value="fail">Issues only</option><option value="overdue">Overdue only</option></select>
-      <input class="date-input" type="date" id="ovDate" onchange="renderOverview()">
-      <button class="export-btn" onclick="exportCSV()">⬇ Export CSV</button>
-    </div>
-    <div class="section-title">All checks <span id="ovSubtitle"></span></div>
-    <div class="grid" id="ovGrid"></div>
-  </div>
-</div>
-
 <!-- ROOMS -->
-<div class="tab-view" id="tab-rooms">
+<div class="tab-view" id="tab-rooms" class="tab-view active">
   <div class="main">
     <div class="section-title" style="margin-top:4px;">Daily Room Checks <span id="roomsSubtitle"></span></div>
     <div class="ctg-grid" id="roomsGrid"></div>
@@ -390,7 +359,7 @@ async function loadData(){
   setInterval(loadData,120000);
 }
 
-function renderAll(){renderStats();renderOverview();renderRooms();renderEnvironment();renderCleaning();renderHistory();}
+function renderAll(){renderStats();renderRooms();renderEnvironment();renderCleaning();renderHistory();}
 
 function getStatus(id,dateFilter){
   const now=new Date();
@@ -748,7 +717,7 @@ function showTab(name){
   document.querySelectorAll('.tab-view').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
-  const tabs=['overview','rooms','environment','cleaning','history'];
+  const tabs=['rooms','environment','cleaning','history'];
   document.querySelectorAll('.tab')[tabs.indexOf(name)].classList.add('active');
 }
 
