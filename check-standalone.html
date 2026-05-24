@@ -811,9 +811,6 @@ ROOMS_ALL.forEach(room => {
   };
 });
 
-// Override Primrose Annex fridge — unique identifying photo
-EQUIPMENT_DB2['fridge_primrose_annex'].image = 'images/fridge_primrose_annex.jpg';
-EQUIPMENT_DB2['fridge_primrose_annex'].imageCaption = 'The Primrose Annex fridge is located in the annex corridor. Record current, minimum and maximum temperatures. Acceptable range 2–8°C.';
 
 // ── TEMPERATURE CHECKS ────────────────────────────────────
 const TEMP_AREAS = [
@@ -1644,6 +1641,10 @@ FRIDGES.forEach(fridge => {
     }]
   };
 });
+
+// Override Primrose Annex fridge — unique identifying photo
+EQUIPMENT_DB2['fridge_primrose_annex'].image = 'images/fridge_primrose_annex.jpg';
+EQUIPMENT_DB2['fridge_primrose_annex'].imageCaption = 'The Primrose Annex fridge is located in the annex corridor. Record current, minimum and maximum temperatures. Acceptable range 2–8°C.';
 
 // ── INSTRUMENT WASHERS (daily) ───────────────────────────
 EQUIPMENT_DB2['washer_labour_ward'] = {
