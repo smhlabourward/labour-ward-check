@@ -316,7 +316,18 @@ function init() {
   setInterval(updateTime, 30000);
   document.getElementById('roomTitle').textContent = roomName;
   document.getElementById('roomSubtitle').textContent = `Labour Ward Stoke Mandeville — ${isBirthCentre ? 'Birth Centre' : 'Labour Ward'} trolley`;
-  selectType('trolley');
+  
+  // Auto-start if type is specified in URL
+  const typeParam = params.get('type');
+  if (typeParam === 'trolley' || typeParam === 'room') {
+    selectType(typeParam);
+    // Hide the tab buttons so staff see only the relevant check
+    document.getElementById('tabTrolley').style.display = 'none';
+    document.getElementById('tabRoom').style.display = 'none';
+    startCheck();
+  } else {
+    selectType('trolley');
+  }
 }
 
 function updateTime() {
