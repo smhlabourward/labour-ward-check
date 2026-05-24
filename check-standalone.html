@@ -2161,7 +2161,8 @@ EQUIPMENT_DB2['room_ready_bc_3'] = {
           { id: 'rr_bc_3_linen', name: 'Fresh linen on bed', desc: 'Clean fresh linen applied to bed', critical: true, image: 'images/room_linen.jpg' },
           { id: 'rr_bc_3_bed_position', name: 'Bed in throne or upright position', desc: 'Bed positioned to support active birth', critical: true, image: 'images/room_bed_position.jpg' },
           { id: 'rr_bc_3_sharps', name: 'Sharps box present, signed, dated and not above fill line', desc: 'Yellow sharps box present, fill level acceptable, signed and dated', critical: true, image: 'images/room_sharps.jpg' },
-          { id: 'rr_bc_3_egg_light', name: 'Egg light available and working', desc: 'Egg light present in room and functioning', critical: false, image: 'images/room_egg_light.jpg' },
+          { id: 'rr_bc_3_active_birth', name: 'Active birth layout in place', desc: 'Peanut ball, birthing ball, floor mat and other active birth equipment available and in place', critical: true, image: 'images/room_active_birth.jpg' },
+      { id: 'rr_bc_3_egg_light', name: 'Egg light available and working', desc: 'Egg light present in room and functioning', critical: false, image: 'images/room_egg_light.jpg' },
           { id: 'rr_bc_3_bin', name: 'Bin emptied', desc: 'Clinical waste and general waste bins emptied and relined', critical: false, image: 'images/room_bin.jpg' },
     ]
   }]
@@ -2183,7 +2184,8 @@ EQUIPMENT_DB2['room_ready_bc_4'] = {
           { id: 'rr_bc_4_linen', name: 'Fresh linen on bed', desc: 'Clean fresh linen applied to bed', critical: true, image: 'images/room_linen.jpg' },
           { id: 'rr_bc_4_bed_position', name: 'Bed in throne or upright position', desc: 'Bed positioned to support active birth', critical: true, image: 'images/room_bed_position.jpg' },
           { id: 'rr_bc_4_sharps', name: 'Sharps box present, signed, dated and not above fill line', desc: 'Yellow sharps box present, fill level acceptable, signed and dated', critical: true, image: 'images/room_sharps.jpg' },
-          { id: 'rr_bc_4_egg_light', name: 'Egg light available and working', desc: 'Egg light present in room and functioning', critical: false, image: 'images/room_egg_light.jpg' },
+          { id: 'rr_bc_4_active_birth', name: 'Active birth layout in place', desc: 'Peanut ball, birthing ball, floor mat and other active birth equipment available and in place', critical: true, image: 'images/room_active_birth.jpg' },
+      { id: 'rr_bc_4_egg_light', name: 'Egg light available and working', desc: 'Egg light present in room and functioning', critical: false, image: 'images/room_egg_light.jpg' },
           { id: 'rr_bc_4_bin', name: 'Bin emptied', desc: 'Clinical waste and general waste bins emptied and relined', critical: false, image: 'images/room_bin.jpg' },
     ]
   }]
@@ -2285,7 +2287,7 @@ EQUIPMENT_DB2['room_ready_primrose'] = {
   name: 'Primrose — Daily Room Check',
   location: 'Primrose',
   image: 'images/room_primrose.jpg',
-  imageCaption: 'Check sharps box is present, signed, dated and not above fill line',
+  imageCaption: 'Check sharps box and fridge temperature',
   frequency: 'daily',
   afterEmergency: false,
   dashboard: 2,
@@ -2294,6 +2296,7 @@ EQUIPMENT_DB2['room_ready_primrose'] = {
     icon: '🏥',
     items: [
       { id: 'rr_primrose_sharps', name: 'Sharps box present, signed, dated and not above fill line', desc: 'Yellow sharps box present, fill level acceptable, signed and dated', critical: true, image: 'images/room_sharps.jpg' },
+      { id: 'rr_primrose_fridge', name: 'Fridge temperature 2–8°C', desc: 'Check fridge temperature is within acceptable range 2–8°C. If outside range contact pharmacy on 01494 425355', critical: true, image: 'images/fridge_temp.jpg' },
     ]
   }]
 };
