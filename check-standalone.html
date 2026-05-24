@@ -811,6 +811,10 @@ ROOMS_ALL.forEach(room => {
   };
 });
 
+// Override Primrose Annex fridge — unique identifying photo
+EQUIPMENT_DB2['fridge_primrose_annex'].image = 'images/fridge_primrose_annex.jpg';
+EQUIPMENT_DB2['fridge_primrose_annex'].imageCaption = 'The Primrose Annex fridge is located in the annex corridor. Record current, minimum and maximum temperatures. Acceptable range 2–8°C.';
+
 // ── TEMPERATURE CHECKS ────────────────────────────────────
 const TEMP_AREAS = [
   { id: 'temp_bc_drug_room', name: 'Birth Centre Drug Room', location: 'Birth Centre' },
@@ -1608,7 +1612,7 @@ FRIDGES.forEach(fridge => {
   EQUIPMENT_DB2[fridge.id] = {
     name: `${fridge.name} — Temperature Check`,
     location: fridge.location,
-    image: 'images/fridge.jpg',
+    image: 'images/fridge_escalation_flowchart.jpg',
     imageCaption: 'Record current, minimum and maximum temperatures. Acceptable range is 2–8°C. If outside range follow escalation steps immediately.',
     frequency: 'daily',
     afterEmergency: false,
@@ -1630,12 +1634,12 @@ FRIDGES.forEach(fridge => {
       name: 'Temperature Recording',
       icon: '🌡',
       items: [
-        { id: `${fridge.id}_current_temp`, name: 'Current temperature recorded', desc: 'Enter current temperature reading from the thermometer display', critical: true, image: 'images/fridge_thermometer.jpg' },
-        { id: `${fridge.id}_min_temp`, name: 'Minimum temperature recorded', desc: 'Enter the minimum temperature shown on the thermometer', critical: true, image: 'images/fridge_min_temp.jpg' },
-        { id: `${fridge.id}_max_temp`, name: 'Maximum temperature recorded', desc: 'Enter the maximum temperature shown on the thermometer', critical: true, image: 'images/fridge_max_temp.jpg' },
-        { id: `${fridge.id}_thermometer_reset`, name: 'Thermometer reset after recording', desc: 'Confirm the thermometer min/max has been reset', critical: false, image: 'images/fridge_thermometer_reset.jpg' },
-        { id: `${fridge.id}_in_range`, name: 'All readings within 2–8°C range', desc: 'Confirm current, min and max are all within acceptable range', critical: true, image: 'images/fridge_range.jpg' },
-        { id: `${fridge.id}_escalation`, name: 'Escalation taken if out of range', desc: 'If any reading was outside 2–8°C confirm escalation steps have been followed', critical: false, image: 'images/fridge_escalation.jpg' },
+        { id: `${fridge.id}_current_temp`, name: 'Current temperature recorded', desc: 'Enter current temperature reading from the thermometer display', critical: true, image: 'images/fridge_escalation_flowchart.jpg' },
+        { id: `${fridge.id}_min_temp`, name: 'Minimum temperature recorded', desc: 'Enter the minimum temperature shown on the thermometer', critical: true, image: 'images/fridge_escalation_flowchart.jpg' },
+        { id: `${fridge.id}_max_temp`, name: 'Maximum temperature recorded', desc: 'Enter the maximum temperature shown on the thermometer', critical: true, image: 'images/fridge_escalation_flowchart.jpg' },
+        { id: `${fridge.id}_thermometer_reset`, name: 'Thermometer reset after recording', desc: 'Confirm the thermometer min/max has been reset', critical: false, image: 'images/fridge_escalation_flowchart.jpg' },
+        { id: `${fridge.id}_in_range`, name: 'All readings within 2–8°C range', desc: 'Confirm current, min and max are all within acceptable range', critical: true, image: 'images/fridge_escalation_flowchart.jpg' },
+        { id: `${fridge.id}_escalation`, name: 'Escalation taken if out of range', desc: 'If any reading was outside 2–8°C confirm escalation steps have been followed', critical: false, image: 'images/fridge_escalation_flowchart.jpg' },
       ]
     }]
   };
@@ -2360,7 +2364,7 @@ EQUIPMENT_DB2['room_ready_primrose'] = {
     items: [
       { id: 'rr_primrose_stock_trolley', name: 'Stock trolley clean and stocked', desc: 'Stock trolley wiped down and fully stocked', critical: true, image: 'images/room_stock_trolley.jpg' },
       { id: 'rr_primrose_sharps', name: 'Sharps box present, signed, dated and not above fill line', desc: 'Yellow sharps box present, fill level acceptable, signed and dated', critical: true, image: 'images/room_sharps.jpg' },
-      { id: 'rr_primrose_fridge', name: 'Fridge temperature 2–8°C', desc: 'Check fridge temperature is within acceptable range 2–8°C. If outside range contact pharmacy on 01494 425355', critical: true, image: 'images/fridge_temp.jpg' },
+      { id: 'rr_primrose_fridge', name: 'Fridge temperature 2–8°C', desc: 'Check fridge temperature is within acceptable range 2–8°C. If outside range contact pharmacy on 01494 425355', critical: true, image: 'images/fridge_escalation_flowchart.jpg' },
     ]
   }]
 };
