@@ -379,7 +379,6 @@ function init(){
   Object.assign(EQUIP_META, EQUIP_META_INLINE);
 
   updateTime(); setInterval(updateTime, 30000);
-  document.getElementById('hDate').value = new Date().toISOString().slice(0,10);
   loadData();
   setInterval(loadData, 120000);
 }
