@@ -688,7 +688,8 @@ function renderHistory(){
     }
     if(searchF){
       const name = (EQUIP_META[c.equipment_id]?EQUIP_META[c.equipment_id].name:c.equipment_name||c.equipment_id).toLowerCase();
-      if(!name.includes(searchF)) return false;
+      const eid = (c.equipment_id||'').toLowerCase();
+      if(!name.includes(searchF) && !eid.includes(searchF)) return false;
     }
     return true;
   }).slice(0,500);
@@ -729,9 +730,14 @@ function openModal(id){
 function viewAuditFor(id){
   closeModal();
   showTab('history');
+  // Set current month as default when viewing audit for specific equipment
+  const now = new Date();
+  const currentMonth = now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0');
   const name = EQUIP_META[id]?EQUIP_META[id].name:id;
-  document.getElementById('hSearch').value = name.substring(0,30);
-  document.getElementById('hMonth').value = '';
+  document.getElementById('hSearch').value = name;
+  // Set month to current month - populate first if empty
+  populateMonthFilter();
+  document.getElementById('hMonth').value = currentMonth;
   document.getElementById('hStatus').value = '';
   renderHistory();
 }
@@ -754,6 +760,7 @@ function openRoomModal(id,name){
   } else {
     html='<p style="color:var(--grey3);padding:16px 0;">No checks recorded for this room yet.</p>';
   }
+  html += `<div style="margin-top:14px;"><button onclick="viewAuditFor('${id}')" style="background:var(--blue2);color:white;border:none;padding:8px 16px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;width:100%;">View full audit trail for this room</button></div>`;
   document.getElementById('modalBody').innerHTML=html;
   document.getElementById('modalBg').classList.add('show');
 }
