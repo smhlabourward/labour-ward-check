@@ -238,8 +238,9 @@ tr:hover td{background:var(--grey5);}
   <div class="main">
     <div class="filter-bar" style="margin-top:4px;">
       <label>Filter:</label>
-      <select class="fsel" id="hStatus" onchange="renderHistory()"><option value="">All</option><option value="fail">Issues only</option></select>
-      <input type="date" id="hDate" class="fsel" onchange="renderHistory()">
+      <input type="text" id="hSearch" class="fsel" placeholder="Search equipment name..." oninput="renderHistory()" style="min-width:200px;">
+      <select class="fsel" id="hStatus" onchange="renderHistory()"><option value="">All statuses</option><option value="fail">Issues only</option><option value="pass">Pass only</option></select>
+      <select class="fsel" id="hMonth" onchange="renderHistory()"></select>
       <button class="export-btn" onclick="exportCSV()">⬇ Export CSV</button>
     </div>
     <div class="table-wrap"><div class="table-scroll">
@@ -396,7 +397,7 @@ async function loadData(){
     const since = new Date(); since.setFullYear(since.getFullYear()-2);
     const ids = ALL_IDS.join(',');
     const res = await fetch(
-      `${CONFIG.supabaseUrl}/rest/v1/equipment_checks?equipment_id=in.(${ids})&checked_at=gte.${since.toISOString()}&order=checked_at.desc&limit=10000`,
+      `${CONFIG.supabaseUrl}/rest/v1/equipment_checks?equipment_id=in.(${ids})&checked_at=gte.${since.toISOString()}&order=checked_at.desc&limit=50000`,
       {headers:{'apikey':CONFIG.supabaseKey,'Authorization':`Bearer ${CONFIG.supabaseKey}`}}
     );
     if(!res.ok) throw new Error('Fetch failed');
@@ -496,6 +497,7 @@ function renderAll(){
   renderEnvironment();
   renderCleaning();
   renderHistory();
+  populateMonthFilter();
   renderAlerts();
 }
 
@@ -658,14 +660,38 @@ function renderAlerts(){
 }
 
 // ── HISTORY ───────────────────────────────────────────────
+function populateMonthFilter(){
+  const sel = document.getElementById('hMonth');
+  if(!sel || sel.options.length > 1) return;
+  const months = new Set(allChecks.map(c=>new Date(c.checked_at).toISOString().slice(0,7)));
+  const sorted = Array.from(months).sort().reverse();
+  sorted.forEach(m=>{
+    const opt = document.createElement('option');
+    opt.value = m;
+    const [y,mo] = m.split('-');
+    opt.textContent = new Date(y,mo-1).toLocaleString('en-GB',{month:'long',year:'numeric'});
+    sel.appendChild(opt);
+  });
+}
+
 function renderHistory(){
-  const statusF=document.getElementById('hStatus').value;
-  const dateF=document.getElementById('hDate').value;
-  let rows=allChecks.filter(c=>{
-    if(statusF==='fail'&&c.overall_status!=='fail') return false;
-    if(dateF) return new Date(c.checked_at).toISOString().slice(0,10)===dateF;
+  populateMonthFilter();
+  const statusF = document.getElementById('hStatus').value;
+  const monthF = document.getElementById('hMonth').value;
+  const searchF = document.getElementById('hSearch').value.toLowerCase().trim();
+  let rows = allChecks.filter(c=>{
+    if(statusF==='fail' && c.overall_status!=='fail') return false;
+    if(statusF==='pass' && c.overall_status!=='pass') return false;
+    if(monthF){
+      const cm = new Date(c.checked_at).toISOString().slice(0,7);
+      if(cm !== monthF) return false;
+    }
+    if(searchF){
+      const name = (EQUIP_META[c.equipment_id]?EQUIP_META[c.equipment_id].name:c.equipment_name||c.equipment_id).toLowerCase();
+      if(!name.includes(searchF)) return false;
+    }
     return true;
-  }).slice(0,300);
+  }).slice(0,500);
   const body=document.getElementById('histBody');
   if(!rows.length){body.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--grey3);padding:24px;">No records found.</td></tr>';return;}
   body.innerHTML=rows.map(c=>{
@@ -695,8 +721,19 @@ function openModal(id){
   } else {
     html='<p style="color:var(--grey3);padding:16px 0;">No checks recorded yet.</p>';
   }
+  html += `<div style="margin-top:14px;"><button onclick="viewAuditFor('${id}')" style="background:var(--blue2);color:white;border:none;padding:8px 16px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;width:100%;">View full audit trail for this equipment</button></div>`;
   document.getElementById('modalBody').innerHTML=html;
   document.getElementById('modalBg').classList.add('show');
+}
+
+function viewAuditFor(id){
+  closeModal();
+  showTab('history');
+  const name = EQUIP_META[id]?EQUIP_META[id].name:id;
+  document.getElementById('hSearch').value = name.substring(0,30);
+  document.getElementById('hMonth').value = '';
+  document.getElementById('hStatus').value = '';
+  renderHistory();
 }
 
 function openRoomModal(id,name){
