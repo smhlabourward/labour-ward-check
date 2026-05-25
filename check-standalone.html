@@ -564,7 +564,7 @@ const EQUIPMENT_DB1 = {
   cd_labour_ward_am: {
     name: 'Controlled Drugs Check — Labour Ward (AM)',
     location: 'Labour Ward',
-    image: 'images/cd_cupboard.jpg',
+    image: '',
     imageCaption: 'Confirm CD book check has been completed and signed this morning',
     frequency: 'daily',
     afterEmergency: false,
@@ -573,8 +573,7 @@ const EQUIPMENT_DB1 = {
         name: 'Morning CD Check',
         icon: '🔐',
         items: [
-          { id: 'cd_lw_am_book', name: 'CD book check completed and signed', desc: 'Two staff signatures present in CD book for this check', critical: true, image: 'images/cd_book.jpg' },
-          { id: 'cd_lw_am_cupboard', name: 'CD cupboard locked and secure', desc: 'Cupboard locked, key returned to correct location', critical: true, image: 'images/cd_cupboard_locked.jpg' },
+          { id: 'cd_lw_am_book', name: 'CD book check completed and signed', desc: 'Two staff signatures present in CD book for this check', critical: true, image: '' },
           { id: 'cd_lw_am_count', name: 'Stock count matches CD register', desc: 'Confirm physical count matches book', critical: true, image: 'images/cd_register.jpg' },
         ]
       }
@@ -584,7 +583,7 @@ const EQUIPMENT_DB1 = {
   cd_labour_ward_pm: {
     name: 'Controlled Drugs Check — Labour Ward (PM)',
     location: 'Labour Ward',
-    image: 'images/cd_cupboard.jpg',
+    image: '',
     imageCaption: 'Confirm CD book check has been completed and signed this evening',
     frequency: 'daily',
     afterEmergency: false,
@@ -593,8 +592,8 @@ const EQUIPMENT_DB1 = {
         name: 'Evening CD Check',
         icon: '🔐',
         items: [
-          { id: 'cd_lw_pm_book', name: 'CD book check completed and signed', desc: 'Two staff signatures present in CD book for this check', critical: true, image: 'images/cd_book.jpg' },
-          { id: 'cd_lw_pm_cupboard', name: 'CD cupboard locked and secure', desc: 'Cupboard locked, key returned to correct location', critical: true, image: 'images/cd_cupboard_locked.jpg' },
+          { id: 'cd_lw_pm_book', name: 'CD book check completed and signed', desc: 'Two staff signatures present in CD book for this check', critical: true, image: '' },
+          { id: 'cd_lw_pm_cupboard', name: 'CD cupboard locked and secure', desc: 'Cupboard locked, key returned to correct location', critical: true, image: '' },
           { id: 'cd_lw_pm_count', name: 'Stock count matches CD register', desc: 'Confirm physical count matches book', critical: true, image: 'images/cd_register.jpg' },
         ]
       }
@@ -604,7 +603,7 @@ const EQUIPMENT_DB1 = {
   cd_birth_centre_am: {
     name: 'Controlled Drugs Check — Birth Centre (AM)',
     location: 'Birth Centre',
-    image: 'images/cd_cupboard.jpg',
+    image: '',
     imageCaption: 'Confirm CD book check has been completed and signed this morning',
     frequency: 'daily',
     afterEmergency: false,
@@ -613,8 +612,8 @@ const EQUIPMENT_DB1 = {
         name: 'Morning CD Check',
         icon: '🔐',
         items: [
-          { id: 'cd_bc_am_book', name: 'CD book check completed and signed', desc: 'Two staff signatures present in CD book for this check', critical: true, image: 'images/cd_book.jpg' },
-          { id: 'cd_bc_am_cupboard', name: 'CD cupboard locked and secure', desc: 'Cupboard locked, key returned to correct location', critical: true, image: 'images/cd_cupboard_locked.jpg' },
+          { id: 'cd_bc_am_book', name: 'CD book check completed and signed', desc: 'Two staff signatures present in CD book for this check', critical: true, image: '' },
+          { id: 'cd_bc_am_cupboard', name: 'CD cupboard locked and secure', desc: 'Cupboard locked, key returned to correct location', critical: true, image: '' },
           { id: 'cd_bc_am_count', name: 'Stock count matches CD register', desc: 'Confirm physical count matches book', critical: true, image: 'images/cd_register.jpg' },
         ]
       }
@@ -624,7 +623,7 @@ const EQUIPMENT_DB1 = {
   cd_birth_centre_pm: {
     name: 'Controlled Drugs Check — Birth Centre (PM)',
     location: 'Birth Centre',
-    image: 'images/cd_cupboard.jpg',
+    image: '',
     imageCaption: 'Confirm CD book check has been completed and signed this evening',
     frequency: 'daily',
     afterEmergency: false,
@@ -633,8 +632,8 @@ const EQUIPMENT_DB1 = {
         name: 'Evening CD Check',
         icon: '🔐',
         items: [
-          { id: 'cd_bc_pm_book', name: 'CD book check completed and signed', desc: 'Two staff signatures present in CD book for this check', critical: true, image: 'images/cd_book.jpg' },
-          { id: 'cd_bc_pm_cupboard', name: 'CD cupboard locked and secure', desc: 'Cupboard locked, key returned to correct location', critical: true, image: 'images/cd_cupboard_locked.jpg' },
+          { id: 'cd_bc_pm_book', name: 'CD book check completed and signed', desc: 'Two staff signatures present in CD book for this check', critical: true, image: '' },
+          { id: 'cd_bc_pm_cupboard', name: 'CD cupboard locked and secure', desc: 'Cupboard locked, key returned to correct location', critical: true, image: '' },
           { id: 'cd_bc_pm_count', name: 'Stock count matches CD register', desc: 'Confirm physical count matches book', critical: true, image: 'images/cd_register.jpg' },
         ]
       }
@@ -670,7 +669,7 @@ for (let i = 1; i <= 9; i++) {
           { id: `res${i}_sats_probe`, name: '1 x Sats probe and Posey', desc: 'Neonatal sats probe and Posey wrap present', critical: true, image: 'images/res_sats_probe.jpg' },
           { id: `res${i}_ambu_bag`, name: '1 x Paed ambu bag', desc: 'Present and intact', critical: true, image: 'images/res_ambu_bag.jpg' },
           { id: `res${i}_proforma`, name: 'Newborn resus proforma', desc: 'Present and adequate supply', critical: true, image: 'images/res_proforma.jpg' },
-          { id: `res${i}_cover`, name: 'Covered with protective bag', desc: 'Clean protective cover in place', critical: false, image: 'images/res_cover.jpg' },
+          { id: `res${i}_cover`, name: 'Covered with protective bag', desc: 'Clean protective cover in place', critical: false, image: '' },
         ]
       }
     ]
@@ -873,7 +872,6 @@ const EQUIPMENT_DB1_EXTRA = {
           { id: 'triage_am_reviewed', name: 'All outstanding results reviewed', desc: 'Confirm all triage results have been checked this morning', critical: true, image: 'images/triage_results_screen.jpg' },
           { id: 'triage_am_escalated', name: 'Any abnormal results escalated', desc: 'Confirm any results requiring action have been escalated to the appropriate clinician', critical: true, image: 'images/triage_escalation.jpg' },
           { id: 'triage_am_clinician', name: 'Reviewing clinician name recorded', desc: 'Enter name of clinician who reviewed results in the notes field', critical: true, image: 'images/triage_sign_off.jpg' },
-          { id: 'triage_am_no_outstanding', name: 'No outstanding results remaining unreviewed', desc: 'Confirm all results have been actioned or handed over', critical: true, image: 'images/triage_results_clear.jpg' },
         ]
       }
     ]
@@ -894,7 +892,6 @@ const EQUIPMENT_DB1_EXTRA = {
           { id: 'triage_pm_reviewed', name: 'All outstanding results reviewed', desc: 'Confirm all triage results have been checked this evening', critical: true, image: 'images/triage_results_screen.jpg' },
           { id: 'triage_pm_escalated', name: 'Any abnormal results escalated', desc: 'Confirm any results requiring action have been escalated to the appropriate clinician', critical: true, image: 'images/triage_escalation.jpg' },
           { id: 'triage_pm_clinician', name: 'Reviewing clinician name recorded', desc: 'Enter name of clinician who reviewed results in the notes field', critical: true, image: 'images/triage_sign_off.jpg' },
-          { id: 'triage_pm_no_outstanding', name: 'No outstanding results remaining unreviewed', desc: 'Confirm all results have been actioned or handed over to night team', critical: true, image: 'images/triage_results_clear.jpg' },
         ]
       }
     ]
@@ -913,13 +910,10 @@ const EQUIPMENT_DB1_EXTRA = {
         name: 'Calibration Check',
         icon: '🩸',
         items: [
-          { id: 'gm1_strips_code', name: 'Strip code matches monitor code', desc: 'Confirm the code on the test strip pot matches the code displayed on the monitor', critical: true, image: 'images/gm_strip_code.jpg' },
           { id: 'gm1_control_low', name: 'Low control solution test within range', desc: 'Run low control solution — result within acceptable range shown on pot', critical: true, image: 'images/gm_control_low.jpg' },
           { id: 'gm1_control_high', name: 'High control solution test within range', desc: 'Run high control solution — result within acceptable range shown on pot', critical: true, image: 'images/gm_control_high.jpg' },
-          { id: 'gm1_battery', name: 'Battery level adequate', desc: 'Battery indicator shows sufficient charge', critical: false, image: 'images/gm_battery.jpg' },
           { id: 'gm1_strips_expiry', name: 'Test strips not expired', desc: 'Check expiry date on strip pot', critical: true, image: 'images/gm_strips_expiry.jpg' },
-          { id: 'gm1_control_expiry', name: 'Control solutions not expired', desc: 'Check expiry on both control solution bottles', critical: true, image: 'images/gm_control_expiry.jpg' },
-          { id: 'gm1_lancets', name: 'Lancets present and not expired', desc: 'Adequate supply of lancets in date', critical: false, image: 'images/gm_lancets.jpg' },
+          { id: 'gm1_lancets', name: 'Lancets and test strips present', desc: 'Adequate supply of lancets and test strips present and in date', critical: true, image: 'images/gm_lancets.jpg' },
         ]
       }
     ]
@@ -937,13 +931,10 @@ const EQUIPMENT_DB1_EXTRA = {
         name: 'Calibration Check',
         icon: '🩸',
         items: [
-          { id: 'gm2_strips_code', name: 'Strip code matches monitor code', desc: 'Confirm the code on the test strip pot matches the code displayed on the monitor', critical: true, image: 'images/gm_strip_code.jpg' },
           { id: 'gm2_control_low', name: 'Low control solution test within range', desc: 'Run low control solution — result within acceptable range shown on pot', critical: true, image: 'images/gm_control_low.jpg' },
           { id: 'gm2_control_high', name: 'High control solution test within range', desc: 'Run high control solution — result within acceptable range shown on pot', critical: true, image: 'images/gm_control_high.jpg' },
-          { id: 'gm2_battery', name: 'Battery level adequate', desc: 'Battery indicator shows sufficient charge', critical: false, image: 'images/gm_battery.jpg' },
           { id: 'gm2_strips_expiry', name: 'Test strips not expired', desc: 'Check expiry date on strip pot', critical: true, image: 'images/gm_strips_expiry.jpg' },
-          { id: 'gm2_control_expiry', name: 'Control solutions not expired', desc: 'Check expiry on both control solution bottles', critical: true, image: 'images/gm_control_expiry.jpg' },
-          { id: 'gm2_lancets', name: 'Lancets present and not expired', desc: 'Adequate supply of lancets in date', critical: false, image: 'images/gm_lancets.jpg' },
+          { id: 'gm2_lancets', name: 'Lancets and test strips present', desc: 'Adequate supply of lancets and test strips present and in date', critical: true, image: 'images/gm_lancets.jpg' },
         ]
       }
     ]
@@ -1707,12 +1698,12 @@ for (let i = 1; i <= 9; i++) {
       name: 'Cleaning Check',
       icon: '🧹',
       items: [
-        { id: `clean_res${i}_surfaces`, name: 'All external surfaces cleaned', desc: 'Wipe all hard surfaces with approved decontamination wipes', critical: true, image: 'images/clean_surfaces.jpg' },
+        { id: `clean_res${i}_surfaces`, name: 'All external surfaces cleaned', desc: 'Wipe all hard surfaces with approved decontamination wipes', critical: true, image: 'images/clean_instructions.jpg' },
         { id: `clean_res${i}_mattress`, name: 'Mattress and cover cleaned', desc: 'Wipe mattress cover with approved wipes, replace if damaged', critical: true, image: 'images/clean_mattress.jpg' },
         { id: `clean_res${i}_overhead`, name: 'Overhead heater and light cleaned', desc: 'Wipe overhead unit carefully — ensure dry before use', critical: false, image: 'images/clean_overhead.jpg' },
-        { id: `clean_res${i}_drawers`, name: 'Drawer exteriors cleaned', desc: 'All drawer handles and exteriors wiped', critical: false, image: 'images/clean_drawers.jpg' },
-        { id: `clean_res${i}_wheels`, name: 'Wheels and base cleaned', desc: 'Wipe base and wheels — clear any debris', critical: false, image: 'images/clean_wheels.jpg' },
-        { id: `clean_res${i}_signature`, name: 'Cleaning label completed', desc: 'Sign and date the cleaning label on the resuscitaire', critical: true, image: 'images/clean_label.jpg' },
+        { id: `clean_res${i}_drawers`, name: 'Drawer exteriors cleaned', desc: 'All drawer handles and exteriors wiped', critical: false, image: 'images/clean_instructions.jpg' },
+        { id: `clean_res${i}_wheels`, name: 'Wheels and base cleaned', desc: 'Wipe base and wheels — clear any debris', critical: false, image: 'images/clean_instructions.jpg' },
+        { id: `clean_res${i}_signature`, name: 'Cleaning label completed', desc: 'Sign and date the cleaning label on the resuscitaire', critical: true, image: 'images/clean_instructions.jpg' },
       ]
     }]
   };
@@ -1733,12 +1724,12 @@ for (let i = 1; i <= 2; i++) {
       name: 'Cleaning Check',
       icon: '🧹',
       items: [
-        { id: `clean_uss${i}_screen`, name: 'Screen cleaned', desc: 'Wipe screen with approved screen-safe wipe', critical: false, image: 'images/clean_screen.jpg' },
-        { id: `clean_uss${i}_body`, name: 'Machine body cleaned', desc: 'All surfaces wiped with approved decontamination wipes', critical: true, image: 'images/clean_surfaces.jpg' },
+        { id: `clean_uss${i}_screen`, name: 'Screen cleaned', desc: 'Wipe screen with approved screen-safe wipe', critical: false, image: 'images/clean_instructions.jpg' },
+        { id: `clean_uss${i}_body`, name: 'Machine body cleaned', desc: 'All surfaces wiped with approved decontamination wipes', critical: true, image: 'images/clean_instructions.jpg' },
         { id: `clean_uss${i}_probe`, name: 'Probe cleaned and stored correctly', desc: 'Probe wiped and hung in correct storage position', critical: true, image: 'images/uss_probe.jpg' },
         { id: `clean_uss${i}_cable`, name: 'Cable wiped and stored safely', desc: 'Cable wiped and coiled without kinking', critical: false, image: 'images/uss_cable.jpg' },
         { id: `clean_uss${i}_gel`, name: 'Gel bottle wiped externally', desc: 'Outside of gel bottle wiped clean', critical: false, image: 'images/uss_gel.jpg' },
-        { id: `clean_uss${i}_signature`, name: 'Cleaning label completed', desc: 'Sign and date cleaning label on machine', critical: true, image: 'images/clean_label.jpg' },
+        { id: `clean_uss${i}_signature`, name: 'Cleaning label completed', desc: 'Sign and date cleaning label on machine', critical: true, image: 'images/clean_instructions.jpg' },
       ]
     }]
   };
@@ -1766,10 +1757,10 @@ BATCH_CLEANS.forEach(item => {
       name: 'Batch Clean Confirmation',
       icon: '🧹',
       items: [
-        { id: `${item.id}_all_cleaned`, name: 'All units cleaned with approved wipes', desc: 'Every unit has been wiped down with approved decontamination wipes', critical: true, image: 'images/clean_surfaces.jpg' },
-        { id: `${item.id}_screens`, name: 'Screens and displays cleaned', desc: 'All screens wiped with screen-safe wipes', critical: false, image: 'images/clean_screen.jpg' },
-        { id: `${item.id}_cables`, name: 'Cables and leads wiped', desc: 'All attached cables wiped down', critical: false, image: 'images/clean_cables.jpg' },
-        { id: `${item.id}_stored`, name: 'All units stored correctly after cleaning', desc: 'Units returned to correct storage location', critical: false, image: 'images/clean_stored.jpg' },
+        { id: `${item.id}_all_cleaned`, name: 'All units cleaned with approved wipes', desc: 'Every unit has been wiped down with approved decontamination wipes', critical: true, image: 'images/clean_instructions.jpg' },
+        { id: `${item.id}_screens`, name: 'Screens and displays cleaned', desc: 'All screens wiped with screen-safe wipes', critical: false, image: 'images/clean_instructions.jpg' },
+        { id: `${item.id}_cables`, name: 'Cables and leads wiped', desc: 'All attached cables wiped down', critical: false, image: 'images/clean_instructions.jpg' },
+        { id: `${item.id}_stored`, name: 'All units stored correctly after cleaning', desc: 'Units returned to correct storage location', critical: false, image: 'images/clean_instructions.jpg' },
       ]
     }]
   };
@@ -1799,13 +1790,13 @@ TROLLEY_CLEANS.forEach(t => {
       name: 'Trolley Clean',
       icon: '🧹',
       items: [
-        { id: `${t.id}_top`, name: 'Top surface cleaned', desc: 'Top of trolley wiped with approved decontamination solution', critical: true, image: 'images/clean_surfaces.jpg' },
-        { id: `${t.id}_drawers_ext`, name: 'Drawer exteriors cleaned', desc: 'All drawer fronts, handles and sides wiped', critical: true, image: 'images/clean_drawers.jpg' },
+        { id: `${t.id}_top`, name: 'Top surface cleaned', desc: 'Top of trolley wiped with approved decontamination solution', critical: true, image: 'images/clean_instructions.jpg' },
+        { id: `${t.id}_drawers_ext`, name: 'Drawer exteriors cleaned', desc: 'All drawer fronts, handles and sides wiped', critical: true, image: 'images/clean_instructions.jpg' },
         { id: `${t.id}_drawers_int`, name: 'Drawer interiors cleaned', desc: 'Inside of each drawer wiped and dried before restocking', critical: true, image: 'images/clean_drawers_inside.jpg' },
-        { id: `${t.id}_frame`, name: 'Frame and legs cleaned', desc: 'All frame surfaces and legs wiped down', critical: false, image: 'images/clean_frame.jpg' },
-        { id: `${t.id}_wheels`, name: 'Wheels cleaned', desc: 'Wheels wiped and checked for debris', critical: false, image: 'images/clean_wheels.jpg' },
+        { id: `${t.id}_frame`, name: 'Frame and legs cleaned', desc: 'All frame surfaces and legs wiped down', critical: false, image: 'images/clean_instructions.jpg' },
+        { id: `${t.id}_wheels`, name: 'Wheels cleaned', desc: 'Wheels wiped and checked for debris', critical: false, image: 'images/clean_instructions.jpg' },
         { id: `${t.id}_restocked`, name: 'Trolley restocked after cleaning', desc: 'Confirm all items have been replaced correctly after cleaning', critical: true, image: 'images/clean_restocked.jpg' },
-        { id: `${t.id}_signature`, name: 'Cleaning label completed and dated', desc: 'Sign and date the cleaning record label', critical: true, image: 'images/clean_label.jpg' },
+        { id: `${t.id}_signature`, name: 'Cleaning label completed and dated', desc: 'Sign and date the cleaning record label', critical: true, image: 'images/clean_instructions.jpg' },
       ]
     }]
   };
@@ -1825,10 +1816,10 @@ EQUIPMENT_DB2['mattress_audit'] = {
     name: 'Mattress Inspection',
     icon: '🛏',
     items: [
-      { id: 'mattress_all_checked', name: 'All available mattresses fully checked', desc: 'Every soft mattress on the ward has been inspected including inside the zip', critical: true, image: 'images/mattress_check.jpg' },
+      { id: 'mattress_all_checked', name: 'All available mattresses fully checked', desc: 'Every soft mattress on the ward has been inspected including inside the zip', critical: true, image: '' },
       { id: 'mattress_zip_checked', name: 'Inside zip inspected on all mattresses', desc: 'Zip opened and interior checked for damage, staining or moisture', critical: true, image: 'images/mattress_zip.jpg' },
-      { id: 'mattress_no_damage', name: 'No rips, tears, leaks or stains found (or condemned if found)', desc: 'Any damaged mattresses have been condemned and removed from use', critical: true, image: 'images/mattress_damage.jpg' },
-      { id: 'mattress_condemned_process', name: 'Condemned mattresses bagged and collection arranged', desc: 'Any condemned mattresses placed in yellow mattress bag and collection arranged via Help Desk', critical: false, image: 'images/mattress_condemned.jpg' },
+      { id: 'mattress_no_damage', name: 'No rips, tears, leaks or stains found (or condemned if found)', desc: 'Any damaged mattresses have been condemned and removed from use', critical: true, image: 'images/mattress.jpg' },
+      { id: 'mattress_condemned_process', name: 'Condemned mattresses bagged and collection arranged', desc: 'Any condemned mattresses placed in yellow mattress bag and collection arranged via Help Desk', critical: false, image: 'images/mattress.jpg' },
     ]
   }]
 };
