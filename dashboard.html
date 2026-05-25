@@ -156,6 +156,14 @@ tr:hover td{background:var(--grey5);}
       <div class="stat-card"><div class="stat-num s-grey" id="st-checks7">--</div><div class="stat-label">Checks (7 days)</div></div>
       <div class="stat-card"><div class="stat-num s-grey" id="st-compliance">--%</div><div class="stat-label">This month</div></div>
     </div>
+    <div class="stats-row" id="complianceRow" style="grid-template-columns:repeat(5,1fr);margin-bottom:16px;">
+      <div class="stat-card"><div class="stat-num s-grey" id="comp-emergency">--%</div><div class="stat-label">Emergency Equip</div></div>
+      <div class="stat-card"><div class="stat-num s-grey" id="comp-rooms">--%</div><div class="stat-label">Room Inspections</div></div>
+      <div class="stat-card"><div class="stat-num s-grey" id="comp-trolleys">--%</div><div class="stat-label">Trolleys</div></div>
+      <div class="stat-card"><div class="stat-num s-grey" id="comp-environment">--%</div><div class="stat-label">Environment</div></div>
+      <div class="stat-card"><div class="stat-num s-grey" id="comp-cleaning">--%</div><div class="stat-label">Cleaning</div></div>
+    </div>
+
     <div class="filter-bar">
       <label>Filter:</label>
       <select class="fsel" id="emFreq" onchange="renderEmergency()"><option value="">All frequencies</option><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select>
@@ -481,6 +489,7 @@ function makeRoomCard(room){
 // ── RENDER ALL ────────────────────────────────────────────
 function renderAll(){
   renderStats();
+  renderCompliance();
   renderEmergency();
   renderRooms();
   renderTrolleys();
@@ -488,6 +497,35 @@ function renderAll(){
   renderCleaning();
   renderHistory();
   renderAlerts();
+}
+
+// ── CATEGORY COMPLIANCE ──────────────────────────────────
+function avgCompliance(ids){
+  if(!ids.length) return 0;
+  const rates = ids.map(id => calcCompliance(id, EQUIP_META[id]?EQUIP_META[id].freq:'daily'));
+  const avg = Math.round(rates.reduce((a,b)=>a+b,0)/rates.length);
+  return avg;
+}
+
+function setCompStat(elId, pct){
+  const el = document.getElementById(elId);
+  if(!el) return;
+  el.textContent = pct + '%';
+  el.className = 'stat-num ' + (pct>=95?'s-green':pct>=70?'s-amber':'s-red');
+}
+
+function renderCompliance(){
+  const emIds = [...ROOM_EM_IDS, ...EMERGENCY_IDS, ...RESUS_IDS, ...CD_IDS];
+  const roomIds = [...LW_ROOM_IDS.map(r=>r.id), ...BC_ROOM_IDS.map(r=>r.id), ...TRIAGE_OBS_IDS.map(r=>r.id)];
+  const trolleyIds = [...PPH_IDS, ...INST_IDS, ...EPID_IDS, ...EMG_TROLLEY_IDS];
+  const envIds = [...AREA_TEMP_IDS, ...FRIDGE_IDS];
+  const cleanIds = [...TRISTEL_IDS, ...WASHER_IDS, ...WEEKLY_IDS, ...MONTHLY_IDS, ...MATTRESS_IDS];
+
+  setCompStat('comp-emergency', avgCompliance(emIds));
+  setCompStat('comp-rooms', avgCompliance(roomIds));
+  setCompStat('comp-trolleys', avgCompliance(trolleyIds));
+  setCompStat('comp-environment', avgCompliance(envIds));
+  setCompStat('comp-cleaning', avgCompliance(cleanIds));
 }
 
 // ── STATS ─────────────────────────────────────────────────
