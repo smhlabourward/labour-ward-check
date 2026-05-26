@@ -177,7 +177,6 @@ const roomName = ROOM_NAMES[roomId] || 'Room';
 // ── LABOUR WARD TROLLEY (rooms 6-18 and Primrose) ──────────
 const LW_TROLLEY = [
   { drawer: 'Top Tray — Drawer 1', overview: 'images/lw_drawer1_overview.jpg', icon: '🔵', items: [
-    { id:'lw_d1_overview', name:'Drawer 1 overview', image:'images/lw_drawer1_overview.jpg' },
     { id:'d1_blue_tray', name:'1 x Blue tray', image:'images/delivery_blue_tray.jpg' },
     { id:'d1_tegerderm', name:'2 x Tegaderm', image:'images/sep_tegerderm.jpg' },
     { id:'d1_octopus', name:'2 x Octopus', image:'images/sep_octopus.jpg' },
@@ -198,20 +197,17 @@ const LW_TROLLEY = [
     { id:'d1_placenta_bag', name:'1 x Clear placenta bag', image:'images/delivery_placenta_bag.jpg' },
   ]},
   { drawer: 'Drawer 2 — Needles & Vacutainers', overview: 'images/lw_drawer2_overview.jpg', icon: '💉', items: [
-    { id:'lw_d2_overview', name:'Drawer 2 overview', image:'images/lw_drawer2_overview.jpg' },
     { id:'d2_vacutainers', name:'4 x Vacutainers (2 blue + 2 green vacutainer needles)', image:'images/delivery_vacutainers.jpg' },
     { id:'d2_purple_blunt', name:'2 x Purple blunt fill needles', image:'images/delivery_blunt_fill.jpg' },
     { id:'d2_red_blunt', name:'2 x Red blunt fill needles', image:'images/delivery_blunt_fill.jpg' },
     { id:'d2_21g', name:'4 x 21g green needles', image:'images/delivery_21g_needles.jpg' },
   ]},
   { drawer: 'Drawer 3 — Cotton Wool & Caps', overview: 'images/lw_drawer3_overview.jpg', icon: '🧴', items: [
-    { id:'lw_d3_overview', name:'Drawer 3 overview', image:'images/lw_drawer3_overview.jpg' },
     { id:'d3_cotton_wool', name:'1 x Pack cotton wool balls', image:'images/sep_cotton_wool.jpg' },
     { id:'d3_white_caps', name:'2 x White caps', image:'images/delivery_white_caps.jpg' },
     { id:'d3_yellow_caps', name:'2 x Yellow epidural caps', image:'images/delivery_yellow_caps.jpg' },
   ]},
   { drawer: 'Drawer 4 — Blood Bottles', overview: 'images/lw_drawer4_overview.jpg', icon: '🩸', items: [
-    { id:'lw_d4_overview', name:'Drawer 4 overview', image:'images/lw_drawer4_overview.jpg' },
     { id:'d4_pink', name:'2 x Pink blood bottles', image:'images/sep_bottle_pink.jpg' },
     { id:'d4_yellow', name:'2 x Yellow blood bottles', image:'images/sep_bottle_yellow.jpg' },
     { id:'d4_purple', name:'2 x Purple blood bottles', image:'images/sep_bottle_purple.jpg' },
@@ -219,19 +215,16 @@ const LW_TROLLEY = [
     { id:'d4_blue', name:'1 x Blue blood bottle', image:'images/sep_bottle_blue.jpg' },
   ]},
   { drawer: 'Drawer 5 — Wipes & Tourniquets', overview: 'images/lw_drawer5_overview.jpg', icon: '🧹', items: [
-    { id:'lw_d5_overview', name:'Drawer 5 overview', image:'images/lw_drawer5_overview.jpg' },
     { id:'d5_wipes', name:'10 x Alcohol wipes', image:'images/sep_alcohol_wipes.jpg' },
     { id:'d5_tourniquet', name:'4 x Tourniquets', image:'images/sep_tourniquet.jpg' },
   ]},
   { drawer: 'Drawer 6 — Wristbands & ID', overview: 'images/lw_drawer6_overview.jpg', icon: '🏷', items: [
-    { id:'lw_d6_overview', name:'Drawer 6 overview', image:'images/lw_drawer6_overview.jpg' },
     { id:'d6_adult_band', name:'1 x Adult wristband', image:'images/pph_allergy_bracelet.jpg' },
     { id:'d6_cord_clamp', name:'1 x Cord clamp', image:'images/res_cord_clamps.jpg' },
     { id:'d6_allergy_band', name:'1 x Red allergy band', image:'images/delivery_allergy_band.jpg' },
     { id:'d6_baby_band', name:'1 x Baby wristband', image:'images/delivery_baby_band.jpg' },
   ]},
   { drawer: 'Drawer 7 — Catheterisation & FSE', overview: 'images/lw_drawer7_overview.jpg', icon: '🩺', items: [
-    { id:'lw_d7_overview', name:'Drawer 7 overview', image:'images/lw_drawer7_overview.jpg' },
     { id:'d7_foley', name:'1 x Foley catheter', image:'images/pph_foley.jpg' },
     { id:'d7_inout', name:'2 x In/out catheters', image:'images/pph_inout_cath.jpg' },
     { id:'d7_instillagel', name:'2 x Instillagel', image:'images/pph_instillagel.jpg' },
@@ -242,14 +235,12 @@ const LW_TROLLEY = [
     { id:'d7_amnihook', name:'2 x Amnihooks', image:'images/delivery_amnihook.jpg' },
   ]},
   { drawer: 'Drawer 8 — Gloves & Gel', overview: 'images/lw_drawer8_overview.jpg', icon: '🧤', items: [
-    { id:'lw_d8_overview', name:'Drawer 8 overview', image:'images/lw_drawer8_overview.jpg' },
     { id:'d8_gloves_s', name:'Sterile gloves — small', image:'images/tb_sterile_gloves.jpg' },
     { id:'d8_gloves_m', name:'Sterile gloves — medium', image:'images/tb_sterile_gloves.jpg' },
     { id:'d8_gloves_l', name:'Sterile gloves — large', image:'images/tb_sterile_gloves.jpg' },
     { id:'d8_aqua_gel', name:'Sachets of aqua gel', image:'images/delivery_aqua_gel.jpg' },
   ]},
   { drawer: 'Drawer 9 — Sutures & Repair', overview: 'images/lw_drawer9_overview.jpg', icon: '🧵', items: [
-    { id:'lw_d9_overview', name:'Drawer 9 overview', image:'images/lw_drawer9_overview.jpg' },
     { id:'d9_perineal', name:'1 x Perineal repair pack', image:'images/inst_perineal_suture.jpg' },
     { id:'d9_underbuttock', name:'1 x Under buttock drape', image:'images/delivery_underbuttock.jpg' },
     { id:'d9_cssd', name:'1 x CSSD candy stripe bag', image:'images/inst_cssd_bag.jpg' },
@@ -261,7 +252,6 @@ const LW_TROLLEY = [
     { id:'d9_vicryl_30', name:'2 x 3-0 Vicryl rapide', image:'images/inst_vicryl.jpg' },
   ]},
   { drawer: 'Drawer 10 — Inco & Pads', overview: 'images/lw_drawer10_overview.jpg', icon: '📦', items: [
-    { id:'lw_d10_overview', name:'Drawer 10 overview', image:'images/lw_drawer10_overview.jpg' },
     { id:'d10_inco', name:'Inco sheets', image:'images/delivery_inco.jpg' },
     { id:'d10_pads', name:'1 x Pack of maternity pads', image:'images/delivery_pads.jpg' },
   ]},
@@ -270,7 +260,6 @@ const LW_TROLLEY = [
 // ── BIRTH CENTRE TROLLEY (BC 1, 3, 4) ──────────────────
 const BC_TROLLEY = [
   { drawer: 'Drawer 1 — Delivery Instruments', overview: 'images/bc_drawer1_overview.jpg', icon: '✂', items: [
-    { id:'bc_trolley_overview', name:'Birth Centre trolley overview', image:'images/bc_trolley_overview.jpg' },
     { id:'bc_d1_instruments', name:'1 x Normal delivery instruments', image:'images/delivery_instruments.jpg' },
     { id:'bc_d1_delivery_pack', name:'1 x Delivery pack', image:'images/delivery_pack.jpg' },
   ]},
