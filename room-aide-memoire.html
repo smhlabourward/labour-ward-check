@@ -390,7 +390,7 @@ function buildList() {
   let html = '';
   currentData.forEach(section => {
     const overviewImg = section.overview
-      ? `<div class="drawer-overview" onclick="openLightbox('${section.overview}');event.stopPropagation()"><img src="${section.overview}" alt="Drawer overview" onerror="this.parentElement.style.display='none'"></div>`
+      ? `<div class="drawer-overview"><img src="${section.overview}" alt="Drawer overview" onclick="openLightbox('${section.overview}')" onerror="this.style.display='none'"></div>`
       : '';
     html += `<div class="cat-header"><div class="cat-icon">${section.icon}</div>${section.drawer}</div>${overviewImg}`;
     section.items.forEach(item => {
