@@ -715,25 +715,17 @@ function showAlertDetail(){
 }
 
 
-function showTab(name){
-  document.querySelectorAll('.tab-view').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('tab-'+name).classList.add('active');
-  const tabs=['emergency','rooms','trolleys','environment','cleaning','history'];
-  document.querySelectorAll('.tab')[tabs.indexOf(name)].classList.add('active');
-}
 
-// ── EXPORT ────────────────────────────────────────────────
-function exportCSV(){
-  const headers=['equipment_id','staff_name','checked_at','overall_status','pass_count','fail_count'];
-  const csv=[headers.join(','),...allChecks.map(c=>headers.map(h=>{const v=c[h]??'';return typeof v==='string'&&v.includes(',')? `"${v}"`:v;}).join(','))].join('\n');
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  a.download=`smh-labour-ward-${new Date().toISOString().slice(0,10)}.csv`;
-  a.click();
-}
-
-init();
-</script>
-</body>
-</html>
+// ── MODALS ────────────────────────────────────────────────
+function openModal(id){
+  const name=EQUIP_META[id]?EQUIP_META[id].name:id;
+  document.getElementById('modalTitle').textContent=name;
+  const checks=allChecks.filter(c=>c.equipment_id===id);
+  const last=checks[0];
+  const comp=calcCompliance(id,EQUIP_META[id]?EQUIP_META[id].freq:'daily');
+  let html='';
+  if(last){
+    html+=`<div class="mdr"><span class="mdr-label">Last checked</span><span class="mdr-val">${fmtTime(last.checked_at)}</span></div>`;
+    html+=`<div class="mdr"><span class="mdr-label">By</span><span class="mdr-val">${last.staff_name}</span></div>`;
+    html+=`<div class="mdr"><span class="mdr-label">Result</span><span class="mdr-val" style="color:${last.overall_status==='pass'?'var(--green)':'var(--red)'}">${last.overall_status==='pass'?'✓ Passed':'⚠ Failed'}</span></div>`;
+    html+=`<div class="mdr"><span class="mdr-label">Pass / Fail</span><span class="mdr-val">${last.pass_count||0} / ${last.fail_count||
