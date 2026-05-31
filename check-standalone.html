@@ -2589,6 +2589,31 @@ function updateSubmit() {
 // ============================================================
 //  SUBMIT
 // ============================================================
+
+// ── AUTO-DAILY MAP ──────────────────────────────────────
+// When a monthly/weekly check is submitted, also register the daily check
+const AUTO_DAILY_MAP = {
+  'resuscitaire_1_monthly': 'resuscitaire_1_daily',
+  'resuscitaire_2_monthly': 'resuscitaire_2_daily',
+  'resuscitaire_3_monthly': 'resuscitaire_3_daily',
+  'resuscitaire_4_monthly': 'resuscitaire_4_daily',
+  'resuscitaire_5_monthly': 'resuscitaire_5_daily',
+  'resuscitaire_6_monthly': 'resuscitaire_6_daily',
+  'resuscitaire_7_monthly': 'resuscitaire_7_daily',
+  'resuscitaire_8_monthly': 'resuscitaire_8_daily',
+  'resuscitaire_9_monthly': 'resuscitaire_9_daily',
+  'pph_trolley_1_monthly': 'pph_trolley_1_daily',
+  'pph_trolley_2_monthly': 'pph_trolley_2_daily',
+  'instrumental_trolley_1_monthly': 'instrumental_trolley_1_daily',
+  'instrumental_trolley_2_monthly': 'instrumental_trolley_2_daily',
+  'emergency_trolley_monthly': 'emergency_trolley_daily',
+  'transfer_bag_handover_monthly': 'transfer_bag_handover_daily',
+  'transfer_bag_triage_monthly': 'transfer_bag_triage_daily',
+  'sepsis_box_monthly': 'sepsis_box_daily',
+  'hypo_box_weekly': 'hypo_box_daily',
+  'cpr_trolley_weekly': 'cpr_trolley_daily',
+};
+
 async function submitCheck() {
   const items = getAllItems();
   items.forEach(i => {
@@ -2646,6 +2671,19 @@ async function submitCheck() {
     if(local.length > 1000) local.splice(1000);
     localStorage.setItem('sm_lwec_checks', JSON.stringify(local));
   } catch(e) {}
+
+  // Auto-register daily check if this is a monthly/weekly check
+  const dailyId = AUTO_DAILY_MAP[currentEqId];
+  if(dailyId && saved) {
+    try {
+      const dailyPayload = {...payload, equipment_id: dailyId, frequency: 'daily'};
+      await fetch(`${CONFIG.supabaseUrl}/rest/v1/equipment_checks`, {
+        method:'POST',
+        headers:{'Content-Type':'application/json','apikey':CONFIG.supabaseKey,'Authorization':`Bearer ${CONFIG.supabaseKey}`,'Prefer':'return=minimal'},
+        body: JSON.stringify(dailyPayload)
+      });
+    } catch(e) { console.error('Auto-daily save failed:', e); }
+  }
 
   showComplete(overall, passCount, failCount, naCount, critFails, saved);
 }
