@@ -416,8 +416,25 @@ function getStatus(id, freqKey){
   const last = checks[0];
   if(!last) return 'never';
   if(last.overall_status==='fail') return 'fail';
-  const ms = FREQ_MS[freqKey] || FREQ_MS.daily;
-  if(Date.now()-new Date(last.checked_at)>ms) return 'overdue';
+  const now = new Date();
+  const lastDate = new Date(last.checked_at);
+  if(freqKey==='daily'){
+    // Reset at midnight — check must be done today (same calendar day)
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    if(lastDate < todayStart) return 'overdue';
+  } else if(freqKey==='weekly'){
+    // Must be done within the current calendar week (Mon-Sun)
+    const dayOfWeek = now.getDay()===0 ? 6 : now.getDay()-1; // 0=Mon
+    const weekStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()-dayOfWeek);
+    if(lastDate < weekStart) return 'overdue';
+  } else if(freqKey==='monthly'){
+    // Must be done within the current calendar month
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    if(lastDate < monthStart) return 'overdue';
+  } else {
+    const ms = FREQ_MS[freqKey] || FREQ_MS.daily;
+    if(Date.now()-new Date(last.checked_at)>ms) return 'overdue';
+  }
   return 'pass';
 }
 
