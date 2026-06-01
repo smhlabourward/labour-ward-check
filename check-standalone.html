@@ -1613,9 +1613,9 @@ FRIDGES.forEach(fridge => {
       name: 'Temperature Recording',
       icon: '🌡',
       items: [
-        { id: `${fridge.id}_current_temp`, name: 'Current temperature recorded', desc: 'Enter current temperature reading from the thermometer display', critical: true, image: 'images/fridge_escalation_flowchart.jpg' },
-        { id: `${fridge.id}_min_temp`, name: 'Minimum temperature recorded', desc: 'Enter the minimum temperature shown on the thermometer', critical: true, image: 'images/fridge_escalation_flowchart.jpg' },
-        { id: `${fridge.id}_max_temp`, name: 'Maximum temperature recorded', desc: 'Enter the maximum temperature shown on the thermometer', critical: true, image: 'images/fridge_escalation_flowchart.jpg' },
+        { id: `${fridge.id}_temp_recorded_current`, name: 'Current temperature (°C)', desc: 'Enter the current temperature reading from the thermometer display. Must be 2–8°C.', critical: true, image: 'images/fridge_escalation_flowchart.jpg', temperatureInput: true },
+        { id: `${fridge.id}_temp_recorded_min`, name: 'Minimum temperature (°C)', desc: 'Enter the minimum temperature shown on the thermometer. Must be 2–8°C.', critical: true, image: 'images/fridge_escalation_flowchart.jpg', temperatureInput: true },
+        { id: `${fridge.id}_temp_recorded_max`, name: 'Maximum temperature (°C)', desc: 'Enter the maximum temperature shown on the thermometer. Must be 2–8°C.', critical: true, image: 'images/fridge_escalation_flowchart.jpg', temperatureInput: true },
         { id: `${fridge.id}_thermometer_reset`, name: 'Thermometer reset after recording', desc: 'Confirm the thermometer min/max has been reset', critical: false, image: 'images/fridge_escalation_flowchart.jpg' },
         { id: `${fridge.id}_in_range`, name: 'All readings within 2–8°C range', desc: 'Confirm current, min and max are all within acceptable range', critical: true, image: 'images/fridge_escalation_flowchart.jpg' },
         { id: `${fridge.id}_escalation`, name: 'Escalation taken if out of range', desc: 'If any reading was outside 2–8°C confirm escalation steps have been followed', critical: false, image: 'images/fridge_escalation_flowchart.jpg' },
@@ -2496,14 +2496,14 @@ function buildChecklist() {
           </div>`;
 
       // Temperature input for temp check items
-      if (currentEquip.temperatureCheck && item.id.includes('temp_recorded')) {
+      if (item.temperatureInput || (currentEquip.temperatureCheck && item.id.includes('temp_recorded'))) {
         html += `
           <div class="temp-input-wrap">
             <div class="temp-label">Enter temperature reading:</div>
             <input class="temp-input" type="number" step="0.1" id="temp-${item.id}" placeholder="00.0" oninput="checkTemp('${item.id}',this.value)">
             <span class="temp-unit">${currentEquip.tempUnit || '°C'}</span>
             <div class="temp-alert" id="tempalert-${item.id}">
-              <strong>⚠ Temperature ${currentEquip.tempMax}°C or above — action required</strong>
+              <strong>⚠ Temperature outside 2–8°C range — action required</strong>
               <div id="tempescalation-${item.id}"></div>
             </div>
           </div>`;
@@ -2530,16 +2530,24 @@ function buildChecklist() {
 
 function checkTemp(itemId, val) {
   const temp = parseFloat(val);
-  const max = currentEquip.tempMax || 25;
   const alertEl = document.getElementById(`tempalert-${itemId}`);
   const escEl = document.getElementById(`tempescalation-${itemId}`);
-  if (!isNaN(temp) && temp >= max) {
+  // Fridge items use 2-8°C range, area temp items use max threshold
+  const isFridgeItem = itemId.includes('fridge') || itemId.includes('_temp_recorded_');
+  let outOfRange = false;
+  if (isFridgeItem) {
+    outOfRange = !isNaN(temp) && (temp < 2 || temp > 8);
+  } else {
+    const max = currentEquip.tempMax || 25;
+    outOfRange = !isNaN(temp) && temp >= max;
+  }
+  if (outOfRange) {
     const esc = currentEquip.escalation;
-    escEl.innerHTML = esc ? `<p style="margin-bottom:6px">${esc.inHours}</p><p style="margin-bottom:6px">${esc.outOfHours}</p><p>${esc.further}</p>` : '';
-    alertEl.classList.add('show');
+    if(escEl) escEl.innerHTML = esc ? `<p style="margin-bottom:6px">${esc.immediate||''}</p><p style="margin-bottom:6px">${esc.outOfRange||''}</p><p>${esc.contactPharmacy||''}</p>` : '';
+    if(alertEl) alertEl.classList.add('show');
     setAns(itemId, 'fail');
   } else if (!isNaN(temp)) {
-    alertEl.classList.remove('show');
+    if(alertEl) alertEl.classList.remove('show');
     setAns(itemId, 'pass');
   }
   tempValues[itemId] = val;
