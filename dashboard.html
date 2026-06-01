@@ -419,21 +419,18 @@ function getStatus(id, freqKey){
   const now = new Date();
   const lastDate = new Date(last.checked_at);
   if(freqKey==='daily'){
-    // Reset at midnight — check must be done today (same calendar day)
+    // Reset at midnight — must be done today
     const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     if(lastDate < todayStart) return 'overdue';
   } else if(freqKey==='weekly'){
-    // Must be done within the current calendar week (Mon-Sun)
-    const dayOfWeek = now.getDay()===0 ? 6 : now.getDay()-1; // 0=Mon
-    const weekStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()-dayOfWeek);
-    if(lastDate < weekStart) return 'overdue';
+    // Overdue if more than 7 days since last completed
+    if(Date.now() - lastDate > 7*86400000) return 'overdue';
   } else if(freqKey==='monthly'){
-    // Must be done within the current calendar month
-    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-    if(lastDate < monthStart) return 'overdue';
+    // Overdue if more than 30 days since last completed
+    if(Date.now() - lastDate > 30*86400000) return 'overdue';
   } else {
     const ms = FREQ_MS[freqKey] || FREQ_MS.daily;
-    if(Date.now()-new Date(last.checked_at)>ms) return 'overdue';
+    if(Date.now() - lastDate > ms) return 'overdue';
   }
   return 'pass';
 }
