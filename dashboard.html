@@ -794,6 +794,59 @@ function viewAuditFor(id){
   renderHistory();
 }
 
+
+// ── HISTORY ───────────────────────────────────────────────
+function populateMonthFilter(){
+  const sel = document.getElementById('hMonth');
+  if(!sel) return;
+  // Keep existing options, just repopulate if empty
+  if(sel.options.length > 1) return;
+  const months = new Set(allChecks.map(c=>new Date(c.checked_at).toISOString().slice(0,7)));
+  const sorted = Array.from(months).sort().reverse();
+  // Add blank option first
+  const blank = document.createElement('option');
+  blank.value = '';
+  blank.textContent = 'All months';
+  sel.appendChild(blank);
+  sorted.forEach(m=>{
+    const opt = document.createElement('option');
+    opt.value = m;
+    const [y,mo] = m.split('-');
+    opt.textContent = new Date(y,mo-1).toLocaleString('en-GB',{month:'long',year:'numeric'});
+    sel.appendChild(opt);
+  });
+}
+
+function renderHistory(){
+  populateMonthFilter();
+  const statusF = document.getElementById('hStatus').value;
+  const monthF = document.getElementById('hMonth').value;
+  const searchF = (document.getElementById('hSearch').value||'').toLowerCase().trim();
+  let rows = allChecks.filter(c=>{
+    if(statusF==='fail' && c.overall_status!=='fail') return false;
+    if(statusF==='pass' && c.overall_status!=='pass') return false;
+    if(monthF){
+      const cm = new Date(c.checked_at).toISOString().slice(0,7);
+      if(cm !== monthF) return false;
+    }
+    if(searchF){
+      const name = (EQUIP_META[c.equipment_id]?EQUIP_META[c.equipment_id].name:c.equipment_name||c.equipment_id).toLowerCase();
+      const eid = (c.equipment_id||'').toLowerCase();
+      if(!name.includes(searchF) && !eid.includes(searchF)) return false;
+    }
+    return true;
+  }).slice(0,500);
+  const body=document.getElementById('histBody');
+  if(!rows.length){
+    body.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--grey3);padding:24px;">No records found.</td></tr>';
+    return;
+  }
+  body.innerHTML=rows.map(c=>{
+    const name=EQUIP_META[c.equipment_id]?EQUIP_META[c.equipment_id].name:c.equipment_name||c.equipment_id;
+    return `<tr><td style="font-weight:600;font-size:11px;">${name}</td><td style="font-size:11px;">${c.location||'—'}</td><td>${c.staff_name||'—'}</td><td style="white-space:nowrap;font-size:11px;">${fmtTime(c.checked_at)}</td><td><span class="${c.overall_status==='pass'?'td-pass':'td-fail'}">${c.overall_status==='pass'?'✓ Pass':'⚠ Fail'}</span></td><td style="color:var(--green);font-weight:700;">${c.pass_count??'—'}</td><td style="color:${(c.fail_count||0)>0?'var(--red)':'var(--grey3)'};font-weight:700;">${c.fail_count??'—'}</td></tr>`;
+  }).join('');
+}
+
 function showTab(name){
   document.querySelectorAll('.tab-view').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
