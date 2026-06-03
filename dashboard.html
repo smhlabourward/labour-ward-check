@@ -419,9 +419,12 @@ function getStatus(id, freqKey){
   const now = new Date();
   const lastDate = new Date(last.checked_at);
   if(freqKey==='daily'){
-    // Reset at midnight — must be done today
-    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    if(lastDate < todayStart) return 'overdue';
+    // Reset at midnight local time — must be done today
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+    // Use local date string comparison to avoid timezone issues
+    const todayStr = now.toLocaleDateString('en-GB');
+    const lastStr = lastDate.toLocaleDateString('en-GB');
+    if(lastStr !== todayStr) return 'overdue';
   } else if(freqKey==='weekly'){
     // Overdue if more than 7 days since last completed
     if(Date.now() - lastDate > 7*86400000) return 'overdue';
