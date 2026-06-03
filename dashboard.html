@@ -419,12 +419,19 @@ function getStatus(id, freqKey){
   const now = new Date();
   const lastDate = new Date(last.checked_at);
   if(freqKey==='daily'){
-    // Reset at midnight local time — must be done today
-    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
-    // Use local date string comparison to avoid timezone issues
+    // PM checks only become overdue at 21:00
+    const PM_IDS = ['cd_labour_ward_pm','cd_birth_centre_pm','triage_results_pm'];
+    const isPM = PM_IDS.includes(id);
     const todayStr = now.toLocaleDateString('en-GB');
     const lastStr = lastDate.toLocaleDateString('en-GB');
-    if(lastStr !== todayStr) return 'overdue';
+    if(isPM){
+      // Not overdue until 21:00 today
+      const pmDeadline = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 21, 0, 0);
+      if(lastStr !== todayStr && now >= pmDeadline) return 'overdue';
+      if(lastStr !== todayStr && now < pmDeadline) return 'never'; // not yet due
+    } else {
+      if(lastStr !== todayStr) return 'overdue';
+    }
   } else if(freqKey==='weekly'){
     // Overdue if more than 7 days since last completed
     if(Date.now() - lastDate > 7*86400000) return 'overdue';
