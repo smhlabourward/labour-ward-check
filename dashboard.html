@@ -471,18 +471,20 @@ function calcCompliance(id, freq){
   const monthStart = new Date(now.getFullYear(),now.getMonth(),1);
   const thisMonth = allChecks.filter(c=>c.equipment_id===id&&new Date(c.checked_at)>=monthStart);
   if(freq==='monthly'){
-    // Rolling 30 days not calendar month
-    const thirtyDaysAgo = new Date(now - 30*86400000);
-    const recent = allChecks.filter(c=>c.equipment_id===id&&new Date(c.checked_at)>=thirtyDaysAgo);
-    return recent.length>0?100:0;
+    // Calendar month — done once this month = 100%
+    return thisMonth.length>0?100:0;
   }
   if(freq==='weekly'){
-    // Rolling 7 days
-    const sevenDaysAgo = new Date(now - 7*86400000);
-    const recent = allChecks.filter(c=>c.equipment_id===id&&new Date(c.checked_at)>=sevenDaysAgo);
-    return recent.length>0?100:0;
+    // Count distinct weeks this calendar month that have a check
+    const weeksInMonth = Math.ceil(daysInMonth/7);
+    const weeks = new Set(thisMonth.map(c=>{
+      const d = new Date(c.checked_at);
+      return Math.ceil(d.getDate()/7);
+    }));
+    return Math.min(Math.round(weeks.size/weeksInMonth*100),100);
   }
-  const days=new Set(thisMonth.map(c=>new Date(c.checked_at).toISOString().slice(0,10)));
+  // Daily — distinct days checked this month / days in month
+  const days=new Set(thisMonth.map(c=>new Date(c.checked_at).toLocaleDateString('en-GB')));
   return Math.min(Math.round(days.size/daysInMonth*100),100);
 }
 
