@@ -396,12 +396,26 @@ async function loadData(){
   document.getElementById('navStatus').textContent='Loading...';
   try{
     const since = new Date(); since.setFullYear(since.getFullYear()-2);
-    const res = await fetch(
-      `${CONFIG.supabaseUrl}/rest/v1/equipment_checks?checked_at=gte.${since.toISOString()}&order=checked_at.desc&limit=50000`,
-      {headers:{'apikey':CONFIG.supabaseKey,'Authorization':`Bearer ${CONFIG.supabaseKey}`,'Range-Unit':'items','Range':'0-49999','Prefer':'count=none'}}
-    );
-    if(!res.ok) throw new Error('Fetch failed');
-    allChecks = await res.json();
+    // Fetch all records in batches of 1000 to bypass Supabase default limit
+    const batchSize = 1000;
+    let allResults = [];
+    let offset = 0;
+    let keepFetching = true;
+    while(keepFetching) {
+      const res = await fetch(
+        `${CONFIG.supabaseUrl}/rest/v1/equipment_checks?checked_at=gte.${since.toISOString()}&order=checked_at.desc&limit=${batchSize}&offset=${offset}`,
+        {headers:{'apikey':CONFIG.supabaseKey,'Authorization':`Bearer ${CONFIG.supabaseKey}`}}
+      );
+      if(!res.ok) throw new Error('Fetch failed');
+      const batch = await res.json();
+      allResults = allResults.concat(batch);
+      if(batch.length < batchSize) {
+        keepFetching = false;
+      } else {
+        offset += batchSize;
+      }
+    }
+    allChecks = allResults;
     document.getElementById('navStatus').textContent=`Updated ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}`;
   }catch(e){
     document.getElementById('navStatus').textContent='Offline';
