@@ -2384,248 +2384,114 @@ EQUIPMENT_DB2['room_ready_primrose'] = {
 // Merge all equipment data into single lookup object
 Object.assign(EQUIPMENT_DB1, EQUIPMENT_DB1_EXTRA);
 Object.assign(EQUIPMENT_DB1, EQUIPMENT_DB2);
-
-//  APP STATE
-// ============================================================
-let currentEquip = null;
-let currentEqId = null;
-let answers = {};
-let failNotes = {};
-let tempValues = {};
-let staffName = '';
-let staffId = "";
-let isEmergencyCheck = false;
-
-// ============================================================
-//  INIT
-// ============================================================
-function init() {
-  console.log("init() running, EQUIPMENT_DB1 keys:", Object.keys(EQUIPMENT_DB1).length);
-  console.log("looking for eq:", new URLSearchParams(window.location.search).get("eq"));
-  console.log("found:", EQUIPMENT_DB1[new URLSearchParams(window.location.search).get("eq")] ? "YES" : "NO");
-  updateTime();
-  setInterval(updateTime, 30000);
-  if (CONFIG.supabaseUrl === 'YOUR_SUPABASE_URL') {
-    document.getElementById('configNotice').style.display = 'block';
-  }
-  const params = new URLSearchParams(window.location.search);
-  currentEqId = params.get('eq');
-  if (!currentEqId || !EQUIPMENT_DB1[currentEqId]) {
-    document.getElementById('heroName').textContent = 'Equipment not found';
-    document.getElementById('heroLocation').textContent = 'Check QR code and try again';
-    return;
-  }
-  currentEquip = EQUIPMENT_DB1[currentEqId];
-  renderHero();
-  loadLastCheck(currentEqId);
-  document.getElementById('staffName').addEventListener('input', checkCanStart);
-  if (currentEquip.afterEmergency) {
-    document.getElementById('emergencyBtn').style.display = 'block';
-  }
-}
-
-function updateTime() {
-  const now = new Date();
-  document.getElementById('topTime').innerHTML =
-    now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) + '<br>' +
-    now.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
-}
-
-function renderHero() {
-  const eq = currentEquip;
-  const imgWrap = document.getElementById('heroImgWrap');
-  if (eq.image) {
-    imgWrap.innerHTML = `<img src="${eq.image}" alt="${eq.name}" onerror="this.parentElement.innerHTML='<div class=equip-hero-placeholder><div>🏥</div><p>Photo coming soon</p></div>'">`;
-  }
-  document.getElementById('heroName').textContent = eq.name;
-  document.getElementById('heroLocation').textContent = eq.location;
-  const freqMap = {daily:'Daily',weekly:'Weekly',monthly:'Monthly'};
-  const freqClass = {daily:'fp-daily',weekly:'fp-weekly',monthly:'fp-monthly'};
-  let badges = `<span class="freq-pill ${freqClass[eq.frequency]}">${freqMap[eq.frequency]} check</span>`;
-  if (eq.afterEmergency) badges += `<span class="freq-pill fp-emergency">Also after emergency use</span>`;
-  document.getElementById('heroBadges').innerHTML = badges;
-}
-
-async function loadLastCheck(eqId) {
-  if (CONFIG.supabaseUrl === 'YOUR_SUPABASE_URL') return;
-  try {
-    const res = await fetch(`${CONFIG.supabaseUrl}/rest/v1/equipment_checks?equipment_id=eq.${eqId}&order=checked_at.desc&limit=1`, {
-      headers:{'apikey':CONFIG.supabaseKey,'Authorization':`Bearer ${CONFIG.supabaseKey}`}
-    });
-    const data = await res.json();
-    if (data && data.length > 0) {
-      const last = data[0];
-      const t = new Date(last.checked_at);
-      document.getElementById('lastCheckText').textContent =
-        `${t.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})} at ${t.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})} by ${last.staff_name} — ${last.overall_status === 'pass' ? '✓ Passed' : '⚠ Issues recorded'}`;
-      document.getElementById('lastCheckBox').style.display = 'block';
+EQUIPMENT_DB1['hcid_box_daily'] = {
+  name: 'HCID Isolation Box — Daily Visual Check',
+  location: 'Labour Ward',
+  image: 'images/hcid_box.jpg',
+  imageCaption: 'Check the isolation box is in place, sealed and signage is present',
+  frequency: 'daily',
+  afterEmergency: false,
+  categories: [{
+    name: 'Daily Visual Check',
+    icon: '🔒',
+    items: [
+      { id: 'hcid_daily_location', name: 'Box in correct location', desc: 'HCID isolation box is in its designated location', critical: true, image: 'images/hcid_box_location.jpg' },
+      { id: 'hcid_daily_sealed', name: 'Box sealed and intact', desc: 'Seal is intact and has not been broken', critical: true, image: 'images/hcid_box_seal.jpg' },
+      { id: 'hcid_daily_sign', name: 'Do not enter sign present', desc: 'Do not enter sign is visible and in place', critical: true, image: 'images/hcid_do_not_enter.jpg' },
+      { id: 'hcid_daily_log', name: 'Isolation room access log present', desc: 'Access log is present outside the room', critical: true, image: 'images/hcid_access_log.jpg' },
+      { id: 'hcid_daily_instructions', name: 'Laminated donning and doffing instructions present', desc: 'Donning and doffing instructions are visible and legible', critical: true, image: 'images/hcid_donning_doffing.jpg' },
+    ]
+  }]
+};
+EQUIPMENT_DB1['hcid_box_monthly'] = {
+  name: 'HCID Isolation Box — Monthly Full Check',
+  location: 'Labour Ward',
+  image: 'images/hcid_box.jpg',
+  imageCaption: 'Full contents check of the HCID isolation box',
+  frequency: 'monthly',
+  afterEmergency: false,
+  categories: [
+    {
+      name: 'Signage & Documentation',
+      icon: '📋',
+      items: [
+        { id: 'hcid_m_log', name: 'Isolation room access log', desc: 'Access log present outside room', critical: true, image: 'images/hcid_access_log.jpg' },
+        { id: 'hcid_m_sign', name: 'Do not enter sign', desc: 'Do not enter sign present and legible', critical: true, image: 'images/hcid_do_not_enter.jpg' },
+        { id: 'hcid_m_instructions', name: 'Laminated donning and doffing instructions', desc: 'Instructions present and legible', critical: true, image: 'images/hcid_donning_doffing.jpg' },
+      ]
+    },
+    {
+      name: 'PPE',
+      icon: '🧤',
+      items: [
+        { id: 'hcid_m_pens', name: 'Box of pens', desc: 'Box of pens present for documentation', critical: false, image: 'images/hcid_pens.jpg' },
+        { id: 'hcid_m_ffp3', name: 'FFP3 non-valved masks (fit tested)', desc: 'FFP3 masks present — fit tested only', critical: true, image: 'images/hcid_ffp3.jpg' },
+        { id: 'hcid_m_visor', name: 'Full face visor or goggles', desc: 'Full face visor or goggles present', critical: true, image: 'images/hcid_visor.jpg' },
+        { id: 'hcid_m_coveralls', name: 'Fluid resistant coveralls (long gown)', desc: 'Fluid resistant coveralls present', critical: true, image: 'images/hcid_coveralls.jpg' },
+        { id: 'hcid_m_gloves_s', name: 'Long cuff gloves — small', desc: 'Long cuff gloves size small present', critical: true, image: 'images/hcid_gloves.jpg' },
+        { id: 'hcid_m_gloves_m', name: 'Long cuff gloves — medium', desc: 'Long cuff gloves size medium present', critical: true, image: 'images/hcid_gloves.jpg' },
+        { id: 'hcid_m_gloves_l', name: 'Long cuff gloves — large', desc: 'Long cuff gloves size large present', critical: true, image: 'images/hcid_gloves.jpg' },
+        { id: 'hcid_m_aprons', name: '1 x Green roll aprons', desc: 'Green roll aprons present', critical: true, image: 'images/hcid_aprons.jpg' },
+        { id: 'hcid_m_wellies', name: 'Wellington boots available in Room 5', desc: 'Wellington boots in various sizes available in Room 5', critical: false, image: 'images/hcid_wellies.jpg' },
+      ]
+    },
+    {
+      name: 'Consumables',
+      icon: '🧴',
+      items: [
+        { id: 'hcid_m_sanitiser', name: '1 x Hand sanitiser', desc: 'Hand sanitiser present and not empty', critical: true, image: 'images/hcid_sanitiser.jpg' },
+        { id: 'hcid_m_biohazard_bags', name: 'Large biohazard specimen bags', desc: 'Biohazard specimen bags present', critical: true, image: 'images/hcid_biohazard_bags.jpg' },
+        { id: 'hcid_m_sharps', name: 'Sharps bin', desc: 'Sharps bin present and not above fill line', critical: true, image: 'images/hcid_sharps.jpg' },
+        { id: 'hcid_m_waste_bags', name: '1 x Roll of spare clinical waste bags', desc: 'Clinical waste bags present', critical: true, image: 'images/hcid_waste_bags.jpg' },
+        { id: 'hcid_m_tristel', name: 'Tristel Fuse container', desc: 'Tristel Fuse present and in date', critical: true, image: 'images/hcid_tristel.jpg' },
+        { id: 'hcid_m_clinell', name: 'Clinell wipes', desc: 'Clinell wipes present and in date', critical: true, image: 'images/hcid_clinell.jpg' },
+        { id: 'hcid_m_spill_wipes', name: 'Spill kit — spill wipes', desc: 'Spill wipes present', critical: true, image: 'images/hcid_spill_kit.jpg' },
+        { id: 'hcid_m_vernagel', name: 'Vernagel granules', desc: 'Vernagel granules present for spill management', critical: true, image: 'images/hcid_vernagel.jpg' },
+      ]
+    },
+    {
+      name: 'Patient PPE',
+      icon: '🏥',
+      items: [
+        { id: 'hcid_m_pt_gown', name: 'Patient gown', desc: 'Gown present for patient use', critical: true, image: 'images/hcid_pt_gown.jpg' },
+        { id: 'hcid_m_pt_gloves', name: 'Patient gloves', desc: 'Gloves present for patient use', critical: true, image: 'images/hcid_gloves.jpg' },
+        { id: 'hcid_m_pt_ffp3', name: 'Patient non-valved FFP3 mask', desc: 'Non-valved FFP3 mask present for patient', critical: true, image: 'images/hcid_ffp3.jpg' },
+      ]
+    },
+    {
+      name: 'Phlebotomy Tray',
+      icon: '🩸',
+      items: [
+        { id: 'hcid_m_tourniquet', name: 'Disposable tourniquets', desc: 'Disposable tourniquets present', critical: true, image: 'images/sep_tourniquet.jpg' },
+        { id: 'hcid_m_alc_wipes', name: 'Alcohol wipes', desc: 'Alcohol wipes present', critical: true, image: 'images/sep_alcohol_wipes.jpg' },
+        { id: 'hcid_m_butterfly', name: 'Butterfly needle', desc: 'Butterfly needle present', critical: true, image: 'images/pph_butterfly.jpg' },
+        { id: 'hcid_m_vacutainer_blue', name: 'Vacutainer with blue attachment', desc: 'Vacutainer with blue needle attachment present', critical: true, image: 'images/delivery_vacutainers.jpg' },
+        { id: 'hcid_m_vacutainer_green', name: 'Vacutainer with green attachment', desc: 'Vacutainer with green needle attachment present', critical: true, image: 'images/delivery_vacutainers.jpg' },
+        { id: 'hcid_m_cannulas', name: 'Cannulas — all sizes', desc: 'Cannulas of all sizes present', critical: true, image: 'images/sep_cannula_grey.jpg' },
+        { id: 'hcid_m_saline_flush', name: 'Saline syringe flush', desc: 'Saline flush present', critical: true, image: 'images/sep_saline_flush.jpg' },
+        { id: 'hcid_m_cotton_wool', name: 'Cotton wool', desc: 'Cotton wool present', critical: true, image: 'images/sep_cotton_wool.jpg' },
+        { id: 'hcid_m_micropore', name: 'Micropore tape', desc: 'Micropore tape present', critical: false, image: 'images/pph_tape.jpg' },
+        { id: 'hcid_m_tegaderm', name: 'Tegaderm cannula dressing', desc: 'Tegaderm dressing present', critical: true, image: 'images/sep_tegerderm.jpg' },
+        { id: 'hcid_m_bucket', name: '1 x White bucket for sample transportation', desc: 'White bucket for transporting samples present', critical: true, image: 'images/hcid_bucket.jpg' },
+      ]
+    },
+    {
+      name: 'Blood Bottles & Specimens',
+      icon: '🔬',
+      items: [
+        { id: 'hcid_m_culture', name: '1 x Blood culture bottles', desc: 'Blood culture bottles present', critical: true, image: 'images/sep_blood_culture.jpg' },
+        { id: 'hcid_m_purple', name: '3 x Purple blood bottles', desc: '3 purple blood bottles present', critical: true, image: 'images/sep_bottle_purple.jpg' },
+        { id: 'hcid_m_pink', name: '2 x Pink blood bottles', desc: '2 pink blood bottles present', critical: true, image: 'images/sep_bottle_pink.jpg' },
+        { id: 'hcid_m_yellow', name: '2 x Yellow blood bottles', desc: '2 yellow blood bottles present', critical: true, image: 'images/sep_bottle_yellow.jpg' },
+        { id: 'hcid_m_blue', name: '2 x Blue blood bottles', desc: '2 blue blood bottles present', critical: true, image: 'images/sep_bottle_blue.jpg' },
+        { id: 'hcid_m_grey', name: '1 x Grey blood bottle', desc: '1 grey blood bottle present', critical: true, image: 'images/sep_bottle_grey.jpg' },
+        { id: 'hcid_m_throat_swabs', name: '2 x Viral throat swabs', desc: '2 viral throat swabs present', critical: true, image: 'images/hcid_throat_swabs.jpg' },
+        { id: 'hcid_m_spec_bags', name: 'Biohazardous specimen bags', desc: 'Biohazardous specimen bags present', critical: true, image: 'images/hcid_biohazard_bags.jpg' },
+        { id: 'hcid_m_urine', name: '2 x Urine pots', desc: '2 urine pots present', critical: true, image: 'images/sep_urine_pot.jpg' },
+      ]
     }
-  } catch(e) {}
-}
-
-function checkCanStart() {
-  const ok = document.getElementById('staffName').value.trim().length >= 1;
-  document.getElementById('startBtn').disabled = !ok;
-}
-
-function startEmergencyCheck() {
-  isEmergencyCheck = true;
-  staffName = document.getElementById('staffName').value.trim();
-  
-  if (!staffName) { showToast('Please enter your name first'); return; }
-  buildChecklist();
-  showScreen('screen-check');
-}
-
-function startCheck() {
-  console.log("startCheck called, staffName:", document.getElementById("staffName").value, "button disabled:", document.getElementById("startBtn").disabled);
-  isEmergencyCheck = false;
-  staffName = document.getElementById('staffName').value.trim();
-  
-  answers = {}; failNotes = {}; tempValues = {};
-  buildChecklist();
-  showScreen('screen-check');
-}
-
-// ============================================================
-//  BUILD CHECKLIST
-// ============================================================
-function buildChecklist() {
-
-  const eq = currentEquip;
-  document.getElementById('checkTitle').textContent = eq.name + (isEmergencyCheck ? ' — Post-Emergency' : '');
-  document.getElementById('checkSubtitle').textContent = `${staffName} · ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}`;
-  if (eq.image) {
-    document.getElementById('mainImg').src = eq.image;
-    document.getElementById('mainCaption').textContent = eq.imageCaption || '';
-    document.getElementById('mainImgSection').style.display = 'block';
-  }
-
-  let html = '';
-  eq.categories.forEach(cat => {
-    html += `<div class="cat-header"><div class="cat-icon">${cat.icon}</div>${cat.name}</div>`;
-    cat.items.forEach(item => {
-      const hasImg = item.image;
-      const imgHtml = hasImg
-        ? `<div class="item-img-thumb" onclick="openLightbox('${item.image}','${item.name}')"><img src="${item.image}" alt="${item.name}" onerror="this.parentElement.innerHTML='<div class=item-img-placeholder>📷</div>'"><div class="item-img-expand">🔍</div></div>`
-        : `<div class="item-img-thumb"><div class="item-img-placeholder">📷</div></div>`;
-      html += `
-        <div class="item-wrap${item.critical?' critical':''}" id="wrap-${item.id}">
-          <div class="item-row">
-            ${imgHtml}
-            <div class="item-text">
-              <div class="item-name">${item.name}${item.critical?'<span class="critical-tag">Critical</span>':''}</div>
-              <div class="item-desc">${item.desc}</div>
-            </div>
-            <div class="ans-wrap">
-              <button class="ans-btn a-pass" id="pass-${item.id}" onclick="setAns('${item.id}','pass')">✓ Pass</button>
-              <button class="ans-btn a-fail" id="fail-${item.id}" onclick="setAns('${item.id}','fail')">✗ Fail</button>
-              <button class="ans-btn a-na" id="na-${item.id}" onclick="setAns('${item.id}','na')">N/A</button>
-            </div>
-          </div>`;
-
-      // Temperature input for temp check items
-      if (item.temperatureInput || (currentEquip.temperatureCheck && item.id.includes('temp_recorded'))) {
-        html += `
-          <div class="temp-input-wrap">
-            <div class="temp-label">Enter temperature reading:</div>
-            <input class="temp-input" type="number" step="0.1" id="temp-${item.id}" placeholder="00.0" oninput="checkTemp('${item.id}',this.value)">
-            <span class="temp-unit">${currentEquip.tempUnit || '°C'}</span>
-            <div class="temp-alert" id="tempalert-${item.id}">
-              <strong>⚠ Temperature outside 2–8°C range — action required</strong>
-              <div id="tempescalation-${item.id}"></div>
-            </div>
-          </div>`;
-      }
-
-      html += `
-          <div class="fail-note" id="fnote-${item.id}" style="display:none;">
-            <div class="fail-note-label">⚠ Describe the fault (required before submitting):</div>
-            <textarea class="fail-note-input" id="fnotetxt-${item.id}" placeholder="Describe what was found and any action taken..." oninput="updateSubmit()"></textarea>
-          </div>
-        </div>`;
-    });
-  });
-
-  try {
-    document.getElementById('checksBody').innerHTML = html;
-    console.log("checksBody set, length:", document.getElementById('checksBody').innerHTML.length, "children:", document.getElementById('checksBody').children.length);
-    updateProgress();
-  } catch(buildErr) {
-    console.error('buildChecklist error:', buildErr.message, buildErr.stack);
-    document.getElementById('checksBody').innerHTML = '<div style="padding:20px;color:red;">Error loading checklist: ' + buildErr.message + '</div>';
-  }
-}
-
-function checkTemp(itemId, val) {
-  const temp = parseFloat(val);
-  const alertEl = document.getElementById(`tempalert-${itemId}`);
-  const escEl = document.getElementById(`tempescalation-${itemId}`);
-  // Fridge items use 2-8°C range, area temp items use max threshold
-  const isFridgeItem = itemId.includes('fridge') || itemId.includes('_temp_recorded_');
-  let outOfRange = false;
-  if (isFridgeItem) {
-    outOfRange = !isNaN(temp) && (temp < 2 || temp > 8);
-  } else {
-    const max = currentEquip.tempMax || 25;
-    outOfRange = !isNaN(temp) && temp >= max;
-  }
-  if (outOfRange) {
-    const esc = currentEquip.escalation;
-    if(escEl) escEl.innerHTML = esc ? `<p style="margin-bottom:6px">${esc.immediate||''}</p><p style="margin-bottom:6px">${esc.outOfRange||''}</p><p>${esc.contactPharmacy||''}</p>` : '';
-    if(alertEl) alertEl.classList.add('show');
-    setAns(itemId, 'fail');
-  } else if (!isNaN(temp)) {
-    if(alertEl) alertEl.classList.remove('show');
-    setAns(itemId, 'pass');
-  }
-  tempValues[itemId] = val;
-}
-
-function setAns(itemId, ans) {
-  answers[itemId] = ans;
-  ['pass','fail','na'].forEach(a => {
-    const el = document.getElementById(`${a}-${itemId}`);
-    if(el) el.classList.toggle('active', a === ans);
-  });
-  const fnote = document.getElementById(`fnote-${itemId}`);
-  if(fnote) fnote.style.display = ans === 'fail' ? 'block' : 'none';
-  if(ans !== 'fail') delete failNotes[itemId];
-  updateProgress();
-  updateSubmit();
-}
-
-function getAllItems() {
-  const items = [];
-  currentEquip.categories.forEach(c => c.items.forEach(i => items.push(i)));
-  return items;
-}
-
-function updateProgress() {
-  const items = getAllItems();
-  const done = items.filter(i => answers[i.id]).length;
-  const pct = items.length ? Math.round(done/items.length*100) : 0;
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressText').textContent = `${done} of ${items.length} answered`;
-}
-
-function updateSubmit() {
-  const items = getAllItems();
-  const allAnswered = items.every(i => answers[i.id]);
-  const failsMissingNotes = items.filter(i => answers[i.id]==='fail').some(i => {
-    const el = document.getElementById(`fnotetxt-${i.id}`);
-    return el && !el.value.trim();
-  });
-  const canSubmit = allAnswered && !failsMissingNotes;
-  document.getElementById('submitBtn').disabled = !canSubmit;
-  if (!allAnswered) document.getElementById('submitNote').textContent = 'Answer all items to submit';
-  else if (failsMissingNotes) document.getElementById('submitNote').textContent = 'Add fault notes for all failed items';
-  else document.getElementById('submitNote').textContent = 'All items answered — ready to submit';
-}
-
-// ============================================================
-//  SUBMIT
-// ============================================================
+  ]
+};
 
 // ── AUTO-DAILY MAP ──────────────────────────────────────
 // When a monthly/weekly check is submitted, also register the daily check
@@ -2648,6 +2514,7 @@ const AUTO_DAILY_MAP = {
   'transfer_bag_triage_monthly': 'transfer_bag_triage_daily',
   'sepsis_box_monthly': 'sepsis_box_daily',
   'hypo_box_weekly': 'hypo_box_daily',
+  'hcid_box_monthly': 'hcid_box_daily',
   'cpr_trolley_weekly': 'cpr_trolley_daily',
 };
 
