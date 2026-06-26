@@ -2383,27 +2383,7 @@ EQUIPMENT_DB2['room_ready_primrose'] = {
 
 // Merge all equipment data into single lookup object
 Object.assign(EQUIPMENT_DB1, EQUIPMENT_DB1_EXTRA);
-Object.assign(EQUIPMENT_DB1, EQUIPMENT_DB2);
-EQUIPMENT_DB1['hcid_box_daily'] = {
-  name: 'HCID Isolation Box — Daily Visual Check',
-  location: 'Labour Ward',
-  image: 'images/hcid_box.jpg',
-  imageCaption: 'Check the isolation box is in place, sealed and signage is present',
-  frequency: 'daily',
-  afterEmergency: false,
-  categories: [{
-    name: 'Daily Visual Check',
-    icon: '🔒',
-    items: [
-      { id: 'hcid_daily_location', name: 'Box in correct location', desc: 'HCID isolation box is in its designated location', critical: true, image: 'images/hcid_box_location.jpg' },
-      { id: 'hcid_daily_sealed', name: 'Box sealed and intact', desc: 'Seal is intact and has not been broken', critical: true, image: 'images/hcid_box_seal.jpg' },
-      { id: 'hcid_daily_sign', name: 'Do not enter sign present', desc: 'Do not enter sign is visible and in place', critical: true, image: 'images/hcid_do_not_enter.jpg' },
-      { id: 'hcid_daily_log', name: 'Isolation room access log present', desc: 'Access log is present outside the room', critical: true, image: 'images/hcid_access_log.jpg' },
-      { id: 'hcid_daily_instructions', name: 'Laminated donning and doffing instructions present', desc: 'Donning and doffing instructions are visible and legible', critical: true, image: 'images/hcid_donning_doffing.jpg' },
-    ]
-  }]
-};
-EQUIPMENT_DB1['hcid_box_monthly'] = {
+Object.assign(EQUIPMENT_DB1, EQUIPMENT_DB2);EQUIPMENT_DB1['hcid_box_monthly'] = {
   name: 'HCID Isolation Box — Monthly Full Check',
   location: 'Labour Ward',
   image: 'images/hcid_box.jpg',
@@ -2514,7 +2494,6 @@ const AUTO_DAILY_MAP = {
   'transfer_bag_triage_monthly': 'transfer_bag_triage_daily',
   'sepsis_box_monthly': 'sepsis_box_daily',
   'hypo_box_weekly': 'hypo_box_daily',
-  'hcid_box_monthly': 'hcid_box_daily',
   'cpr_trolley_weekly': 'cpr_trolley_daily',
 };
 
