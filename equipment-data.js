@@ -627,5 +627,97 @@ TEMP_AREAS.forEach(area => {
   };
 });
 
+
+// ── HCID ISOLATION BOX ───────────────────────────────────
+EQUIPMENT_DB1['hcid_box_monthly'] = {
+  name: 'HCID Isolation Box — Monthly Full Check',
+  location: 'Labour Ward',
+  image: 'images/hcid_box.jpg',
+  imageCaption: 'Full contents check of the HCID isolation box',
+  frequency: 'monthly',
+  afterEmergency: false,
+  categories: [
+    {
+      name: 'Signage & Documentation',
+      icon: '📋',
+      items: [
+        { id: 'hcid_m_log', name: 'Isolation room access log', desc: 'Access log present outside room', critical: true, image: 'images/hcid_access_log.jpg' },
+        { id: 'hcid_m_sign', name: 'Do not enter sign', desc: 'Do not enter sign present and legible', critical: true, image: 'images/hcid_do_not_enter.jpg' },
+        { id: 'hcid_m_instructions', name: 'Laminated donning and doffing instructions', desc: 'Instructions present and legible', critical: true, image: 'images/hcid_donning_doffing.jpg' },
+      ]
+    },
+    {
+      name: 'PPE',
+      icon: '🧤',
+      items: [
+        { id: 'hcid_m_pens', name: 'Box of pens', desc: 'Box of pens present for documentation', critical: false, image: 'images/hcid_pens.jpg' },
+        { id: 'hcid_m_ffp3', name: 'FFP3 non-valved masks (fit tested)', desc: 'FFP3 masks present — fit tested only', critical: true, image: 'images/hcid_ffp3.jpg' },
+        { id: 'hcid_m_visor', name: 'Full face visor or goggles', desc: 'Full face visor or goggles present', critical: true, image: 'images/hcid_visor.jpg' },
+        { id: 'hcid_m_coveralls', name: 'Fluid resistant coveralls (long gown)', desc: 'Fluid resistant coveralls present', critical: true, image: 'images/hcid_coveralls.jpg' },
+        { id: 'hcid_m_gloves_s', name: 'Long cuff gloves — small', desc: 'Long cuff gloves size small present', critical: true, image: 'images/hcid_gloves.jpg' },
+        { id: 'hcid_m_gloves_m', name: 'Long cuff gloves — medium', desc: 'Long cuff gloves size medium present', critical: true, image: 'images/hcid_gloves.jpg' },
+        { id: 'hcid_m_gloves_l', name: 'Long cuff gloves — large', desc: 'Long cuff gloves size large present', critical: true, image: 'images/hcid_gloves.jpg' },
+        { id: 'hcid_m_aprons', name: '1 x Green roll aprons', desc: 'Green roll aprons present', critical: true, image: 'images/hcid_aprons.jpg' },
+        { id: 'hcid_m_wellies', name: 'Wellington boots available in Room 5', desc: 'Wellington boots in various sizes available in Room 5', critical: false, image: 'images/hcid_wellies.jpg' },
+      ]
+    },
+    {
+      name: 'Consumables',
+      icon: '🧴',
+      items: [
+        { id: 'hcid_m_sanitiser', name: '1 x Hand sanitiser', desc: 'Hand sanitiser present and not empty', critical: true, image: 'images/hcid_sanitiser.jpg' },
+        { id: 'hcid_m_biohazard_bags', name: 'Large biohazard specimen bags', desc: 'Biohazard specimen bags present', critical: true, image: 'images/hcid_biohazard_bags.jpg' },
+        { id: 'hcid_m_sharps', name: 'Sharps bin', desc: 'Sharps bin present and not above fill line', critical: true, image: 'images/hcid_sharps.jpg' },
+        { id: 'hcid_m_waste_bags', name: '1 x Roll of spare clinical waste bags', desc: 'Clinical waste bags present', critical: true, image: 'images/hcid_waste_bags.jpg' },
+        { id: 'hcid_m_tristel', name: 'Tristel Fuse container', desc: 'Tristel Fuse present and in date', critical: true, image: 'images/hcid_tristel.jpg' },
+        { id: 'hcid_m_clinell', name: 'Clinell wipes', desc: 'Clinell wipes present and in date', critical: true, image: 'images/hcid_clinell.jpg' },
+        { id: 'hcid_m_spill_wipes', name: 'Spill kit — spill wipes', desc: 'Spill wipes present', critical: true, image: 'images/hcid_spill_kit.jpg' },
+        { id: 'hcid_m_vernagel', name: 'Vernagel granules', desc: 'Vernagel granules present for spill management', critical: true, image: 'images/hcid_vernagel.jpg' },
+      ]
+    },
+    {
+      name: 'Patient PPE',
+      icon: '🏥',
+      items: [
+        { id: 'hcid_m_pt_gown', name: 'Patient gown', desc: 'Gown present for patient use', critical: true, image: 'images/hcid_pt_gown.jpg' },
+        { id: 'hcid_m_pt_gloves', name: 'Patient gloves', desc: 'Gloves present for patient use', critical: true, image: 'images/hcid_gloves.jpg' },
+        { id: 'hcid_m_pt_ffp3', name: 'Patient non-valved FFP3 mask', desc: 'Non-valved FFP3 mask present for patient', critical: true, image: 'images/hcid_ffp3.jpg' },
+      ]
+    },
+    {
+      name: 'Phlebotomy Tray',
+      icon: '🩸',
+      items: [
+        { id: 'hcid_m_tourniquet', name: 'Disposable tourniquets', desc: 'Disposable tourniquets present', critical: true, image: 'images/sep_tourniquet.jpg' },
+        { id: 'hcid_m_alc_wipes', name: 'Alcohol wipes', desc: 'Alcohol wipes present', critical: true, image: 'images/sep_alcohol_wipes.jpg' },
+        { id: 'hcid_m_butterfly', name: 'Butterfly needle', desc: 'Butterfly needle present', critical: true, image: 'images/pph_butterfly.jpg' },
+        { id: 'hcid_m_vacutainer_blue', name: 'Vacutainer with blue attachment', desc: 'Vacutainer with blue needle attachment present', critical: true, image: 'images/delivery_vacutainers.jpg' },
+        { id: 'hcid_m_vacutainer_green', name: 'Vacutainer with green attachment', desc: 'Vacutainer with green needle attachment present', critical: true, image: 'images/delivery_vacutainers.jpg' },
+        { id: 'hcid_m_cannulas', name: 'Cannulas — all sizes', desc: 'Cannulas of all sizes present', critical: true, image: 'images/sep_cannula_grey.jpg' },
+        { id: 'hcid_m_saline_flush', name: 'Saline syringe flush', desc: 'Saline flush present', critical: true, image: 'images/sep_saline_flush.jpg' },
+        { id: 'hcid_m_cotton_wool', name: 'Cotton wool', desc: 'Cotton wool present', critical: true, image: 'images/sep_cotton_wool.jpg' },
+        { id: 'hcid_m_micropore', name: 'Micropore tape', desc: 'Micropore tape present', critical: false, image: 'images/pph_tape.jpg' },
+        { id: 'hcid_m_tegaderm', name: 'Tegaderm cannula dressing', desc: 'Tegaderm dressing present', critical: true, image: 'images/sep_tegerderm.jpg' },
+        { id: 'hcid_m_bucket', name: '1 x White bucket for sample transportation', desc: 'White bucket for transporting samples present', critical: true, image: 'images/hcid_bucket.jpg' },
+      ]
+    },
+    {
+      name: 'Blood Bottles & Specimens',
+      icon: '🔬',
+      items: [
+        { id: 'hcid_m_culture', name: '1 x Blood culture bottles', desc: 'Blood culture bottles present', critical: true, image: 'images/sep_blood_culture.jpg' },
+        { id: 'hcid_m_purple', name: '3 x Purple blood bottles', desc: '3 purple blood bottles present', critical: true, image: 'images/sep_bottle_purple.jpg' },
+        { id: 'hcid_m_pink', name: '2 x Pink blood bottles', desc: '2 pink blood bottles present', critical: true, image: 'images/sep_bottle_pink.jpg' },
+        { id: 'hcid_m_yellow', name: '2 x Yellow blood bottles', desc: '2 yellow blood bottles present', critical: true, image: 'images/sep_bottle_yellow.jpg' },
+        { id: 'hcid_m_blue', name: '2 x Blue blood bottles', desc: '2 blue blood bottles present', critical: true, image: 'images/sep_bottle_blue.jpg' },
+        { id: 'hcid_m_grey', name: '1 x Grey blood bottle', desc: '1 grey blood bottle present', critical: true, image: 'images/sep_bottle_grey.jpg' },
+        { id: 'hcid_m_throat_swabs', name: '2 x Viral throat swabs', desc: '2 viral throat swabs present', critical: true, image: 'images/hcid_throat_swabs.jpg' },
+        { id: 'hcid_m_spec_bags', name: 'Biohazardous specimen bags', desc: 'Biohazardous specimen bags present', critical: true, image: 'images/hcid_biohazard_bags.jpg' },
+        { id: 'hcid_m_urine', name: '2 x Urine pots', desc: '2 urine pots present', critical: true, image: 'images/sep_urine_pot.jpg' },
+      ]
+    }
+  ]
+};
+
 // Export for use in check.html and dashboard
 if (typeof module !== 'undefined') module.exports = { EQUIPMENT_DB1, ROOMS_ALL };
