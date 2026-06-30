@@ -936,10 +936,36 @@ function renderHistory(){
     body.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--grey3);padding:24px;">No records found.</td></tr>';
     return;
   }
-  body.innerHTML=rows.map(c=>{
+  // Store rows globally so we can look them up by index when clicked
+  window._historyRows = rows;
+  body.innerHTML=rows.map((c,idx)=>{
     const name=EQUIP_META[c.equipment_id]?EQUIP_META[c.equipment_id].name:c.equipment_name||c.equipment_id;
-    return `<tr><td style="font-weight:600;font-size:11px;">${name}</td><td style="font-size:11px;">${c.location||'—'}</td><td>${c.staff_name||'—'}</td><td style="white-space:nowrap;font-size:11px;">${fmtTime(c.checked_at)}</td><td><span class="${c.overall_status==='pass'?'td-pass':'td-fail'}">${c.overall_status==='pass'?'✓ Pass':'⚠ Fail'}</span></td><td style="color:var(--green);font-weight:700;">${c.pass_count??'—'}</td><td style="color:${(c.fail_count||0)>0?'var(--red)':'var(--grey3)'};font-weight:700;">${c.fail_count??'—'}</td></tr>`;
+    const clickable = c.overall_status==='fail' ? `onclick="showHistoryDetail(${idx})" style="cursor:pointer;"` : '';
+    return `<tr ${clickable}><td style="font-weight:600;font-size:11px;">${name}</td><td style="font-size:11px;">${c.location||'—'}</td><td>${c.staff_name||'—'}</td><td style="white-space:nowrap;font-size:11px;">${fmtTime(c.checked_at)}</td><td><span class="${c.overall_status==='pass'?'td-pass':'td-fail'}">${c.overall_status==='pass'?'✓ Pass':'⚠ Fail'+(c.overall_status==='fail'?' — tap for details':'')}</span></td><td style="color:var(--green);font-weight:700;">${c.pass_count??'—'}</td><td style="color:${(c.fail_count||0)>0?'var(--red)':'var(--grey3)'};font-weight:700;">${c.fail_count??'—'}</td></tr>`;
   }).join('');
+}
+
+function showHistoryDetail(idx){
+  const c = window._historyRows[idx];
+  if(!c) return;
+  const name=EQUIP_META[c.equipment_id]?EQUIP_META[c.equipment_id].name:c.equipment_name||c.equipment_id;
+  document.getElementById('modalTitle').textContent = name;
+  let html = `<div class="mdr"><span class="mdr-label">Checked</span><span class="mdr-val">${fmtTime(c.checked_at)}</span></div>`;
+  html += `<div class="mdr"><span class="mdr-label">By</span><span class="mdr-val">${c.staff_name||'—'}</span></div>`;
+  html += `<div class="mdr"><span class="mdr-label">Result</span><span class="mdr-val" style="color:var(--red)">⚠ Failed</span></div>`;
+  html += `<div class="mdr"><span class="mdr-label">Pass / Fail</span><span class="mdr-val">${c.pass_count||0} / ${c.fail_count||0}</span></div>`;
+  if(c.critical_fails && c.critical_fails.length>0){
+    html += `<div style="margin-top:12px;font-weight:700;font-size:13px;margin-bottom:6px;color:var(--red);">Critical failures:</div>`;
+    html += `<div style="font-size:13px;margin-bottom:10px;">${c.critical_fails.join(', ')}</div>`;
+  }
+  if(c.fail_notes && Object.keys(c.fail_notes).length>0){
+    html += `<div style="margin-top:12px;font-weight:700;font-size:13px;margin-bottom:6px;">Issue details:</div>`;
+    Object.entries(c.fail_notes).forEach(([k,v])=>{
+      if(v) html += `<div class="fail-item"><strong>${k}</strong><p>${v}</p></div>`;
+    });
+  }
+  document.getElementById('modalBody').innerHTML = html;
+  document.getElementById('modalBg').classList.add('show');
 }
 
 function showTab(name){
