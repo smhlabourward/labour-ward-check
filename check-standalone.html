@@ -1846,7 +1846,49 @@ EQUIPMENT_DB2['mattress_audit'] = {
 
 
 // ============================================================
+// ── PRIMROSE ANNEX FRIDGE CLEANING ──────────────────────
+EQUIPMENT_DB2['clean_fridge_primrose_annex_daily'] = {
+  name: 'Primrose Annex Fridge — Daily Clean',
+  location: 'Primrose Annex',
+  image: 'images/fridge_primrose_annex.jpg',
+  imageCaption: 'Clean all external fridge surfaces daily using approved decontamination wipes.',
+  frequency: 'daily',
+  afterEmergency: false,
+  dashboard: 2,
+  categories: [{
+    name: 'Daily Clean',
+    icon: '🧹',
+    items: [
+      { id: 'clean_fpa_daily_exterior', name: 'Exterior surfaces cleaned', desc: 'All outer surfaces wiped with approved decontamination wipes', critical: true, image: 'images/clean_surfaces.jpg' },
+      { id: 'clean_fpa_daily_handle', name: 'Door handle cleaned', desc: 'Handle wiped thoroughly — high-touch surface', critical: true, image: 'images/clean_surfaces.jpg' },
+      { id: 'clean_fpa_daily_seal', name: 'Door seal wiped', desc: 'Rubber door seal wiped clean', critical: false, image: 'images/clean_surfaces.jpg' },
+      { id: 'clean_fpa_daily_signature', name: 'Cleaning label completed', desc: 'Sign and date the cleaning record label on the fridge', critical: true, image: 'images/clean_label.jpg' },
+    ]
+  }]
+};
 
+EQUIPMENT_DB2['clean_fridge_primrose_annex_monthly'] = {
+  name: 'Primrose Annex Fridge — Monthly Clean',
+  location: 'Primrose Annex',
+  image: 'images/fridge_primrose_annex.jpg',
+  imageCaption: 'Full monthly clean — empty fridge contents, clean interior and exterior with approved decontamination solution.',
+  frequency: 'monthly',
+  afterEmergency: false,
+  dashboard: 2,
+  categories: [{
+    name: 'Monthly Deep Clean',
+    icon: '🧹',
+    items: [
+      { id: 'clean_fpa_monthly_emptied', name: 'Fridge emptied before cleaning', desc: 'All contents removed and stored appropriately during clean', critical: true, image: 'images/clean_surfaces.jpg' },
+      { id: 'clean_fpa_monthly_interior', name: 'Interior fully cleaned', desc: 'All interior surfaces, shelves and drawers wiped with approved solution', critical: true, image: 'images/clean_surfaces.jpg' },
+      { id: 'clean_fpa_monthly_shelves', name: 'Shelves removed and cleaned', desc: 'Shelves taken out, cleaned on both sides and replaced', critical: true, image: 'images/clean_drawers_inside.jpg' },
+      { id: 'clean_fpa_monthly_seal', name: 'Door seal cleaned thoroughly', desc: 'Rubber seal wiped and checked for damage or mould', critical: false, image: 'images/clean_surfaces.jpg' },
+      { id: 'clean_fpa_monthly_exterior', name: 'Exterior surfaces cleaned', desc: 'All outer surfaces including top, sides and handle wiped', critical: true, image: 'images/clean_surfaces.jpg' },
+      { id: 'clean_fpa_monthly_restocked', name: 'Fridge restocked correctly', desc: 'Contents returned to fridge in correct order after cleaning', critical: true, image: 'images/clean_restocked.jpg' },
+      { id: 'clean_fpa_monthly_signature', name: 'Cleaning label completed and dated', desc: 'Sign and date the monthly cleaning record label', critical: true, image: 'images/clean_label.jpg' },
+    ]
+  }]
+};
 // ── ROOM READINESS CHECKS (Dashboard 2 — Support Staff) ─
 EQUIPMENT_DB2['room_ready_room_6'] = {
   name: 'Room 6 — Daily Room Check',
