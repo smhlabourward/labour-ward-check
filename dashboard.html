@@ -539,14 +539,30 @@ function calcComplianceMonth(id, freq){
 
 function calcComplianceWeek(id, freq){
   const now = new Date();
-  const checks7 = allChecks.filter(c=>{
+  const weekStart = new Date(now - 6*24*60*60*1000);
+  weekStart.setHours(0,0,0,0);
+  const checks7 = allChecks.filter(function(c){
     if(c.equipment_id!==id) return false;
-    const diffMs = now - new Date(c.checked_at);
-    return diffMs>=0 && diffMs<=7*24*60*60*1000;
+    return new Date(c.checked_at) >= weekStart;
   });
   if(freq==='monthly'||freq==='weekly') return checks7.length>0?100:0;
-  const days=new Set(checks7.map(c=>new Date(c.checked_at).toLocaleDateString('en-GB',{timeZone:'Europe/London'})));
-  return Math.min(Math.round(days.size/7*100),100);
+  // Count distinct UK dates checked in the last 7 calendar days
+  const todayStr = now.toLocaleDateString('en-GB',{timeZone:'Europe/London'});
+  const todayParts = todayStr.split('/').map(Number);
+  // Build the set of the last 7 calendar days in UK time
+  const last7 = new Set();
+  for(var i=0;i<7;i++){
+    const d = new Date(now);
+    d.setDate(d.getDate()-i);
+    last7.add(d.toLocaleDateString('en-GB',{timeZone:'Europe/London'}));
+  }
+  const checkedDays = new Set(checks7.map(function(c){
+    return new Date(c.checked_at).toLocaleDateString('en-GB',{timeZone:'Europe/London'});
+  }));
+  // Count how many of the last 7 days had a check
+  var done = 0;
+  last7.forEach(function(d){ if(checkedDays.has(d)) done++; });
+  return Math.round(done/7*100);
 }
 
 function calcComplianceDay(id, freq){
