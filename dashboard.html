@@ -622,15 +622,17 @@ function renderAll(){
 function avgCompliance(ids){
   if(!ids.length) return 0;
   if(compPeriod==='day'){
-    // Day view: what % of checks in this category have been done today
+    // Day view: only count daily-frequency checks (monthly/weekly not due today)
     const todayStr = new Date().toLocaleDateString('en-GB',{timeZone:'Europe/London'});
-    const done = ids.filter(id=>{
-      return allChecks.some(c=>
-        c.equipment_id===id &&
-        new Date(c.checked_at).toLocaleDateString('en-GB',{timeZone:'Europe/London'})===todayStr
-      );
+    const dailyIds = ids.filter(id=>(EQUIP_META[id]?EQUIP_META[id].freq:'daily')==='daily');
+    if(!dailyIds.length) return 100; // no daily checks in this category = nothing due today
+    const done = dailyIds.filter(function(id){
+      return allChecks.some(function(rec){
+        return rec.equipment_id===id &&
+          new Date(rec.checked_at).toLocaleDateString('en-GB',{timeZone:'Europe/London'})===todayStr;
+      });
     }).length;
-    return Math.round(done/ids.length*100);
+    return Math.round(done/dailyIds.length*100);
   }
   const rates = ids.map(id => calcCompliance(id, EQUIP_META[id]?EQUIP_META[id].freq:'daily'));
   const avg = Math.round(rates.reduce((a,b)=>a+b,0)/rates.length);
@@ -672,12 +674,18 @@ function renderStats(){
     const st=getStatus(id,meta?meta.freq:'daily');
     if(st==='overdue'||st==='never') overdue++;
   });
-  // Overall compliance — day view: checks done today vs total
+  // Overall compliance — day view: only daily-frequency checks due today
   let avg = 0;
   if(compPeriod==='day'){
     const todayStr = new Date().toLocaleDateString('en-GB',{timeZone:'Europe/London'});
-    const done = ALL_IDS.filter(id=>allChecks.some(c=>c.equipment_id===id&&new Date(c.checked_at).toLocaleDateString('en-GB',{timeZone:'Europe/London'})===todayStr)).length;
-    avg = ALL_IDS.length ? Math.round(done/ALL_IDS.length*100) : 0;
+    const dailyAll = ALL_IDS.filter(id=>(EQUIP_META[id]?EQUIP_META[id].freq:'daily')==='daily');
+    const done = dailyAll.filter(function(id){
+      return allChecks.some(function(rec){
+        return rec.equipment_id===id &&
+          new Date(rec.checked_at).toLocaleDateString('en-GB',{timeZone:'Europe/London'})===todayStr;
+      });
+    }).length;
+    avg = dailyAll.length ? Math.round(done/dailyAll.length*100) : 0;
   } else {
     const rates=ALL_IDS.map(id=>calcCompliance(id,EQUIP_META[id]?EQUIP_META[id].freq:'daily'));
     avg=rates.length?Math.round(rates.reduce((a,b)=>a+b,0)/rates.length):0;
@@ -793,7 +801,12 @@ function renderAlerts(){
     return st==='overdue'||st==='never';
   });
 
-  if(activeFailIds.length>0){
+  if(activeFailIds.length>0 && overdue.length>3){
+    // Both issues and overdue — show fail colour but mention both
+    ab.className='alert-bar fail';
+    document.getElementById('alertTitle').textContent=`${activeFailIds.length} unresolved issue${activeFailIds.length>1?'s':''} today — ${overdue.length} checks not yet completed`;
+    document.getElementById('alertBody').textContent=' — tap here for details';
+  } else if(activeFailIds.length>0){
     ab.className='alert-bar fail';
     document.getElementById('alertTitle').textContent=`${activeFailIds.length} unresolved issue${activeFailIds.length>1?'s':''} today`;
     document.getElementById('alertBody').textContent=' — tap here for details';
