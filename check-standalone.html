@@ -1630,99 +1630,37 @@ FRIDGES.forEach(fridge => {
   };
 });
 
-// Override Primrose Annex fridge — AM and PM checks, new flowchart image
-EQUIPMENT_DB2['fridge_primrose_annex_am'] = {
-  name: 'Primrose Annex Fridges — AM Temperature Check',
-  location: 'Primrose Annex',
-  image: 'images/fridge_primrose_annex_flowchart.jpg',
-  imageCaption: 'Check and record temperatures for both Primrose Annex fridges. Acceptable range 2–8°C. Follow the failure procedure if outside range.',
-  frequency: 'daily',
-  afterEmergency: false,
-  fridgeCheck: true,
-  tempMin: 2, tempMax: 8, tempUnit: '°C',
-  pharmacyNumber: '01494 425355',
-  escalation: {
-    immediate: 'Report any reading outside 2–8°C to a senior midwife/manager IMMEDIATELY.',
-    outOfRange: 'Empty fridge contents into Abi Cots. Open annexe door, turn fans on, lights off. Wait 30 minutes and recheck.',
-    contactPharmacy: 'If temperature remains outside range: contact on-call APT (mortuary staff 01296 315381) via switchboard and arrange immediate transfer of fridge contents to the mortuary.',
-    disposal: 'Escalate to co-ordinator/manager on call and update original poster.'
-  },
-  dashboard: 2,
-  categories: [
+// Override Primrose Annex fridge — two fridges in one cabinet, one QR code, new flowchart image
+EQUIPMENT_DB2['fridge_primrose_annex'].image = 'images/fridge_primrose_annex_flowchart.jpg';
+EQUIPMENT_DB2['fridge_primrose_annex'].imageCaption = 'The Primrose Annex fridge cabinet contains two fridges. Record temperatures for both. Acceptable range 2–8°C. Follow failure procedure if outside range.';
+EQUIPMENT_DB2['fridge_primrose_annex'].name = 'Primrose Annex Fridges — Temperature Check';
+EQUIPMENT_DB2['fridge_primrose_annex'].categories = [
   {
     name: 'Fridge 1 — Temperature Recording',
     icon: '❄',
     items: [
-      { id: 'fridge_primrose_annex_f1_current_am', name: 'Fridge 1 — Current temperature (°C)', desc: 'Enter the current temperature reading for Fridge 1. Must be 2–8°C.', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg', temperatureInput: true },
-      { id: 'fridge_primrose_annex_f1_min_am', name: 'Fridge 1 — Minimum temperature (°C)', desc: 'Enter the minimum temperature shown on Fridge 1 thermometer. Must be 2–8°C.', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg', temperatureInput: true },
-      { id: 'fridge_primrose_annex_f1_max_am', name: 'Fridge 1 — Maximum temperature (°C)', desc: 'Enter the maximum temperature shown on Fridge 1 thermometer. Must be 2–8°C.', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg', temperatureInput: true },
-      { id: 'fridge_primrose_annex_f1_reset_am', name: 'Fridge 1 — Thermometer reset after recording', desc: 'Confirm the Fridge 1 thermometer min/max has been reset', critical: false, image: 'images/fridge_primrose_annex_flowchart.jpg' },
-      { id: 'fridge_primrose_annex_f1_in_range_am', name: 'Fridge 1 — All readings within 2–8°C', desc: 'Confirm all Fridge 1 readings are within acceptable range', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg' },
-      { id: 'fridge_primrose_annex_f1_escalation_am', name: 'Fridge 1 — Escalation taken if out of range', desc: 'If any Fridge 1 reading was outside 2–8°C confirm escalation steps have been followed', critical: false, image: 'images/fridge_primrose_annex_flowchart.jpg' },
+      { id: 'fridge_primrose_annex_f1_current', name: 'Fridge 1 — Current temperature (°C)', desc: 'Enter the current temperature reading for Fridge 1. Must be 2–8°C.', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg', temperatureInput: true },
+      { id: 'fridge_primrose_annex_f1_min', name: 'Fridge 1 — Minimum temperature (°C)', desc: 'Enter the minimum temperature shown on Fridge 1 thermometer. Must be 2–8°C.', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg', temperatureInput: true },
+      { id: 'fridge_primrose_annex_f1_max', name: 'Fridge 1 — Maximum temperature (°C)', desc: 'Enter the maximum temperature shown on Fridge 1 thermometer. Must be 2–8°C.', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg', temperatureInput: true },
+      { id: 'fridge_primrose_annex_f1_reset', name: 'Fridge 1 — Thermometer reset after recording', desc: 'Confirm the Fridge 1 thermometer min/max has been reset', critical: false, image: 'images/fridge_primrose_annex_flowchart.jpg' },
+      { id: 'fridge_primrose_annex_f1_in_range', name: 'Fridge 1 — All readings within 2–8°C', desc: 'Confirm all Fridge 1 readings are within acceptable range', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg' },
+      { id: 'fridge_primrose_annex_f1_escalation', name: 'Fridge 1 — Escalation taken if out of range', desc: 'If any Fridge 1 reading was outside 2–8°C confirm escalation steps have been followed', critical: false, image: 'images/fridge_primrose_annex_flowchart.jpg' },
     ]
   },
   {
     name: 'Fridge 2 — Temperature Recording',
     icon: '❄',
     items: [
-      { id: 'fridge_primrose_annex_f2_current_am', name: 'Fridge 2 — Current temperature (°C)', desc: 'Enter the current temperature reading for Fridge 2. Must be 2–8°C.', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg', temperatureInput: true },
-      { id: 'fridge_primrose_annex_f2_min_am', name: 'Fridge 2 — Minimum temperature (°C)', desc: 'Enter the minimum temperature shown on Fridge 2 thermometer. Must be 2–8°C.', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg', temperatureInput: true },
-      { id: 'fridge_primrose_annex_f2_max_am', name: 'Fridge 2 — Maximum temperature (°C)', desc: 'Enter the maximum temperature shown on Fridge 2 thermometer. Must be 2–8°C.', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg', temperatureInput: true },
-      { id: 'fridge_primrose_annex_f2_reset_am', name: 'Fridge 2 — Thermometer reset after recording', desc: 'Confirm the Fridge 2 thermometer min/max has been reset', critical: false, image: 'images/fridge_primrose_annex_flowchart.jpg' },
-      { id: 'fridge_primrose_annex_f2_in_range_am', name: 'Fridge 2 — All readings within 2–8°C', desc: 'Confirm all Fridge 2 readings are within acceptable range', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg' },
-      { id: 'fridge_primrose_annex_f2_escalation_am', name: 'Fridge 2 — Escalation taken if out of range', desc: 'If any Fridge 2 reading was outside 2–8°C confirm escalation steps have been followed', critical: false, image: 'images/fridge_primrose_annex_flowchart.jpg' },
+      { id: 'fridge_primrose_annex_f2_current', name: 'Fridge 2 — Current temperature (°C)', desc: 'Enter the current temperature reading for Fridge 2. Must be 2–8°C.', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg', temperatureInput: true },
+      { id: 'fridge_primrose_annex_f2_min', name: 'Fridge 2 — Minimum temperature (°C)', desc: 'Enter the minimum temperature shown on Fridge 2 thermometer. Must be 2–8°C.', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg', temperatureInput: true },
+      { id: 'fridge_primrose_annex_f2_max', name: 'Fridge 2 — Maximum temperature (°C)', desc: 'Enter the maximum temperature shown on Fridge 2 thermometer. Must be 2–8°C.', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg', temperatureInput: true },
+      { id: 'fridge_primrose_annex_f2_reset', name: 'Fridge 2 — Thermometer reset after recording', desc: 'Confirm the Fridge 2 thermometer min/max has been reset', critical: false, image: 'images/fridge_primrose_annex_flowchart.jpg' },
+      { id: 'fridge_primrose_annex_f2_in_range', name: 'Fridge 2 — All readings within 2–8°C', desc: 'Confirm all Fridge 2 readings are within acceptable range', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg' },
+      { id: 'fridge_primrose_annex_f2_escalation', name: 'Fridge 2 — Escalation taken if out of range', desc: 'If any Fridge 2 reading was outside 2–8°C confirm escalation steps have been followed', critical: false, image: 'images/fridge_primrose_annex_flowchart.jpg' },
     ]
   }
-]
-};
+];
 
-EQUIPMENT_DB2['fridge_primrose_annex_pm'] = {
-  name: 'Primrose Annex Fridges — PM Temperature Check',
-  location: 'Primrose Annex',
-  image: 'images/fridge_primrose_annex_flowchart.jpg',
-  imageCaption: 'Check and record temperatures for both Primrose Annex fridges. Acceptable range 2–8°C. Follow the failure procedure if outside range.',
-  frequency: 'daily',
-  afterEmergency: false,
-  fridgeCheck: true,
-  tempMin: 2, tempMax: 8, tempUnit: '°C',
-  pharmacyNumber: '01494 425355',
-  escalation: {
-    immediate: 'Report any reading outside 2–8°C to a senior midwife/manager IMMEDIATELY.',
-    outOfRange: 'Empty fridge contents into Abi Cots. Open annexe door, turn fans on, lights off. Wait 30 minutes and recheck.',
-    contactPharmacy: 'If temperature remains outside range: contact on-call APT (mortuary staff 01296 315381) via switchboard and arrange immediate transfer of fridge contents to the mortuary.',
-    disposal: 'Escalate to co-ordinator/manager on call and update original poster.'
-  },
-  dashboard: 2,
-  categories: [
-  {
-    name: 'Fridge 1 — Temperature Recording',
-    icon: '❄',
-    items: [
-      { id: 'fridge_primrose_annex_f1_current_pm', name: 'Fridge 1 — Current temperature (°C)', desc: 'Enter the current temperature reading for Fridge 1. Must be 2–8°C.', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg', temperatureInput: true },
-      { id: 'fridge_primrose_annex_f1_min_pm', name: 'Fridge 1 — Minimum temperature (°C)', desc: 'Enter the minimum temperature shown on Fridge 1 thermometer. Must be 2–8°C.', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg', temperatureInput: true },
-      { id: 'fridge_primrose_annex_f1_max_pm', name: 'Fridge 1 — Maximum temperature (°C)', desc: 'Enter the maximum temperature shown on Fridge 1 thermometer. Must be 2–8°C.', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg', temperatureInput: true },
-      { id: 'fridge_primrose_annex_f1_reset_pm', name: 'Fridge 1 — Thermometer reset after recording', desc: 'Confirm the Fridge 1 thermometer min/max has been reset', critical: false, image: 'images/fridge_primrose_annex_flowchart.jpg' },
-      { id: 'fridge_primrose_annex_f1_in_range_pm', name: 'Fridge 1 — All readings within 2–8°C', desc: 'Confirm all Fridge 1 readings are within acceptable range', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg' },
-      { id: 'fridge_primrose_annex_f1_escalation_pm', name: 'Fridge 1 — Escalation taken if out of range', desc: 'If any Fridge 1 reading was outside 2–8°C confirm escalation steps have been followed', critical: false, image: 'images/fridge_primrose_annex_flowchart.jpg' },
-    ]
-  },
-  {
-    name: 'Fridge 2 — Temperature Recording',
-    icon: '❄',
-    items: [
-      { id: 'fridge_primrose_annex_f2_current_pm', name: 'Fridge 2 — Current temperature (°C)', desc: 'Enter the current temperature reading for Fridge 2. Must be 2–8°C.', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg', temperatureInput: true },
-      { id: 'fridge_primrose_annex_f2_min_pm', name: 'Fridge 2 — Minimum temperature (°C)', desc: 'Enter the minimum temperature shown on Fridge 2 thermometer. Must be 2–8°C.', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg', temperatureInput: true },
-      { id: 'fridge_primrose_annex_f2_max_pm', name: 'Fridge 2 — Maximum temperature (°C)', desc: 'Enter the maximum temperature shown on Fridge 2 thermometer. Must be 2–8°C.', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg', temperatureInput: true },
-      { id: 'fridge_primrose_annex_f2_reset_pm', name: 'Fridge 2 — Thermometer reset after recording', desc: 'Confirm the Fridge 2 thermometer min/max has been reset', critical: false, image: 'images/fridge_primrose_annex_flowchart.jpg' },
-      { id: 'fridge_primrose_annex_f2_in_range_pm', name: 'Fridge 2 — All readings within 2–8°C', desc: 'Confirm all Fridge 2 readings are within acceptable range', critical: true, image: 'images/fridge_primrose_annex_flowchart.jpg' },
-      { id: 'fridge_primrose_annex_f2_escalation_pm', name: 'Fridge 2 — Escalation taken if out of range', desc: 'If any Fridge 2 reading was outside 2–8°C confirm escalation steps have been followed', critical: false, image: 'images/fridge_primrose_annex_flowchart.jpg' },
-    ]
-  }
-]
-};
-
-// Keep fridge_primrose_annex pointing to AM for backwards compatibility with existing QR code
-EQUIPMENT_DB2['fridge_primrose_annex'] = EQUIPMENT_DB2['fridge_primrose_annex_am'];
 
 // ── INSTRUMENT WASHERS (daily) ───────────────────────────
 EQUIPMENT_DB2['washer_labour_ward'] = {
