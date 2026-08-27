@@ -826,41 +826,41 @@ function showAlertDetail(){
     const latest=allChecks.find(c=>c.equipment_id===fail.equipment_id);
     return latest&&latest.overall_status==='fail';
   });
+  const overdue=ALL_IDS.filter(id=>{
+    const freq=EQUIP_META[id]?EQUIP_META[id].freq:'daily';
+    if(freq!=='daily') return false; // only show daily checks as overdue today
+    const st=getStatus(id,freq);
+    return st==='overdue'||st==='never';
+  });
 
-  if(activeFailIds.length===0){
-    // Show overdue instead
-    const overdue=ALL_IDS.filter(id=>{
-      const st=getStatus(id,EQUIP_META[id]?EQUIP_META[id].freq:'daily');
-      return st==='overdue'||st==='never';
+  let html='';
+
+  if(activeFailIds.length>0){
+    html+=`<div style="font-weight:700;font-size:13px;color:var(--red);margin-bottom:8px;">⚠ ${activeFailIds.length} Unresolved Issue${activeFailIds.length>1?'s':''}</div>`;
+    activeFailIds.forEach(fail=>{
+      const name=EQUIP_META[fail.equipment_id]?EQUIP_META[fail.equipment_id].name:fail.equipment_id;
+      html+=`<div class="fail-item"><strong>${name}</strong><p>Checked by ${fail.staff_name||'Unknown'} at ${fmtTime(fail.checked_at)}</p>`;
+      if(fail.fail_notes&&Object.keys(fail.fail_notes).length>0){
+        Object.entries(fail.fail_notes).forEach(([k,v])=>{
+          html+=`<p style="margin-top:4px;font-size:12px;"><em>${k}:</em> ${v||'No note'}</p>`;
+        });
+      }
+      html+=`<button onclick="closeModal();openModal('${fail.equipment_id}')" style="margin-top:8px;background:var(--blue2);color:white;border:none;padding:5px 12px;border-radius:4px;font-size:12px;cursor:pointer;width:100%;">View full details</button>`;
+      html+='</div>';
     });
-    if(overdue.length===0) return;
-    document.getElementById('modalTitle').textContent='Checks Not Yet Completed';
-    let html='';
-    overdue.slice(0,20).forEach(id=>{
+  }
+
+  if(overdue.length>0){
+    html+=`<div style="font-weight:700;font-size:13px;color:var(--amber);margin:12px 0 8px;">⏰ ${overdue.length} Daily Check${overdue.length>1?'s':''} Not Yet Completed</div>`;
+    overdue.slice(0,30).forEach(id=>{
       const name=EQUIP_META[id]?EQUIP_META[id].name:id;
       html+=`<div class="fail-item"><strong>${name}</strong><p>Not yet checked today</p></div>`;
     });
-    if(overdue.length>20) html+=`<p style="color:var(--grey3);font-size:12px;padding:8px 0;">...and ${overdue.length-20} more</p>`;
-    document.getElementById('modalBody').innerHTML=html;
-    document.getElementById('modalBg').classList.add('show');
-    return;
+    if(overdue.length>30) html+=`<p style="color:var(--grey3);font-size:12px;padding:8px 0;">...and ${overdue.length-30} more</p>`;
   }
 
-  document.getElementById('modalTitle').textContent='Active Issues Today';
-  let html='';
-  activeFailIds.forEach(fail=>{
-    const name=EQUIP_META[fail.equipment_id]?EQUIP_META[fail.equipment_id].name:fail.equipment_id;
-    html+=`<div class="fail-item">
-      <strong>${name}</strong>
-      <p>Checked by ${fail.staff_name||'Unknown'} at ${fmtTime(fail.checked_at)}</p>`;
-    if(fail.fail_notes&&Object.keys(fail.fail_notes).length>0){
-      Object.entries(fail.fail_notes).forEach(([k,v])=>{
-        html+=`<p style="margin-top:4px;font-size:12px;"><em>${k}:</em> ${v}</p>`;
-      });
-    }
-    html+=`<button onclick="closeModal();openModal('${fail.equipment_id}')" style="margin-top:8px;background:var(--blue2);color:white;border:none;padding:5px 12px;border-radius:4px;font-size:12px;cursor:pointer;width:100%;">View full details &amp; audit trail</button>`;
-    html+='</div>';
-  });
+  if(!html) return;
+  document.getElementById('modalTitle').textContent='Dashboard Alerts';
   document.getElementById('modalBody').innerHTML=html;
   document.getElementById('modalBg').classList.add('show');
 }
@@ -978,10 +978,45 @@ function renderHistory(){
     body.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--grey3);padding:24px;">No records found.</td></tr>';
     return;
   }
-  body.innerHTML=rows.map(c=>{
-    const name=EQUIP_META[c.equipment_id]?EQUIP_META[c.equipment_id].name:c.equipment_name||c.equipment_id;
-    return `<tr><td style="font-weight:600;font-size:11px;">${name}</td><td style="font-size:11px;">${c.location||'—'}</td><td>${c.staff_name||'—'}</td><td style="white-space:nowrap;font-size:11px;">${fmtTime(c.checked_at)}</td><td><span class="${c.overall_status==='pass'?'td-pass':'td-fail'}">${c.overall_status==='pass'?'✓ Pass':'⚠ Fail'}</span></td><td style="color:var(--green);font-weight:700;">${c.pass_count??'—'}</td><td style="color:${(c.fail_count||0)>0?'var(--red)':'var(--grey3)'};font-weight:700;">${c.fail_count??'—'}</td></tr>`;
+  body.innerHTML=rows.map(function(rec){
+    const name=EQUIP_META[rec.equipment_id]?EQUIP_META[rec.equipment_id].name:rec.equipment_name||rec.equipment_id;
+    const isFail = rec.overall_status==='fail';
+    const clickable = isFail ? 'style="cursor:pointer;" onclick="showFailDetail(allChecks.find(function(x){return x.equipment_id===''+rec.equipment_id+''&&x.checked_at===''+rec.checked_at+'';}))"' : '';
+    const temps = rec.temperature_values && Object.keys(rec.temperature_values).length>0
+      ? '<div style="margin-top:2px;">'+Object.entries(rec.temperature_values).map(function(kv){
+          const inRange = parseFloat(kv[1])>=2&&parseFloat(kv[1])<=8;
+          return '<span class="temp-badge'+(inRange?'':' temp-out')+'">'+kv[1]+'°C</span>';
+        }).join('')+'</div>'
+      : '';
+    return '<tr '+clickable+(isFail?' class="audit-row-clickable"':'')+'><td style="font-weight:600;font-size:11px;">'+name+temps+'</td><td style="font-size:11px;">'+(rec.location||'—')+'</td><td>'+(rec.staff_name||'—')+'</td><td style="white-space:nowrap;font-size:11px;">'+fmtTime(rec.checked_at)+'</td><td><span class="'+(rec.overall_status==='pass'?'td-pass':'td-fail')+'">'+(rec.overall_status==='pass'?'✓ Pass':'⚠ Fail')+'</span></td><td style="color:var(--green);font-weight:700;">'+(rec.pass_count??'—')+'</td><td style="color:'+((rec.fail_count||0)>0?'var(--red)':'var(--grey3)')+';font-weight:700;">'+(rec.fail_count??'—')+'</td></tr>';
   }).join('');
+}
+
+function showFailDetail(rec){
+  if(!rec) return;
+  const name=EQUIP_META[rec.equipment_id]?EQUIP_META[rec.equipment_id].name:rec.equipment_name||rec.equipment_id;
+  let html='';
+  html+=`<div style="font-size:12px;color:var(--grey2);margin-bottom:12px;">${fmtTime(rec.checked_at)} — ${rec.staff_name||'Unknown'}</div>`;
+  html+=`<div style="font-weight:700;color:var(--red);margin-bottom:8px;">⚠ ${rec.fail_count||0} item(s) failed</div>`;
+  if(rec.fail_notes&&Object.keys(rec.fail_notes).length>0){
+    Object.entries(rec.fail_notes).forEach(function(kv){
+      html+=`<div class="fail-detail-panel"><strong>${kv[0]}</strong><br><span style="color:var(--grey2);">${kv[1]||'No note recorded'}</span></div>`;
+    });
+  } else {
+    html+='<p style="color:var(--grey3);font-size:12px;">No fail notes recorded.</p>';
+  }
+  if(rec.temperature_values&&Object.keys(rec.temperature_values).length>0){
+    html+=`<div style="margin-top:12px;font-weight:700;font-size:12px;">Temperatures recorded:</div>`;
+    Object.entries(rec.temperature_values).forEach(function(kv){
+      const label=kv[0].replace(/_/g,' ');
+      const val=parseFloat(kv[1]);
+      const inRange=val>=2&&val<=8;
+      html+=`<div style="font-size:12px;padding:3px 0;display:flex;justify-content:space-between;"><span style="color:var(--grey2);">${label}</span><span class="temp-badge${inRange?'':' temp-out'}">${kv[1]}°C</span></div>`;
+    });
+  }
+  document.getElementById('modalTitle').textContent=name+' — Fail Detail';
+  document.getElementById('modalBody').innerHTML=html;
+  document.getElementById('modalBg').classList.add('show');
 }
 
 function showTab(name){
