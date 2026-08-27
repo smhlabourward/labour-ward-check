@@ -981,7 +981,9 @@ function renderHistory(){
   body.innerHTML=rows.map(function(rec){
     const name=EQUIP_META[rec.equipment_id]?EQUIP_META[rec.equipment_id].name:rec.equipment_name||rec.equipment_id;
     const isFail = rec.overall_status==='fail';
-    const clickable = isFail ? 'style="cursor:pointer;" onclick="showFailDetail(allChecks.find(function(x){return x.equipment_id===''+rec.equipment_id+''&&x.checked_at===''+rec.checked_at+'';}))"' : '';
+    const safeId = (rec.equipment_id||'').replace(/'/g,'');
+    const safeAt = (rec.checked_at||'').replace(/'/g,'');
+    const clickable = isFail ? 'data-fail-id="'+safeId+'" data-fail-at="'+safeAt+'" style="cursor:pointer;"' : '';
     const temps = rec.temperature_values && Object.keys(rec.temperature_values).length>0
       ? '<div style="margin-top:2px;">'+Object.entries(rec.temperature_values).map(function(kv){
           const inRange = parseFloat(kv[1])>=2&&parseFloat(kv[1])<=8;
@@ -992,7 +994,8 @@ function renderHistory(){
   }).join('');
 }
 
-function showFailDetail(rec){
+function showFailDetail(equipId, checkedAt){
+  const rec = allChecks.find(function(x){ return x.equipment_id===equipId && x.checked_at===checkedAt; });
   if(!rec) return;
   const name=EQUIP_META[rec.equipment_id]?EQUIP_META[rec.equipment_id].name:rec.equipment_name||rec.equipment_id;
   let html='';
@@ -1036,6 +1039,11 @@ function exportCSV(){
   a.download=`smh-labour-ward-${new Date().toISOString().slice(0,10)}.csv`;
   a.click();
 }
+
+document.addEventListener('click', function(e){
+  const row = e.target.closest('tr[data-fail-id]');
+  if(row) showFailDetail(row.getAttribute('data-fail-id'), row.getAttribute('data-fail-at'));
+});
 
 init();
 </script>
