@@ -649,11 +649,12 @@ function renderAll(){
 // ── CATEGORY COMPLIANCE ──────────────────────────────────
 function avgCompliance(ids){
   if(!ids.length) return 0;
+
   if(compPeriod==='day'){
-    // Day view: only count daily-frequency checks (monthly/weekly not due today)
+    // Day view: only daily checks, was each done today?
     const todayStr = new Date().toLocaleDateString('en-GB',{timeZone:'Europe/London'});
     const dailyIds = ids.filter(id=>(EQUIP_META[id]?EQUIP_META[id].freq:'daily')==='daily');
-    if(!dailyIds.length) return 100; // no daily checks in this category = nothing due today
+    if(!dailyIds.length) return 100;
     const done = dailyIds.filter(function(id){
       return allChecks.some(function(rec){
         return rec.equipment_id===id &&
@@ -662,6 +663,54 @@ function avgCompliance(ids){
     }).length;
     return Math.round(done/dailyIds.length*100);
   }
+
+  if(compPeriod==='week'){
+    // Week view: for each daily check, how many of the last 7 days was it done?
+    // Total done-days / (daily check count x 7)
+    const dailyIds = ids.filter(id=>(EQUIP_META[id]?EQUIP_META[id].freq:'daily')==='daily');
+    const now = new Date();
+    // Build last 7 UK calendar days
+    const last7 = [];
+    for(var i=0;i<7;i++){
+      const d = new Date(now);
+      d.setDate(d.getDate()-i);
+      last7.push(d.toLocaleDateString('en-GB',{timeZone:'Europe/London'}));
+    }
+    // Also include weekly-frequency checks — done at least once in last 7 days = 100%
+    const weeklyIds = ids.filter(id=>(EQUIP_META[id]?EQUIP_META[id].freq:'daily')==='weekly');
+    // Exclude monthly checks from week view entirely
+    const relevantIds = [...dailyIds, ...weeklyIds];
+    if(!relevantIds.length) return 100;
+
+    var totalExpected = 0;
+    var totalDone = 0;
+
+    // Daily: must be done each of the last 7 days
+    dailyIds.forEach(function(id){
+      totalExpected += 7;
+      const checkedDays = new Set(
+        allChecks
+          .filter(function(rec){ return rec.equipment_id===id; })
+          .map(function(rec){ return new Date(rec.checked_at).toLocaleDateString('en-GB',{timeZone:'Europe/London'}); })
+      );
+      last7.forEach(function(day){ if(checkedDays.has(day)) totalDone++; });
+    });
+
+    // Weekly: just needs to be done once in last 7 days
+    weeklyIds.forEach(function(id){
+      totalExpected += 1;
+      const done = allChecks.some(function(rec){
+        if(rec.equipment_id!==id) return false;
+        const diffMs = now - new Date(rec.checked_at);
+        return diffMs>=0 && diffMs<=7*24*60*60*1000;
+      });
+      if(done) totalDone++;
+    });
+
+    return totalExpected ? Math.round(totalDone/totalExpected*100) : 100;
+  }
+
+  // Month view: average compliance across all IDs
   const rates = ids.map(id => calcCompliance(id, EQUIP_META[id]?EQUIP_META[id].freq:'daily'));
   const avg = Math.round(rates.reduce((a,b)=>a+b,0)/rates.length);
   return avg;
